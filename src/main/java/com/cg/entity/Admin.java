@@ -101,11 +101,11 @@ public class Admin {
 		this.email = email;
 	}
 
-	public String getMobileNumber() {
+	public String getAdminContact() {
 		return adminContact;
 	}
 
-	public void setMobileNumber(String adminContact) {
+	public void setAdminContact(String adminContact) {
 		this.adminContact = adminContact;
 	}
 

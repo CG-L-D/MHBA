@@ -1,6 +1,7 @@
 package com.cg.service;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,9 @@ import com.cg.entity.Admin;
 import com.cg.entity.Hall;
 import com.cg.entity.Vendor;
 import com.cg.repository.AdminRepository;
-import com.cg.repository.HallRepository;
+//import com.cg.repository.HallRepository;
 import com.cg.repository.VendorRepository;
 
-//Admin service class
 @Service
 public class AdminService {
 	

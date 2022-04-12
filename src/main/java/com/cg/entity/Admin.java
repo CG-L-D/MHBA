@@ -35,7 +35,6 @@ public class Admin {
 	private String lastName;
 	
 	@NotNull
-	@UniqueElements
 	@Column(name = "email")
 	private String email;
 	

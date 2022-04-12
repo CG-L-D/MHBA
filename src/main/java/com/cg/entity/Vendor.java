@@ -13,12 +13,13 @@ public class Vendor {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "vendor_id")
 	private int vendorId;
 	
-	@Column(name="Vendor Name")
+	@Column(name="vendorName")
 	private String vendorName;
 	
-	@Column(name="Vendor Contact")
+	@Column(name="vendorContact")
 	private int vendorContact;
 	
 	public Vendor() {
@@ -32,7 +33,7 @@ public class Vendor {
 		this.vendorContact = vendorContact;
 	}
 
-	public int getVendorId() {
+	public long getVendorId() {
 		return vendorId;
 	}
 

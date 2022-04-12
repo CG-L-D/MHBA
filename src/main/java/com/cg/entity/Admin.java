@@ -2,6 +2,7 @@ package com.cg.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
@@ -9,22 +10,28 @@ import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
+//Admin class
 @Entity
 public class Admin {
 	
+	//Properties
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "admin_id")
-	private long id;
+	@Column(name = "adminId")
+	private int adminId;
 	
 	@NotNull
-	@Column(name = "first_name")
+	@Column(name = "firstName")
 	private String firstName;
 	
 	@NotNull
-	@Column(name = "last_name")
+	@Column(name = "lastName")
 	private String lastName;
 	
 	@NotNull
@@ -32,38 +39,43 @@ public class Admin {
 	@Column(name = "email")
 	private String email;
 	
-	@Column(name = "mobile_number")
-	private String mobileNumber;
+	@Column(name = "contactNumber")
+	private String contactNumber;
 	
 	@Column(name = "password")
 	private String password;
 
-	@OneToMany
-	private Supervisor supervisor;
+	@OneToMany(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "")
+	private List<Supervisor> supervisors;
 	
-	@OneToMany
-	private Vendor vendor;
+	@OneToMany(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "vendorId")
+	private List<Vendor> vendors;
 	
+	//Default Constructor
 	public Admin() {}
 
+	
+	//Parameterized Constructor
 	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull @UniqueElements String email,
-			String mobileNumber, String password, Supervisor supervisor, Vendor vendor) {
+			String contactNumber, String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.mobileNumber = mobileNumber;
+		this.contactNumber = contactNumber;
 		this.password = password;
-		this.supervisor = supervisor;
-		this.vendor = vendor;
 	}
 
+	
+	//Getters and setters
 	public long getId() {
-		return id;
+		return adminId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setId(int id) {
+		this.adminId = id;
 	}
 
 	public String getFirstName() {
@@ -91,11 +103,11 @@ public class Admin {
 	}
 
 	public String getMobileNumber() {
-		return mobileNumber;
+		return contactNumber;
 	}
 
-	public void setMobileNumber(String mobileNumber) {
-		this.mobileNumber = mobileNumber;
+	public void setMobileNumber(String contactNumber) {
+		this.contactNumber = contactNumber;
 	}
 
 	public String getPassword() {
@@ -106,27 +118,12 @@ public class Admin {
 		this.password = password;
 	}
 
-	public Supervisor getSupervisor() {
-		return supervisor;
-	}
-
-	public void setSupervisor(Supervisor supervisor) {
-		this.supervisor = supervisor;
-	}
-
-	public Vendor getVendor() {
-		return vendor;
-	}
-
-	public void setVendor(Vendor vendor) {
-		this.vendor = vendor;
-	}
-
+	
+	//toString method
 	@Override
 	public String toString() {
-		return "Admin [Id=" + id + ", First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
-				+ ", Mobile_Number=" + mobileNumber + ", Password=" + password + ", Supervisor=" + supervisor
-				+ ", Vendor=" + vendor + "]";
+		return "Admin [Id=" + adminId + ", First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
+				+ ", Contact_Number=" + contactNumber + ", Password=" + password + "]";
 	}
 	
 }

@@ -74,10 +74,10 @@ public class AdminController {
 	
 	}
 
-	@RequestMapping(value = "/getAdminByContactNumber")
-	public ResponseEntity<Object> getAdminByContactNumber(@RequestBody String contactNumber) {
+	@RequestMapping(value = "/getByAdminContact")
+	public ResponseEntity<Object> getAdminByContactNumber(@RequestBody String adminContact) {
 		
-		return adminService.getAdminByContactNumber(contactNumber);
+		return adminService.getByAdminContact(adminContact);
 	
 	}
 	
@@ -88,14 +88,14 @@ public class AdminController {
 	
 	}
 	
-	@RequestMapping(value = "/getAdminByFirstName")
+	@RequestMapping(value = "/getSortedAdminByFirstName")
 	public List<ResponseEntity<Object>> getAdminSortedByFirstName() {
 		
 		return adminService.getAdminSortedByFirstName();
 	
 	}
 	
-	@RequestMapping(value = "/getAdminByLastName")
+	@RequestMapping(value = "/getSortedAdminByLastName")
 	public List<ResponseEntity<Object>> getAdminSortedByLastName() {
 		
 		return adminService.getAdminSortedByFirstName();

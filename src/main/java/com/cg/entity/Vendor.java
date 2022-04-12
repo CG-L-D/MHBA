@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="Vendor")
@@ -16,8 +17,11 @@ public class Vendor {
 	@Column(name = "vendor_id")
 	private int vendorId;
 	
-	@Column(name="vendorName")
-	private String vendorName;
+	@Column(name = "firstName")
+	private String firstName;
+	
+	@Column(name = "lastName")
+	private String lastName;
 	
 	@Column(name="vendorContact")
 	private int vendorContact;
@@ -26,14 +30,15 @@ public class Vendor {
 		super();
 	}
 
-	public Vendor(int vendorId, String vendorName, int vendorContact) {
+	public Vendor(int vendorId, String firstName, String lastName, int vendorContact) {
 		super();
 		this.vendorId = vendorId;
-		this.vendorName = vendorName;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.vendorContact = vendorContact;
 	}
 
-	public long getVendorId() {
+	public int getVendorId() {
 		return vendorId;
 	}
 
@@ -41,12 +46,20 @@ public class Vendor {
 		this.vendorId = vendorId;
 	}
 
-	public String getVendorName() {
-		return vendorName;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setVendorName(String vendorName) {
-		this.vendorName = vendorName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public int getVendorContact() {
@@ -59,8 +72,10 @@ public class Vendor {
 
 	@Override
 	public String toString() {
-		return "Vendor [vendorId=" + vendorId + ", vendorName=" + vendorName + ", vendorContact=" + vendorContact + "]";
+		return "Vendor [vendorId=" + vendorId + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", vendorContact=" + vendorContact + "]";
 	}
+
 	
 	
 

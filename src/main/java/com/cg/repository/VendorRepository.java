@@ -14,8 +14,6 @@ public interface VendorRepository extends JpaRepository<Vendor, Integer> {
 
 	List<Admin> findByLastName(String lastName);
 
-	Vendor findByContactNumber(String contactNumber);
-
-	Vendor findByEmail(String email);
+	Vendor findByVendorContact(String adminContact);
 
 }

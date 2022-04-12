@@ -116,9 +116,9 @@ public class AdminService {
 				
 	}
 	
-	public ResponseEntity<Object> getAdminByContactNumber(String contactNumber){
+	public ResponseEntity<Object> getByAdminContact(String adminContact){
 		
-		Admin admin = adminRepository.findByContactNumber(contactNumber);
+		Admin admin = adminRepository.findByAdminContact(adminContact);
 		
 		if(admin == null ) {
 			
@@ -241,9 +241,9 @@ public class AdminService {
 				
 	}
 	
-	public ResponseEntity<Object> getVendorByContactNumber(String contactNumber){
+	public ResponseEntity<Object> getByVendorContact(String adminContact){
 		
-		Vendor vendor = vendorRepository.findByContactNumber(contactNumber);
+		Vendor vendor = vendorRepository.findByVendorContact(adminContact);
 		
 		if(vendor == null ) {
 			
@@ -252,16 +252,16 @@ public class AdminService {
 				
 	}
 	
-	public ResponseEntity<Object> getVendorByEmail(String email){
-		
-		Vendor vendor = vendorRepository.findByEmail(email);
-		
-		if(vendor == null ) {
-			
-		}
-		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
-				
-	}
+//	public ResponseEntity<Object> getVendorByEmail(String email){
+//		
+//		Vendor vendor = vendorRepository.findByEmail(email);
+//		
+//		if(vendor == null ) {
+//			
+//		}
+//		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
+//				
+//	}
 	
 	public List<ResponseEntity<Object>> getVendorSortedByFirstName() {
 

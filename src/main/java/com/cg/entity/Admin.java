@@ -39,8 +39,8 @@ public class Admin {
 	@Column(name = "email")
 	private String email;
 	
-	@Column(name = "contactNumber")
-	private String contactNumber;
+	@Column(name = "adminContact")
+	private String adminContact;
 	
 	@Column(name = "password")
 	private String password;
@@ -59,12 +59,12 @@ public class Admin {
 	
 	//Parameterized Constructor
 	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull @UniqueElements String email,
-			String contactNumber, String password) {
+			String adminContact, String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.contactNumber = contactNumber;
+		this.adminContact = adminContact;
 		this.password = password;
 	}
 
@@ -103,11 +103,11 @@ public class Admin {
 	}
 
 	public String getMobileNumber() {
-		return contactNumber;
+		return adminContact;
 	}
 
-	public void setMobileNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
+	public void setMobileNumber(String adminContact) {
+		this.adminContact = adminContact;
 	}
 
 	public String getPassword() {
@@ -123,7 +123,7 @@ public class Admin {
 	@Override
 	public String toString() {
 		return "Admin [Id=" + adminId + ", First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
-				+ ", Contact_Number=" + contactNumber + ", Password=" + password + "]";
+				+ ", Contact_Number=" + adminContact + ", Password=" + password + "]";
 	}
 	
 }

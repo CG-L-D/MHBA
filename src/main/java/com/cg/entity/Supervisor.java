@@ -33,7 +33,9 @@ public class Supervisor {
 	@Column(name= "supervisorContact")
 	private String supervisorContact;
 	
-	public Supervisor() {	}
+	public Supervisor() {
+		super();
+	}
 	public Supervisor(int supervisorId, String supervisorName, String supervisorEmail, String supervisorContact) {
 		super();
 		this.supervisorId = supervisorId;

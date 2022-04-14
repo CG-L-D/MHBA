@@ -32,6 +32,8 @@ public class Hall {
 	
 	@Column(name = "price")
 	private double price;
+	
+	private boolean bookingStatus = false;
 
 	public Hall() {}
 	
@@ -75,6 +77,8 @@ public class Hall {
 	public double getPrice() { return price;}
 
 	public void setPrice(double price) { this.price = price;}
+	
+	public void setBookingStatus(boolean b) { this.bookingStatus = b ;}
 
 //	public Date getDateOfBooking() {return dateOfBooking;}
 //

@@ -16,6 +16,7 @@ import javax.validation.constraints.NotBlank;
 public class Customer {
    @Id
    @GeneratedValue(strategy=GenerationType.AUTO)
+   
    private int customerId;
    
    @NotBlank

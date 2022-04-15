@@ -39,7 +39,6 @@ public class Customer {
    }
 
     
-   
 	public Customer(int customerId, String customerName, String customerEmail, String contactNumber) {
 	super();
 	this.customerId = customerId;
@@ -47,8 +46,7 @@ public class Customer {
 	this.customerEmail = customerEmail;
 	this.contactNumber = contactNumber;
     }
-
-
+	
 
 	public int getCustomerId() {
 		return customerId;

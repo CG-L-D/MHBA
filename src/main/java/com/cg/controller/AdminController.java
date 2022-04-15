@@ -104,7 +104,7 @@ public class AdminController {
 	
 	
 	@RequestMapping(value = "/addAdmin")
-	public String addAdmin(@RequestBody Admin admin) {
+	public ResponseEntity<Object> addAdmin(@RequestBody Admin admin) {
 		
 		return adminService.addAdmin(admin);
 		
@@ -117,10 +117,10 @@ public class AdminController {
 		
 	}
 	
-	@RequestMapping(value = "/removeAdminById/{id}")
-	public String removeAdmin(@PathVariable int id) {
+	@RequestMapping(value = "/removeAdminByAdminId/{id}")
+	public String removeAdminByAdminId(@PathVariable int id) {
 		
-		return adminService.removeAdminById(id);
+		return adminService.removeAdminByAdminId(id);
 		
 	}
 	
@@ -138,31 +138,31 @@ public class AdminController {
 	
 	}
 	
-	@RequestMapping(value = "/getAdminById/{id}")
-	public ResponseEntity<Object> getAdminById(@PathVariable int id) {
+	@RequestMapping(value = "/getAdminByAdminId/{id}")
+	public ResponseEntity<Object> getAdminByAdminId(@PathVariable int id) {
 		
-		return adminService.getAdminById(id);
+		return adminService.getAdminByAdminId(id);
 	
 	}
 	
 	@RequestMapping(value = "/getAdminByFirstName")
-	public List<ResponseEntity<Object>> getAdminByFirstName(@RequestBody String firstName) {
+	public ResponseEntity<Object> getAdminByFirstName(@RequestBody String firstName) {
 		
 		return adminService.getAdminByFirstName(firstName);
 	
 	}
 	
 	@RequestMapping(value = "/getAdminByLastName")
-	public List<ResponseEntity<Object>> getAdminByLastName(@RequestBody String lastName) {
+	public ResponseEntity<Object> getAdminByLastName(@RequestBody String lastName) {
 		
 		return adminService.getAdminByLastName(lastName);
 	
 	}
 
 	@RequestMapping(value = "/getByAdminContact")
-	public ResponseEntity<Object> getAdminByContactNumber(@RequestBody String adminContact) {
+	public ResponseEntity<Object> getByAdminContact(@RequestBody String adminContact) {
 		
-		return adminService.getByAdminContact(adminContact);
+		return adminService.getByContact(adminContact);
 	
 	}
 	
@@ -174,16 +174,16 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/getSortedAdminByFirstName")
-	public List<ResponseEntity<Object>> getAdminSortedByFirstName() {
+	public ResponseEntity<Object> getAdminSortedByFirstName() {
 		
 		return adminService.getAdminSortedByFirstName();
 	
 	}
 	
 	@RequestMapping(value = "/getSortedAdminByLastName")
-	public List<ResponseEntity<Object>> getAdminSortedByLastName() {
+	public ResponseEntity<Object> getAdminSortedByLastName() {
 		
-		return adminService.getAdminSortedByFirstName();
+		return adminService.getAdminSortedByLastName();
 	
 	}
 }

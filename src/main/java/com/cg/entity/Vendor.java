@@ -3,11 +3,13 @@ package com.cg.entity;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -29,20 +31,20 @@ public class Vendor {
 	@Column(name="vendorContact")
 	private int vendorContact;
 	
-	@Column(name="Services_available")
-	private Map<String,Double> vendorServicesAvailable ;
+	@OneToMany(targetEntity=VendorOffers.class, cascade=CascadeType.ALL)
+	private List<VendorOffers> vendorOffers;
 	
 	public Vendor() {
 		super();
 	}
 
-	public Vendor(int vendorId, String firstName, String lastName, int vendorContact,Map<String,Double> vendorServicesAvailable) {
+	public Vendor(int vendorId, String firstName, String lastName, int vendorContact,List<VendorOffers> vendorOffers) {
 		super();
 		this.vendorId = vendorId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.vendorContact = vendorContact;
-		this.vendorServicesAvailable=vendorServicesAvailable;
+		this.vendorOffers=vendorOffers;
 	}
 
 	public int getVendorId() {
@@ -52,13 +54,13 @@ public class Vendor {
 	public void setVendorId(int vendorId) {
 		this.vendorId = vendorId;
 	}
-	public Map<String,Double> getVendorServicesAvailable(){
-		return vendorServicesAvailable;
+	public List<VendorOffers> getVendorOffers(){
+		return vendorOffers;
 	}
 
 
-	public void setVendorServicesAvailable(){
-		this.vendorServicesAvailable=vendorServicesAvailable;
+	public void setVendorOffers(){
+		this.vendorOffers=vendorOffers;
 	}
 
 	
@@ -89,9 +91,9 @@ public class Vendor {
 	@Override
 	public String toString() {
 		return "Vendor [vendorId=" + vendorId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", vendorContact=" + vendorContact + ", vendorServicesAvailable="+ vendorServicesAvailable + "]";
+				+ ", vendorContact=" + vendorContact + ", vendorOffers="+ vendorOffers + "]";
 	}
-	
+	/*
 	public double getVendorCost(Map<String,Double> vendorServicesAvailable) {
 		
 		double totalCost=0;
@@ -102,7 +104,7 @@ public class Vendor {
 		
 		return totalCost;
 		
-	}
+	}*/
 
 	
 	

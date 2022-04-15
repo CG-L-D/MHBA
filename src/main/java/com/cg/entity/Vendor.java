@@ -1,5 +1,8 @@
 package com.cg.entity;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,16 +29,20 @@ public class Vendor {
 	@Column(name="vendorContact")
 	private int vendorContact;
 	
+	@Column(name="Services_available")
+	private Map<String,Double> vendorServicesAvailable ;
+	
 	public Vendor() {
 		super();
 	}
 
-	public Vendor(int vendorId, String firstName, String lastName, int vendorContact) {
+	public Vendor(int vendorId, String firstName, String lastName, int vendorContact,Map<String,Double> vendorServicesAvailable) {
 		super();
 		this.vendorId = vendorId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.vendorContact = vendorContact;
+		this.vendorServicesAvailable=vendorServicesAvailable;
 	}
 
 	public int getVendorId() {
@@ -45,7 +52,16 @@ public class Vendor {
 	public void setVendorId(int vendorId) {
 		this.vendorId = vendorId;
 	}
+	public Map<String,Double> getVendorServicesAvailable(){
+		return vendorServicesAvailable;
+	}
 
+
+	public void setVendorServicesAvailable(){
+		this.vendorServicesAvailable=vendorServicesAvailable;
+	}
+
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -73,7 +89,19 @@ public class Vendor {
 	@Override
 	public String toString() {
 		return "Vendor [vendorId=" + vendorId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", vendorContact=" + vendorContact + "]";
+				+ ", vendorContact=" + vendorContact + ", vendorServicesAvailable="+ vendorServicesAvailable + "]";
+	}
+	
+	public double getVendorCost(Map<String,Double> vendorServicesAvailable) {
+		
+		double totalCost=0;
+		
+		for (String key: vendorServicesAvailable.keySet())
+        totalCost += vendorServicesAvailable.get(key);
+		
+		
+		return totalCost;
+		
 	}
 
 	

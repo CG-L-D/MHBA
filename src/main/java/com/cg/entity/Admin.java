@@ -2,17 +2,12 @@ package com.cg.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.UniqueElements;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
@@ -35,6 +30,7 @@ public class Admin {
 	private String lastName;
 	
 	@NotNull
+	@Email
 	@Column(name = "email")
 	private String email;
 	
@@ -45,11 +41,9 @@ public class Admin {
 	private String password;
 
 	@OneToMany(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "")
 	private List<Supervisor> supervisors;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "vendorId")
 	private List<Vendor> vendors;
 	
 	//Default Constructor
@@ -57,7 +51,19 @@ public class Admin {
 
 	
 	//Parameterized Constructor
-	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull @UniqueElements String email,
+	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email,
+			String adminContact, String password) {
+		super();
+		this.adminId = adminId;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.adminContact = adminContact;
+		this.password = password;
+	}
+	
+	//Parameterized Overloaded Constructor
+	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
 			String adminContact, String password) {
 		super();
 		this.firstName = firstName;
@@ -101,11 +107,11 @@ public class Admin {
 		this.email = email;
 	}
 
-	public String getMobileNumber() {
+	public String getAdminContact() {
 		return adminContact;
 	}
 
-	public void setMobileNumber(String adminContact) {
+	public void setadminContact(String adminContact) {
 		this.adminContact = adminContact;
 	}
 
@@ -121,7 +127,7 @@ public class Admin {
 	//toString method
 	@Override
 	public String toString() {
-		return "Admin [Id=" + adminId + ", First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
+		return "Admin [First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
 				+ ", Contact_Number=" + adminContact + ", Password=" + password + "]";
 	}
 	

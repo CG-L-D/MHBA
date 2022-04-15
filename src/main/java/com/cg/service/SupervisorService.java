@@ -21,4 +21,38 @@ public class SupervisorService {
 	public List<Supervisor> getAllSupervisor(){
 		  return superRepo.findAll();
 	  }
+	public void removeAll() {
+		superRepo.deleteAll();
+	}
+	public void removeById(Integer id) {
+		superRepo.deleteById(id);
+	}
+	public Supervisor getById(Integer id) {
+		return superRepo.getById(id);
+	}
+	public Supervisor getByName(String name) {
+		for(Supervisor supervisor:getAllSupervisor()) {
+			if(supervisor.getSupervisorName().equalsIgnoreCase(name))
+				return supervisor;
+		}
+		return null;
+	}
+	public Supervisor getByContact(String contact) {
+		for(Supervisor supervisor:getAllSupervisor()) {
+			if(supervisor.getSupervisorContact().equalsIgnoreCase(contact))
+				return supervisor;
+		}
+		return null;
+	}
+	public Supervisor getByEmail(String email) {
+		for(Supervisor supervisor:getAllSupervisor()) {
+			if(supervisor.getSupervisorEmail().equalsIgnoreCase(email))
+				return supervisor;
+		}
+		return null;
+	}
+	public List<Supervisor> sortByName() {
+		superRepo.findAll(new )
+	}
+	
 }

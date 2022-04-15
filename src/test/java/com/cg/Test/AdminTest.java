@@ -245,7 +245,7 @@ class AdminTest {
 		
 		adminController.addAdmin(new Admin(101, "First", "Last", "email@gmail.com", "9000000000", "Password@123"));
 		
-		ResponseEntity<Object> admin = adminController.getAdminByContactNumber("9000000000");
+		ResponseEntity<Object> admin = adminController.getByAdminContact("9000000000");
 		
 		assertNotNull(admin);
 		
@@ -256,7 +256,7 @@ class AdminTest {
 
 		adminController.removeAllAdmin();
 		
-		assertEquals("<200 OK OK,Admin not found.,[]>", adminController.getAdminByContactNumber("8000000000").toString());
+		assertEquals("<200 OK OK,Admin not found.,[]>", adminController.getByAdminContact("8000000000").toString());
 				
 	}
 	

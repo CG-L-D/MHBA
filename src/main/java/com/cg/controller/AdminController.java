@@ -75,9 +75,9 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/getByAdminContact")
-	public ResponseEntity<Object> getAdminByContactNumber(@RequestBody String adminContact) {
+	public ResponseEntity<Object> getByAdminContact(@RequestBody String adminContact) {
 		
-		return adminService.getByAdminContact(adminContact);
+		return adminService.getByContact(adminContact);
 	
 	}
 	

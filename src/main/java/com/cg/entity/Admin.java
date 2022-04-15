@@ -4,7 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.util.List;
@@ -17,26 +21,33 @@ public class Admin {
 	
 	//Properties
 	@Id
+	@Column(name = "adminId", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "adminId")
 	private int adminId;
 	
-	@NotNull
-	@Column(name = "firstName")
+	@Column(name = "firstName", nullable = false)
+	@Pattern(regexp = "^[A-Z]+&", message="First name is invalid, must contain alphabets only.")
 	private String firstName;
 	
-	@NotNull
-	@Column(name = "lastName")
+	@Column(name = "lastName", nullable = false)
+	@Pattern(regexp = "^[A-Z]+&", message="Last name is invalid, must contain alphabets only.")
 	private String lastName;
 	
-	@NotNull
+	@Column(name = "age", nullable = false)
+	@Min(value = 20, message= "Age is too low.")
+	@Max(value = 80, message = "Age limit exceeded.")
+	private int age;
+	
 	@Email
-	@Column(name = "email")
+	@Size(min = 3, max = 30, message = "Email must be between 3 to 30 characters.")
+	@Column(name = "email", nullable = false)
 	private String email;
 	
-	@Column(name = "adminContact")
-	private String adminContact;
+	@Pattern(regexp = "[0-9]{10}", message="Contact number is not valid, must be of 10 digit numeric value.")
+	@Column(name = "contact", nullable = false)
+	private String contact;
 	
+	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message="Password does not match the policy.")
 	@Column(name = "password")
 	private String password;
 
@@ -52,24 +63,24 @@ public class Admin {
 	
 	//Parameterized Constructor
 	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email,
-			String adminContact, String password) {
+			String contact, String password) {
 		super();
 		this.adminId = adminId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.adminContact = adminContact;
+		this.contact = contact;
 		this.password = password;
 	}
 	
 	//Parameterized Overloaded Constructor
 	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
-			String adminContact, String password) {
+			String contact, String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.adminContact = adminContact;
+		this.contact = contact;
 		this.password = password;
 	}
 
@@ -107,12 +118,12 @@ public class Admin {
 		this.email = email;
 	}
 
-	public String getAdminContact() {
-		return adminContact;
+	public String getContact() {
+		return contact;
 	}
 
-	public void setadminContact(String adminContact) {
-		this.adminContact = adminContact;
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
 	public String getPassword() {
@@ -128,7 +139,7 @@ public class Admin {
 	@Override
 	public String toString() {
 		return "Admin [First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
-				+ ", Contact_Number=" + adminContact + ", Password=" + password + "]";
+				+ ", Contact_Number=" + contact + ", Password=" + password + "]";
 	}
 	
 }

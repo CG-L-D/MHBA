@@ -14,7 +14,7 @@ public class Vendor {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "vendor_id")
+	@Column(name = "vendor_id" , nullable=false)
 	private int vendorId;
 	
 	@Column(name = "firstName")

@@ -97,10 +97,16 @@ public class AdminController {
 	@RequestMapping(value = "/getSortedVendorByLastName")
 	public List<ResponseEntity<Object>> getVendorSortedByLastName() {
 		
-		return adminService.getVendorSortedByFirstName();
+		return vendorService.getVendorSortedByLastName();
 	
 	}
 
+	
+	
+	
+	
+	//admin service
+	
 	
 	
 	@RequestMapping(value = "/addAdmin")

@@ -3,12 +3,17 @@ package com.cg.service;
 import java.util.List;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -103,16 +108,16 @@ public class AdminService {
 //		if(upperCharCount + lowerCharCount + digitCount + specialCharCount != pass.length())
 //			return new ResponseEntity<Object>("Password does not match the policy, "
 //					+ "it should contain at least one uppercase character, lowercase character, digit and special character.", HttpStatus.BAD_REQUEST);
-		try {
-			
-			adminRepository.save(admin);
-
-		}
-		catch (TransactionSystemException e) {
-
-			return new ResponseEntity<Object>("Error: " + e.getMostSpecificCause(), HttpStatus.OK);
-
-		}
+//		try {
+//			
+//			adminRepository.save(admin);
+//
+//		}
+//		catch(Throwable e) {
+//			 if(e instanceof ConstraintViolationException) {
+//			  ConstraintViolationException ce = (ConstraintViolationException) e;
+//			  String constraintName = ce.getConstraintName();
+//		 }
 		return new ResponseEntity<Object>("Admin added successfully.", HttpStatus.OK);
 	}
 	

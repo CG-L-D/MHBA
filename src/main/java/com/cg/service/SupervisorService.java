@@ -2,9 +2,9 @@ package com.cg.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.cg.entity.Customer;
 import com.cg.entity.Supervisor;
 import com.cg.repository.SupervisorRepository;
 
@@ -52,7 +52,7 @@ public class SupervisorService {
 		return null;
 	}
 	public List<Supervisor> sortByName() {
-		superRepo.findAll(new )
+		return superRepo.findAll(Sort.by("supervisorName"));
 	}
 	
 }

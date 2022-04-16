@@ -2,13 +2,15 @@ package com.cg.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="Vendor_Offers")
 public class VendorOffers {
 	
-	@Column
+	@Id
 	private String serviceType;
 	
 	@Column

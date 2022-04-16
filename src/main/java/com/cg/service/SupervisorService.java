@@ -35,7 +35,7 @@ public class SupervisorService {
 	  }
 	public ResponseEntity<Object> removeAll() {
 		superRepo.deleteAll();
-		return new ResponseEntity<Object>("Removed all supervisors", );
+		return new ResponseEntity<Object>("Removed all supervisors", HttpStatus.OK );
 	}
 	public ResponseEntity<Object> removeById(Integer id) {
 		superRepo.deleteById(id);

@@ -118,6 +118,7 @@ public class AdminService {
 	public ResponseEntity<Object> getAdminByAdminId(int id) {
 
 		if(currentAdmin != null) {
+			
 			Optional<Admin> admin = adminRepository.findById(id);
 			System.out.println(admin);
 			if (admin.isEmpty()) {
@@ -134,6 +135,7 @@ public class AdminService {
 	public ResponseEntity<Object> getAdminByFirstName(String firstName) {
 
 		if(currentAdmin != null) {
+			
 			List<Admin> admin = adminRepository.findByFirstName(firstName);
 	
 			if (admin == null) {
@@ -155,18 +157,15 @@ public class AdminService {
 		if(admin == null ) {
 			
 		}
-		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>(admin, HttpStatus.OK);
 				
 	}
 	
 	public ResponseEntity<Object> getByAdminContact(String adminContact){
-		
-		Admin admin = adminRepository.findByAdminContact(adminContact);
-		
-		if(admin == null ) {
 			
 		if(currentAdmin != null) {
-			List<Admin> admin = adminRepository.findByLastName(lastName);
+			
+			Admin admin = adminRepository.findByAdminContact(adminContact);
 	
 			if (admin == null) {
 	
@@ -183,7 +182,8 @@ public class AdminService {
 	public ResponseEntity<Object> getByContact(String contact) {
 
 		if(currentAdmin != null) {
-			Admin admin = adminRepository.findByContact(contact);
+			
+			Admin admin = adminRepository.findByAdminContact(contact);
 	
 			if (admin == null) {
 	

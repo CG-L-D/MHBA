@@ -99,15 +99,9 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/getByAdminContact")
-<<<<<<< Updated upstream
 	public ResponseEntity<Object> getByAdminContact(@RequestBody String adminContact) {
 		
-		return adminService.getByContact(adminContact);
-=======
-	public ResponseEntity<Object> getAdminByContactNumber(@RequestBody String adminContact) {
-		
 		return adminService.getByAdminContact(adminContact);
->>>>>>> Stashed changes
 	
 	}
 	
@@ -119,22 +113,14 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/getSortedAdminByFirstName")
-<<<<<<< Updated upstream
 	public ResponseEntity<Object> getAdminSortedByFirstName() {
-=======
-	public List<ResponseEntity<Object>> getAdminSortedByFirstName() {
->>>>>>> Stashed changes
 		
 		return adminService.getAdminSortedByFirstName();
 	
 	}
 	
 	@RequestMapping(value = "/getSortedAdminByLastName")
-<<<<<<< Updated upstream
 	public ResponseEntity<Object> getAdminSortedByLastName() {
-=======
-	public List<ResponseEntity<Object>> getAdminSortedByLastName() {
->>>>>>> Stashed changes
 		
 		return adminService.getAdminSortedByLastName();
 	

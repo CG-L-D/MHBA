@@ -1,16 +1,11 @@
 package com.cg.entity;
 
-<<<<<<< Updated upstream
 import javax.persistence.Entity;
 import javax.persistence.Id;
-=======
-<<<<<<< HEAD
->>>>>>> Stashed changes
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-<<<<<<< Updated upstream
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
@@ -88,42 +83,4 @@ public class Supervisor {
 
 	}
 
-=======
-=======
-import javax.persistence.Entity;
->>>>>>> 2066ab205978e3d6f46397f82197540db45ed59b
-import javax.persistence.Id;
-
-@Entity
-public class Supervisor {
-	
-	@Id
-<<<<<<< HEAD
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int supervisorId;
-	
-=======
->>>>>>> 2066ab205978e3d6f46397f82197540db45ed59b
-	private String firstName;
-	
-	public Supervisor() {
-		
-	}
-
-	public Supervisor(String firstName) {
-		super();
-		this.firstName = firstName;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	
-	
-	
->>>>>>> Stashed changes
 }

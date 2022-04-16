@@ -21,10 +21,29 @@ public class AdminService {
 	// Admin repository instance
 	@Autowired
 	AdminRepository adminRepository;
+	
+	Admin currentAdmin = null;
 
-	Pattern namePattern = Pattern.compile("^[A-Za-z]+$");
+	
+	public ResponseEntity<Object> loginAdmin(String email, String password){
+		
+		if((currentAdmin = adminRepository.findByEmailAndPassword(email, password)) != null){
+			return new ResponseEntity<Object>("Admin login successfull.", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Object>("Admin login failed, invalid credentials.", HttpStatus.FORBIDDEN);
+	}
+	
+	public ResponseEntity<Object> logoutAdmin(){
+		
+		if(currentAdmin != null){
+			currentAdmin = null;
+			return new ResponseEntity<Object>("Admin logout successfull.", HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<Object>("Error, currently no admin logged-in.", HttpStatus.BAD_REQUEST);
+	}
 
-	// Methods for admin
 	public ResponseEntity<Object> addAdmin(Admin admin) {
 
 		// Matcher firstNameMatcher = namePattern.matcher(admin.getFirstName());
@@ -123,104 +142,131 @@ public class AdminService {
 		return new ResponseEntity<Object>("Admin added successfully.", HttpStatus.OK);
 	}
 
-	public String removeAllAdmin() {
+	public ResponseEntity<Object> removeAllAdmin() {
 
-		if (adminRepository.count() != 0) {
-
-			adminRepository.deleteAll();
-			return "All admin deleted successfully.";
-
+		if(currentAdmin != null) {
+			if (adminRepository.count() != 0) {
+		
+				adminRepository.deleteAll();
+				return new ResponseEntity<Object>("All admin deleted successfully.", HttpStatus.OK);
+		
+			}
+			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
 		}
-		return "Admin not found.";
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
+		
 	}
 
-	public String removeAdminByAdminId(int id) {
+	public ResponseEntity<Object> removeAdminByAdminId(int id) {
 
-		if (adminRepository.existsById(id)) {
+		if(currentAdmin != null) {
+			if (adminRepository.existsById(id)) {
 
-			adminRepository.deleteById(id);
-			return "Admin deleted successfully.";
-
+				adminRepository.deleteById(id);
+				return new ResponseEntity<Object>("Admin deleted successfully.", HttpStatus.OK);
+				
+			}
+			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
 		}
-		return "Admin not found.";
-
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
+		
 	}
 
 	public ResponseEntity<Object> getAllAdmin() {
 
-		List<Admin> admin = adminRepository.findAll();
-
-		if (admin.isEmpty()) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
+		if(currentAdmin != null) {
+			List<Admin> admin = adminRepository.findAll();
+	
+			if (admin.isEmpty()) {
+	
+				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+	
+			}
+			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
+			
 	}
 
 	public ResponseEntity<Object> getAdminByPage(int m, int n) {
 
-		Pageable page = PageRequest.of(m, n);
-
-		Page<Admin> admin = adminRepository.findAll(page);
-
-		if (admin == null) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
+		if(currentAdmin != null) {
+			Pageable page = PageRequest.of(m, n);
+	
+			Page<Admin> admin = adminRepository.findAll(page);
+	
+			if (admin == null) {
+	
+				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+	
+			}
+			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
+			
 	}
 
 	public ResponseEntity<Object> getAdminByAdminId(int id) {
 
-		Optional<Admin> admin = adminRepository.findById(id);
-		System.out.println(admin);
-		if (admin.isEmpty()) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
+		if(currentAdmin != null) {
+			Optional<Admin> admin = adminRepository.findById(id);
+			System.out.println(admin);
+			if (admin.isEmpty()) {
+	
+				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+	
+			}
+			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
 
 	}
 
 	public ResponseEntity<Object> getAdminByFirstName(String firstName) {
 
-		List<Admin> admin = adminRepository.findByFirstName(firstName);
-
-		if (admin == null) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
+		if(currentAdmin != null) {
+			List<Admin> admin = adminRepository.findByFirstName(firstName);
+	
+			if (admin == null) {
+	
+				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+	
+			}
+			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
 
 	}
 
 	public ResponseEntity<Object> getAdminByLastName(String lastName) {
 
-		List<Admin> admin = adminRepository.findByLastName(lastName);
-
-		if (admin == null) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
+		if(currentAdmin != null) {
+			List<Admin> admin = adminRepository.findByLastName(lastName);
+	
+			if (admin == null) {
+	
+				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+	
+			}
+			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
 
 	}
 
 	public ResponseEntity<Object> getByContact(String contact) {
 
-		Admin admin = adminRepository.findByContact(contact);
-
-		if (admin == null) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
+		if(currentAdmin != null) {
+			Admin admin = adminRepository.findByContact(contact);
+	
+			if (admin == null) {
+	
+				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+	
+			}
+			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
 
 	}
 

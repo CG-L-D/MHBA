@@ -25,89 +25,22 @@ public class AdminController {
 	@Autowired
 	VendorService vendorService;
 	
-	@PostMapping("/addVendor")
-	public String addVendor(@RequestBody Vendor vendor)
-	{
-		return vendorService.addVendor(vendor);
+	
+	//admin services
+	
+	@RequestMapping(value = "/loginAdmin/{email}/{password}")
+	public ResponseEntity<Object> loginAdmin(@PathVariable String email, @PathVariable String password){
+		
+		return adminService.loginAdmin(email, password);
 		
 	}
 	
-
-	@RequestMapping(value = "/removeAllVendor")
-	public String removeAllVendor() {
+	@RequestMapping(value = "/logoutAdmin")
+	public ResponseEntity<Object> logoutAdmin(){
 		
-		return vendorService.removeAllVendor();
-		
-	}
-	
-	@RequestMapping(value = "/removeVendorById/{id}")
-	public String removeVendorById(@PathVariable int id) {
-		
-		return vendorService.removeVendorById(id);
+		return adminService.logoutAdmin();
 		
 	}
-	@RequestMapping(value = "/getAllVendor")
-	public ResponseEntity<Object> getAllVendor() {
-		
-		return vendorService.getAllVendor();
-	
-	}
-	
-	@RequestMapping(value = "/getVendorByPage/{m}/{n}")
-	public ResponseEntity<Object> getVendorByPage(@PathVariable int m, @PathVariable int n) {
-		
-		return vendorService.getVendorByPage(m,n);
-	
-	}
-	@RequestMapping(value = "/getVendorById/{id}")
-	public ResponseEntity<Object> getVendorById(@PathVariable int id) {
-		
-		return vendorService.getVendorById(id);
-	
-	}
-	
-	@RequestMapping(value = "/getVendorByFirstName")
-	public List<ResponseEntity<Object>> getVendorByFirstName(@RequestBody String firstName) {
-		
-		return vendorService.getVendorByFirstName(firstName);
-	
-	}
-	
-
-	@RequestMapping(value = "/getVendorByLastName")
-	public List<ResponseEntity<Object>> getVendorByLastName(@RequestBody String lastName) {
-		
-		return vendorService.getVendorByLastName(lastName);
-	
-	}
-
-	@RequestMapping(value = "/getByVendorContact")
-	public ResponseEntity<Object> getVendorByContactNumber(@RequestBody String vendorContact) {
-		
-		return vendorService.getByVendorContact(vendorContact);
-	
-	}
-	@RequestMapping(value = "/getSortedVendorByFirstName")
-	public List<ResponseEntity<Object>> getVendorSortedByFirstName() {
-		
-		return vendorService.getVendorSortedByFirstName();
-	
-	}
-	
-	@RequestMapping(value = "/getSortedVendorByLastName")
-	public List<ResponseEntity<Object>> getVendorSortedByLastName() {
-		
-		return vendorService.getVendorSortedByLastName();
-	
-	}
-
-	
-	
-	
-	
-	//admin service
-	
-	
 	
 	@RequestMapping(value = "/addAdmin")
 	public ResponseEntity<Object> addAdmin(@RequestBody Admin admin) {
@@ -117,14 +50,14 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/removeAllAdmin")
-	public String removeAllAdmin() {
+	public ResponseEntity<Object> removeAllAdmin() {
 		
 		return adminService.removeAllAdmin();
 		
 	}
 	
 	@RequestMapping(value = "/removeAdminByAdminId/{id}")
-	public String removeAdminByAdminId(@PathVariable int id) {
+	public ResponseEntity<Object> removeAdminByAdminId(@PathVariable int id) {
 		
 		return adminService.removeAdminByAdminId(id);
 		
@@ -192,4 +125,83 @@ public class AdminController {
 		return adminService.getAdminSortedByLastName();
 	
 	}
+	
+	//vendor services
+	@PostMapping("/addVendor")
+	public String addVendor(@RequestBody Vendor vendor)
+	{
+		return vendorService.addVendor(vendor);
+		
+	}
+
+	@RequestMapping(value = "/removeAllVendor")
+	public String removeAllVendor() {
+		
+		return vendorService.removeAllVendor();
+		
+	}
+	
+	@RequestMapping(value = "/removeVendorById/{id}")
+	public String removeVendorById(@PathVariable int id) {
+		
+		return vendorService.removeVendorById(id);
+		
+	}
+	
+	@RequestMapping(value = "/getAllVendor")
+	public ResponseEntity<Object> getAllVendor() {
+		
+		return vendorService.getAllVendor();
+	
+	}
+	
+	@RequestMapping(value = "/getVendorByPage/{m}/{n}")
+	public ResponseEntity<Object> getVendorByPage(@PathVariable int m, @PathVariable int n) {
+		
+		return vendorService.getVendorByPage(m,n);
+	
+	}
+	
+	@RequestMapping(value = "/getVendorById/{id}")
+	public ResponseEntity<Object> getVendorById(@PathVariable int id) {
+		
+		return vendorService.getVendorById(id);
+	
+	}
+	
+	@RequestMapping(value = "/getVendorByFirstName")
+	public List<ResponseEntity<Object>> getVendorByFirstName(@RequestBody String firstName) {
+		
+		return vendorService.getVendorByFirstName(firstName);
+	
+	}
+
+	@RequestMapping(value = "/getVendorByLastName")
+	public List<ResponseEntity<Object>> getVendorByLastName(@RequestBody String lastName) {
+		
+		return vendorService.getVendorByLastName(lastName);
+	
+	}
+
+	@RequestMapping(value = "/getByVendorContact")
+	public ResponseEntity<Object> getVendorByContactNumber(@RequestBody String vendorContact) {
+		
+		return vendorService.getByVendorContact(vendorContact);
+	
+	}
+	
+	@RequestMapping(value = "/getSortedVendorByFirstName")
+	public List<ResponseEntity<Object>> getVendorSortedByFirstName() {
+		
+		return vendorService.getVendorSortedByFirstName();
+	
+	}
+	
+	@RequestMapping(value = "/getSortedVendorByLastName")
+	public List<ResponseEntity<Object>> getVendorSortedByLastName() {
+		
+		return vendorService.getVendorSortedByLastName();
+	
+	}
+
 }

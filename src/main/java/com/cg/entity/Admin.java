@@ -43,9 +43,14 @@ public class Admin {
 	@Column(name = "email", nullable = false)
 	private String email;
 	
+<<<<<<< Updated upstream
 	@Pattern(regexp = "[0-9]{10}", message="Contact number is not valid, must be of 10 digit numeric value.")
 	@Column(name = "contact", nullable = false)
 	private String contact;
+=======
+	@Column(name = "adminContact")
+	private String adminContact;
+>>>>>>> Stashed changes
 	
 	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message="Password does not match the policy.")
 	@Column(name = "password")
@@ -62,6 +67,7 @@ public class Admin {
 
 	
 	//Parameterized Constructor
+<<<<<<< Updated upstream
 	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email,
 			String contact, String password) {
 		super();
@@ -76,11 +82,19 @@ public class Admin {
 	//Parameterized Overloaded Constructor
 	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
 			String contact, String password) {
+=======
+	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull @UniqueElements String email,
+			String adminContact, String password) {
+>>>>>>> Stashed changes
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+<<<<<<< Updated upstream
 		this.contact = contact;
+=======
+		this.adminContact = adminContact;
+>>>>>>> Stashed changes
 		this.password = password;
 	}
 
@@ -118,12 +132,21 @@ public class Admin {
 		this.email = email;
 	}
 
+<<<<<<< Updated upstream
 	public String getContact() {
 		return contact;
 	}
 
 	public void setContact(String contact) {
 		this.contact = contact;
+=======
+	public String getMobileNumber() {
+		return adminContact;
+	}
+
+	public void setMobileNumber(String adminContact) {
+		this.adminContact = adminContact;
+>>>>>>> Stashed changes
 	}
 
 	public String getPassword() {
@@ -138,8 +161,13 @@ public class Admin {
 	//toString method
 	@Override
 	public String toString() {
+<<<<<<< Updated upstream
 		return "Admin [First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
 				+ ", Contact_Number=" + contact + ", Password=" + password + "]";
+=======
+		return "Admin [Id=" + adminId + ", First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
+				+ ", Contact_Number=" + adminContact + ", Password=" + password + "]";
+>>>>>>> Stashed changes
 	}
 	
 }

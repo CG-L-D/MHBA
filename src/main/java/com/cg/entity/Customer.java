@@ -36,9 +36,12 @@ public class Customer {
    @Column(name="customerEmail")
    private String customerEmail;
    
+   private String password;
+   
    @NotBlank
    @Column(name="contactNumber")
    private String contactNumber;
+   
    
    private Date bookHallFrom;
    
@@ -54,11 +57,12 @@ public class Customer {
 	   
    }
 
-	public Customer(int customerId,String customerName, String customerEmail, String contactNumber) {
+	public Customer(int customerId,String customerName, String customerEmail,String password, String contactNumber) {
 	super();
     this.customerId = customerId;
 	this.customerName = customerName;
 	this.customerEmail = customerEmail;
+	this.password = password;
 	this.contactNumber = contactNumber;
 	
     }
@@ -140,10 +144,16 @@ public class Customer {
 		return halls;
 	}
 
-
-
 	public void setHall(List<Hall> hall) {
 		this.halls = halls	;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 

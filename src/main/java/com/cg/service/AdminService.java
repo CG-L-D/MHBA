@@ -201,11 +201,28 @@ public class AdminService {
 	public ResponseEntity<Object> getAdminByLastName(String lastName) {
 
 		List<Admin> admin = adminRepository.findByLastName(lastName);
+<<<<<<< Updated upstream
 
 		if (admin == null) {
 
 			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
 
+=======
+		
+		if(admin == null ) {
+			
+		}
+		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(admin, HttpStatus.OK);
+				
+	}
+	
+	public ResponseEntity<Object> getByAdminContact(String adminContact){
+		
+		Admin admin = adminRepository.findByAdminContact(adminContact);
+		
+		if(admin == null ) {
+			
+>>>>>>> Stashed changes
 		}
 		return new ResponseEntity<Object>(admin, HttpStatus.OK);
 
@@ -241,7 +258,64 @@ public class AdminService {
 
 		List<Admin> admin = adminRepository.findAll(Sort.by("firstName"));
 
+<<<<<<< Updated upstream
 		if (admin == null) {
+=======
+		Optional<Vendor> vendor= vendorRepository.findById(id);
+		
+		if(vendor == null) {
+			
+		}
+		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
+		
+	}
+	
+	public List<ResponseEntity<Object>> getVendorByFirstName(String firstName){
+		
+		List<Admin> vendor = vendorRepository.findByFirstName(firstName);
+		
+		if(vendor == null ) {
+			
+		}
+		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
+				
+	}
+	
+	public List<ResponseEntity<Object>> getVendorByLastName(String lastName){
+		
+		List<Admin> vendor = vendorRepository.findByLastName(lastName);
+		
+		if(vendor == null ) {
+			
+		}
+		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
+				
+	}
+	
+	public ResponseEntity<Object> getByVendorContact(String adminContact){
+		
+		Vendor vendor = vendorRepository.findByVendorContact(adminContact);
+		
+		if(vendor == null ) {
+			
+		}
+		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
+				
+	}
+	
+//	public ResponseEntity<Object> getVendorByEmail(String email){
+//		
+//		Vendor vendor = vendorRepository.findByEmail(email);
+//		
+//		if(vendor == null ) {
+//			
+//		}
+//		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
+//				
+//	}
+	
+	public List<ResponseEntity<Object>> getVendorSortedByFirstName() {
+>>>>>>> Stashed changes
 
 			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
 

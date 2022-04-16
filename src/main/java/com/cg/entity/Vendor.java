@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Vendor")
@@ -20,7 +21,6 @@ public class Vendor {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "vendor_id", nullable = false)
 	private int vendorId;
-
 	@Column(name = "firstName")
 	private String firstName;
 
@@ -38,8 +38,7 @@ public class Vendor {
 		super();
 	}
 
-	public Vendor(int vendorId, String firstName, String lastName, String vendorContact,
-			List<VendorOffers> vendorOffers) {
+	public Vendor(int vendorId, String firstName, String lastName, String vendorContact) {
 		super();
 		this.vendorId = vendorId;
 		this.firstName = firstName;
@@ -93,18 +92,4 @@ public class Vendor {
 		return "Vendor [vendorId=" + vendorId + ", firstName=" + firstName + ", lastName=" + lastName
 				+ ", vendorContact=" + vendorContact + ", vendorOffers=" + vendorOffers + "]";
 	}
-	/*
-	 * public double getVendorCost(Map<String,Double> vendorServicesAvailable) {
-	 * 
-	 * double totalCost=0;
-	 * 
-	 * for (String key: vendorServicesAvailable.keySet())
-	 * totalCost += vendorServicesAvailable.get(key);
-	 * 
-	 * 
-	 * return totalCost;
-	 * 
-	 * }
-	 */
-
 }

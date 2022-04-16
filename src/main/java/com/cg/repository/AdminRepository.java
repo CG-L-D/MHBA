@@ -13,8 +13,10 @@ public interface AdminRepository extends JpaRepository<Admin, Integer>{
 
 	List<Admin> findByLastName(String lastName);
 
-	Admin findByContact(String adminContact);
+	Admin findByAdminContact(String adminContact);
 	
 	Admin findByEmail(String email);
+
+	Admin findByEmailAndPassword(String email, String password);
 	
 }

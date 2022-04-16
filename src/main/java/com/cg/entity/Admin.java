@@ -1,8 +1,11 @@
-	package com.cg.entity;
+package com.cg.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -26,16 +29,16 @@ public class Admin {
 	private int adminId;
 	
 	@Column(name = "firstName", nullable = false)
-	@Pattern(regexp = "^[A-Z]+&", message="First name is invalid, must contain alphabets only.")
+	@Pattern(regexp = "^[A-Za-z]+$", message="First name is invalid, must contain alphabets only.")
 	private String firstName;
 	
 	@Column(name = "lastName", nullable = false)
-	@Pattern(regexp = "^[A-Z]+&", message="Last name is invalid, must contain alphabets only.")
+	@Pattern(regexp = "^[A-Za-z]+$", message="Last name is invalid, must contain alphabets only.")
 	private String lastName;
 	
 	@Column(name = "age", nullable = false)
-	@Min(value = 20, message= "Age is too low.")
-	@Max(value = 80, message = "Age limit exceeded.")
+//	@Min(value = 20, message= "Age is too low.")
+//	@Max(value = 80, message = "Age limit exceeded.")
 	private int age;
 	
 	@Email
@@ -44,17 +47,19 @@ public class Admin {
 	private String email;
 	
 	@Pattern(regexp = "[0-9]{10}", message="Contact number is not valid, must be of 10 digit numeric value.")
-	@Column(name = "contact", nullable = false)
-	private String contact;
+	@Column(name = "adminContact")
+	private String adminContact;
 	
 	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message="Password does not match the policy.")
 	@Column(name = "password")
 	private String password;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "adminId")
 	private List<Supervisor> supervisors;
 	
 	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "adminId")
 	private List<Vendor> vendors;
 	
 	//Default Constructor
@@ -63,24 +68,23 @@ public class Admin {
 	
 	//Parameterized Constructor
 	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email,
-			String contact, String password) {
+			String adminContact, String password) {
 		super();
 		this.adminId = adminId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.contact = contact;
+		this.adminContact = adminContact;
 		this.password = password;
 	}
 	
 	//Parameterized Overloaded Constructor
 	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
-			String contact, String password) {
-		super();
+			String adminContact, String password) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.contact = contact;
+		this.adminContact = adminContact;
 		this.password = password;
 	}
 
@@ -118,12 +122,16 @@ public class Admin {
 		this.email = email;
 	}
 
-	public String getContact() {
-		return contact;
+	public String getAdminContact() {
+		return adminContact;
 	}
 
 	public void setContact(String contact) {
-		this.contact = contact;
+		this.adminContact = contact;
+	}
+
+	public void setMobileNumber(String adminContact) {
+		this.adminContact = adminContact;
 	}
 
 	public String getPassword() {
@@ -138,8 +146,8 @@ public class Admin {
 	//toString method
 	@Override
 	public String toString() {
-		return "Admin [First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
-				+ ", Contact_Number=" + contact + ", Password=" + password + "]";
+		return "Admin [Id=" + adminId + ", First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
+				+ ", Contact_Number=" + adminContact + ", Password=" + password + "]";
 	}
 	
 }

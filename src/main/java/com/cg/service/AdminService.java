@@ -149,6 +149,22 @@ public class AdminService {
 
 	public ResponseEntity<Object> getAdminByLastName(String lastName) {
 
+
+		List<Admin> admin = adminRepository.findByLastName(lastName);
+		
+		if(admin == null ) {
+			
+		}
+		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(admin, HttpStatus.OK);
+				
+	}
+	
+	public ResponseEntity<Object> getByAdminContact(String adminContact){
+		
+		Admin admin = adminRepository.findByAdminContact(adminContact);
+		
+		if(admin == null ) {
+			
 		if(currentAdmin != null) {
 			List<Admin> admin = adminRepository.findByLastName(lastName);
 	
@@ -158,6 +174,7 @@ public class AdminService {
 	
 			}
 			return new ResponseEntity<Object>(admin, HttpStatus.OK);
+
 		}
 		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
 

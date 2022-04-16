@@ -137,7 +137,7 @@ public class Hall {
 		this.bookedTo = bookedTo;
 	}
 
-	public boolean isBookingStatus() {
+	public boolean getBookingStatus() {
 		return bookingStatus;
 	}
 

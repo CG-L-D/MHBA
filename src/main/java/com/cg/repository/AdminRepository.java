@@ -13,7 +13,11 @@ public interface AdminRepository extends JpaRepository<Admin, Integer>{
 
 	List<Admin> findByLastName(String lastName);
 
+<<<<<<< Updated upstream
 	Admin findByContact(String adminContact);
+=======
+	Admin findByAdminContact(String adminContact);
+>>>>>>> Stashed changes
 	
 	Admin findByEmail(String email);
 

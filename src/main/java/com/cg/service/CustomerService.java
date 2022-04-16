@@ -36,29 +36,32 @@ public class CustomerService {
 	public String BookHall(String city, String location, int customerId) {
 		Customer c = customerRepository.findById(customerId).get();
 		List<Hall> halls = hallRepository.findByCityAndLocation(city, location);
-		Hall hall = halls.get(0);
-		if (hall == null)
-			return "Currently no halls available at your location";
+		if(halls == null) return "Currently no halls available at your location"; 
 		else {
-			if (hall.getBookedFrom() == null && hall.getBookedTo() == null) {
-				hall.setBookedFrom(c.getBookHallFrom());
-				hall.setBookedTo(c.getBookHallTo());
-			} else {
-				if (c.getBookHallFrom().after(hall.getBookedTo()) || c.getBookHallTo().before(hall.getBookedFrom())) {
-					hall.setBookedFrom(c.getBookHallFrom());
-					hall.setBookedTo(c.getBookHallTo());
-				}
+			for(Hall h:halls) {
+			  if(!h.getBookingStatus()) {
+				    if (h.getBookedFrom() == null && h.getBookedTo() == null) {
+						h.setBookedFrom(c.getBookHallFrom());
+						h.setBookedTo(c.getBookHallTo());
+					}
+					else if(c.getBookHallFrom().after(h.getBookedTo()) || c.getBookHallTo().before(h.getBookedFrom())) {
+							h.setBookedFrom(c.getBookHallFrom());
+							h.setBookedTo(c.getBookHallTo());
+					}
+
+					List<Hall> hallList = c.getHall();
+					hallList.add(h);
+
+					c.setHall(hallList);
+					h.setBookingStatus(true);
+					hallRepository.save(h);
+					customerRepository.save(c);
+					return "Hall booked Successfully";
+			  }
 			}
-
-			List<Hall> hallList = c.getHall();
-			hallList.add(hall);
-
-			c.setHall(hallList);
-			hall.setBookingStatus(true);
-			hallRepository.save(hall);
-			customerRepository.save(c);
-			return "Hall booked Successfully";
+			return "Hall already booked at that duration";
 		}
 	}
+	
 
 }

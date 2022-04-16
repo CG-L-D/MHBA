@@ -1,4 +1,5 @@
-package com.cg.Test;
+package com.cg.test;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 

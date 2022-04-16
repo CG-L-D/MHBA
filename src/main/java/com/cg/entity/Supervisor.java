@@ -31,17 +31,22 @@ public class Supervisor {
 	@NotBlank
 	@Column(name = "supervisorContact")
 	private String supervisorContact;
-
+	
+	@NotBlank
+	@Column(name = "hallId")
+	private int hallId;
+	
 	public Supervisor() {
 		super();
 	}
 
-	public Supervisor(int supervisorId, String supervisorName, String supervisorEmail, String supervisorContact) {
+	public Supervisor(int supervisorId, String supervisorName, String supervisorEmail, String supervisorContact, int hallId) {
 		super();
 		this.supervisorId = supervisorId;
 		this.supervisorName = supervisorName;
 		this.supervisorEmail = supervisorEmail;
 		this.supervisorContact = supervisorContact;
+		this.hallId = hallId;
 	}
 
 	public int getSupervisorId() {
@@ -75,11 +80,19 @@ public class Supervisor {
 	public void setSupervisorContact(String supervisorContact) {
 		this.supervisorContact = supervisorContact;
 	}
+	
+	public int getHallId() {
+		return hallId;
+	}
+	
+	public void setHallId(int id) {
+		hallId = id;
+	}
 
 	@Override
 	public String toString() {
 		return "Supervisor [supervisorId = " + supervisorId + ", SupervisorName = " + supervisorName
-				+ "', supervisorEmail = " + supervisorEmail + ", supervisorContact = " + supervisorContact + "]";
+				+ "', supervisorEmail = " + supervisorEmail + ", supervisorContact = " + supervisorContact + ", hallId = " + hallId + "]";
 
 	}
 

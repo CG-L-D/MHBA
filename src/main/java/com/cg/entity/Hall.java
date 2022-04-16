@@ -11,46 +11,50 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.Min;
 
 @Entity
 public class Hall {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int hall_id;
-	
+
 	@Column(name = "hallName")
 	private String hallName;
-	
+
+	@Min(value = 5)
 	@Column(name = "noOfRooms")
 	private int noOfRooms;
-	
+
+	@Min(value = 100)
 	@Column(name = "capacity")
 	private long capacity;
-	
+
 	@Column(name = "location")
 	private String location;
-	
+
 	@Column(name = "city")
 	private String city;
-	
+
+	@Min(value = 5000)
 	@Column(name = "price")
 	private double price;
-	
-	@Column(name="bookedFrom")
-	private Date bookedFrom ;
-	
-	@Column(name="bookedTo")
-	private Date bookedTo ;
-	
-	@Column(name="bookingStatus")
+
+	@Column(name = "bookedFrom")
+	private Date bookedFrom;
+
+	@Column(name = "bookedTo")
+	private Date bookedTo;
+
+	@Column(name = "bookingStatus")
 	private boolean bookingStatus = false;
-	
-	
 
-	public Hall() {}
+	public Hall() {
+	}
 
-	public Hall(int hall_id, String hallName, int noOfRooms, long capacity, String location, String city, double price) {
+	public Hall(int hall_id, String hallName, int noOfRooms, long capacity, String location, String city,
+			double price) {
 		super();
 		this.hall_id = hall_id;
 		this.hallName = hallName;
@@ -147,7 +151,5 @@ public class Hall {
 				+ capacity + ", location=" + location + ", city=" + city + ", price=" + price + ", bookedFrom="
 				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + "]";
 	}
-	
-	
 
 }

@@ -1,8 +1,7 @@
 package com.cg.entity;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="Vendor")
@@ -32,7 +30,7 @@ public class Vendor {
 	private int vendorContact;
 	
 	@OneToMany(targetEntity=VendorOffers.class, cascade=CascadeType.ALL)
-	private List<VendorOffers> vendorOffers;
+	private List<VendorOffers> vendorOffers = new ArrayList<VendorOffers>();
 	
 	public Vendor() {
 		super();

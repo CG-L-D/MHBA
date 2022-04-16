@@ -18,50 +18,54 @@ import javax.persistence.Column;
 //Admin class
 @Entity
 public class Admin {
-	
-	//Properties
+
+	// Properties
 	@Id
 	@Column(name = "adminId", nullable = false)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int adminId;
-	
+
 	@Column(name = "firstName", nullable = false)
-	@Pattern(regexp = "^[A-Z]+&", message="First name is invalid, must contain alphabets only.")
+	// @Pattern(regexp = "^[A-Z]+[a-z]+&", message = "First name is invalid, must
+	// contain alphabets only.")
 	private String firstName;
-	
+
 	@Column(name = "lastName", nullable = false)
-	@Pattern(regexp = "^[A-Z]+&", message="Last name is invalid, must contain alphabets only.")
+	// @Pattern(regexp = "^[A-Z]+[a-z]+&", message = "Last name is invalid, must
+	// contain alphabets only.")
 	private String lastName;
-	
+
 	@Column(name = "age", nullable = false)
-	@Min(value = 20, message= "Age is too low.")
-	@Max(value = 80, message = "Age limit exceeded.")
+	// @Min(value = 20, message = "Age is too low.")
+	// @Max(value = 80, message = "Age limit exceeded.")
 	private int age;
-	
+
 	@Email
 	@Size(min = 3, max = 30, message = "Email must be between 3 to 30 characters.")
 	@Column(name = "email", nullable = false)
 	private String email;
-	
-	@Pattern(regexp = "[0-9]{10}", message="Contact number is not valid, must be of 10 digit numeric value.")
-	@Column(name = "contact", nullable = false)
+
+	// @Pattern(regexp = "[0-9]{10}", message = "Contact number is not valid, must
+	// be of 10 digit numeric value.")
+	@Column(name = "contact")
 	private String contact;
-	
-	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message="Password does not match the policy.")
+
+	// @Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message = "Password does not
+	// match the policy.")
 	@Column(name = "password")
 	private String password;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Supervisor> supervisors;
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<Vendor> vendors;
-	
-	//Default Constructor
-	public Admin() {}
 
-	
-	//Parameterized Constructor
+	// Default Constructor
+	public Admin() {
+	}
+
+	// Parameterized Constructor
 	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email,
 			String contact, String password) {
 		super();
@@ -72,10 +76,10 @@ public class Admin {
 		this.contact = contact;
 		this.password = password;
 	}
-	
-	//Parameterized Overloaded Constructor
-	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
-			String contact, String password) {
+
+	// Parameterized Overloaded Constructor
+	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email, String contact,
+			String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -84,8 +88,7 @@ public class Admin {
 		this.password = password;
 	}
 
-	
-	//Getters and setters
+	// Getters and setters
 	public long getId() {
 		return adminId;
 	}
@@ -134,12 +137,11 @@ public class Admin {
 		this.password = password;
 	}
 
-	
-	//toString method
+	// toString method
 	@Override
 	public String toString() {
-		return "Admin [First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
-				+ ", Contact_Number=" + contact + ", Password=" + password + "]";
+		return "Admin [First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email + ", Contact_Number="
+				+ contact + ", Password=" + password + "]";
 	}
-	
+
 }

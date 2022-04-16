@@ -3,6 +3,7 @@ package com.cg.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,7 @@ import com.cg.entity.Hall;
 import com.cg.service.CustomerService;
 
 @RestController
-class CustomerController {
+public class CustomerController {
   @Autowired
   private CustomerService customerService;
   
@@ -24,8 +25,13 @@ class CustomerController {
   }
   
   @GetMapping("/getAllCustomers")
-  public List<Customer> getAllCustomers() {
+  public List<Customer> getAllCustomers(){
 	  return customerService.getAllCustomers();
+  }
+  
+  @DeleteMapping("/removeCustomer/{id}")
+  public String removeCustomer(@PathVariable int id) {
+	  return customerService.removeCustomer(id);
   }
   
   @GetMapping("/getHallByCity/{city}")
@@ -38,8 +44,8 @@ class CustomerController {
 		return customerService.findHallByLocation(city,location);
 	}
   
-  @GetMapping("/bookHall/{city}/{location}")
-	public String bookHall(@PathVariable String city,@PathVariable String location) {
-		return customerService.BookHall(city,location);
+  @PostMapping("/bookHall/{city}/{location}/{customerId}")
+	public String bookHall(@PathVariable String city,@PathVariable String location,@PathVariable int customerId) {
+		return customerService.BookHall(city,location,customerId);
   } 
 }

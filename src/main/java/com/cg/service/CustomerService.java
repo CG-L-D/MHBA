@@ -1,5 +1,6 @@
  package com.cg.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,11 @@ public class CustomerService {
 	  return customerRepository.findAll();
   }
   
+  public String removeCustomer(int id){
+	  customerRepository.deleteById(id);
+	  return "Customer deleted successfully";
+  }
+  
   public List<Hall> findHallByCity(String city) {
 	  return hallRepository.findByCity(city);
   }
@@ -35,11 +41,29 @@ public class CustomerService {
 	  return hallRepository.findByCityAndLocation(city , location);
   }
   
-  public String BookHall(String city,String location){
-	  Hall hall = hallRepository.findByCityAndLocation(city , location);
-	  if(hall == null) return "Currently no halls available at your location";
+  public String BookHall(String city , String location , int customerId){
+	  Customer c = customerRepository.findById(customerId).get();
+	  Hall hall = hallRepository.findByCityAndLocation(city,location);
+	  if(hall == null ) return "Currently no halls available at your location";
 	  else {
+		  if(hall.getBookedFrom() == null && hall.getBookedTo() == null) {
+			  hall.setBookedFrom(c.getBookHallFrom());
+			  hall.setBookedTo(c.getBookHallTo());
+		  }
+		  else {
+			  if(c.getBookHallFrom().after(hall.getBookedTo()) || c.getBookHallTo().before(hall.getBookedFrom())) {
+				  hall.setBookedFrom(c.getBookHallFrom());
+				  hall.setBookedTo(c.getBookHallTo());
+			  }
+		  }
+		  
+		  List<Hall> hallList= c.getHall();
+		  hallList.add(hall);
+		  
+		  c.setHall(hallList);
 		  hall.setBookingStatus(true);
+		  hallRepository.save(hall);
+		  customerRepository.save(c);
 		  return "Hall booked Successfully";
 	  }
   }

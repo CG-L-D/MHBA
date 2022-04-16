@@ -1,8 +1,11 @@
 	package com.cg.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -26,16 +29,16 @@ public class Admin {
 	private int adminId;
 	
 	@Column(name = "firstName", nullable = false)
-	@Pattern(regexp = "^[A-Z]+&", message="First name is invalid, must contain alphabets only.")
+	@Pattern(regexp = "^[A-Za-z]+$", message="First name is invalid, must contain alphabets only.")
 	private String firstName;
 	
 	@Column(name = "lastName", nullable = false)
-	@Pattern(regexp = "^[A-Z]+&", message="Last name is invalid, must contain alphabets only.")
+	@Pattern(regexp = "^[A-Za-z]+$", message="Last name is invalid, must contain alphabets only.")
 	private String lastName;
 	
 	@Column(name = "age", nullable = false)
-	@Min(value = 20, message= "Age is too low.")
-	@Max(value = 80, message = "Age limit exceeded.")
+//	@Min(value = 20, message= "Age is too low.")
+//	@Max(value = 80, message = "Age limit exceeded.")
 	private int age;
 	
 	@Email
@@ -56,10 +59,12 @@ public class Admin {
 	@Column(name = "password")
 	private String password;
 
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "adminId")
 	private List<Supervisor> supervisors;
 	
 	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "adminId")
 	private List<Vendor> vendors;
 	
 	//Default Constructor

@@ -20,5 +20,7 @@ public interface AdminRepository extends JpaRepository<Admin, Integer>{
 >>>>>>> Stashed changes
 	
 	Admin findByEmail(String email);
+
+	Admin findByEmailAndPassword(String email, String password);
 	
 }

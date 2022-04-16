@@ -46,100 +46,9 @@ public class AdminService {
 
 	public ResponseEntity<Object> addAdmin(Admin admin) {
 
-		// Matcher firstNameMatcher = namePattern.matcher(admin.getFirstName());
-		//
-		// Matcher lastNameMatcher = namePattern.matcher(admin.getLastName());
-		//
-		// for(char c : admin.getFirstName().toCharArray()){
-		// if(Character.isDigit(c))
-		// return new ResponseEntity<Object>("First name should not contain digit.",
-		// HttpStatus.BAD_REQUEST);
-		// }
-		//
-		// for(char c : admin.getLastName().toCharArray()){
-		// if(Character.isDigit(c))
-		// return new ResponseEntity<Object>("Last name should not contain digit.",
-		// HttpStatus.BAD_REQUEST);
-		// }
-		//
-		// if(!firstNameMatcher.matches())
-		// return new ResponseEntity<Object>("First name is not valid.",
-		// HttpStatus.BAD_REQUEST);
-		//
-		// if(!lastNameMatcher.matches())
-		// return new ResponseEntity<Object>("Last name is not valid.",
-		// HttpStatus.BAD_REQUEST);
-
-		// if(admin.getContact().length() != 10)
-		// return new ResponseEntity<Object>("Contact number is not valid, must be of 10
-		// digits.", HttpStatus.BAD_REQUEST);
-		//
-		// for(char c : admin.getContact().toCharArray()){
-		// if(!Character.isDigit(c))
-		// return new ResponseEntity<Object>("Contact number is not valid, must be
-		// numeric.", HttpStatus.BAD_REQUEST);
-		// }
-
-		// String pass = admin.getPassword();
-		// if(pass.length() < 8)
-		// return new ResponseEntity<Object>("Password should be minimum 8 length.",
-		// HttpStatus.BAD_REQUEST);
-		//
-		// int upperCharCount = 0;
-		// int lowerCharCount = 0;
-		// int digitCount = 0;
-		// int specialCharCount = 0;
-		//
-		// for(int i=0; i<pass.length(); i++) {
-		//
-		// if(Character.isUpperCase(pass.charAt(i)))
-		// upperCharCount++;
-		//
-		// if(Character.isLowerCase(pass.charAt(i)))
-		// lowerCharCount++;
-		//
-		// if(Character.isDigit(pass.charAt(i)))
-		// digitCount++;
-		//
-		// if(pass.charAt(i) == '!' || pass.charAt(i) == '@' ||
-		// pass.charAt(i) == '#' || pass.charAt(i) == '$' ||
-		// pass.charAt(i) == '%' || pass.charAt(i) == '*' )
-		// specialCharCount++;
-		//
-		// }
-		//
-		// if(upperCharCount == 0)
-		// return new ResponseEntity<Object>("Password must contain at least one
-		// uppercase character.", HttpStatus.BAD_REQUEST);
-		//
-		// if(lowerCharCount == 0)
-		// return new ResponseEntity<Object>("Password must contain at least one
-		// lowercase character.", HttpStatus.BAD_REQUEST);
-		//
-		// if(digitCount == 0)
-		// return new ResponseEntity<Object>("Password must contain at least one
-		// digit.", HttpStatus.BAD_REQUEST);
-		//
-		// if(specialCharCount == 0)
-		// return new ResponseEntity<Object>("Password must contain at least one special
-		// character from !,@,#,$,%,*.", HttpStatus.BAD_REQUEST);
-		//
-		// if(upperCharCount + lowerCharCount + digitCount + specialCharCount !=
-		// pass.length())
-		// return new ResponseEntity<Object>("Password does not match the policy, "
-		// + "it should contain at least one uppercase character, lowercase character,
-		// digit and special character.", HttpStatus.BAD_REQUEST);
-		// try {
-		//
 		adminRepository.save(admin);
-		//
-		// }
-		// catch(Throwable e) {
-		// if(e instanceof ConstraintViolationException) {
-		// ConstraintViolationException ce = (ConstraintViolationException) e;
-		// String constraintName = ce.getConstraintName();
-		// }
 		return new ResponseEntity<Object>("Admin added successfully.", HttpStatus.OK);
+	
 	}
 
 	public ResponseEntity<Object> removeAllAdmin() {
@@ -272,27 +181,36 @@ public class AdminService {
 
 	public ResponseEntity<Object> getAdminByEmail(String email) {
 
-		Admin admin = adminRepository.findByEmail(email);
-
-		if (admin == null) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
+		if(currentAdmin != null) {
+			
+			Admin admin = adminRepository.findByEmail(email);
+	
+			if (admin == null) {
+	
+				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+	
+			}
+			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
 
 	}
 
 	public ResponseEntity<Object> getAdminSortedByFirstName() {
 
-		List<Admin> admin = adminRepository.findAll(Sort.by("firstName"));
-
-		if (admin == null) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
+		if(currentAdmin != null) {
+			
+			List<Admin> admin = adminRepository.findAll(Sort.by("firstName"));
+	
+			if (admin == null) {
+	
+				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+	
+			}
+			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
+	
 	}
 
 	public ResponseEntity<Object> getAdminSortedByLastName() {

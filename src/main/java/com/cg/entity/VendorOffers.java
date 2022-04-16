@@ -10,27 +10,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.springframework.boot.autoconfigure.web.WebProperties.Resources.Chain.Strategy;
-
 @Entity
-@Table(name="Vendor_Offers")
+@Table(name = "Vendor_Offers")
 public class VendorOffers {
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "vendorOffer_id")
+	@Column(name = "vendorOfferId")
 	private int id;
-	
+
 	@Column
 	private String serviceType;
-	
+
 	@Column
 	private double serviceCost;
 
 	public VendorOffers() {
 		super();
 	}
-	
+
 	public VendorOffers(String serviceType, double serviceCost) {
 		super();
 		this.serviceType = serviceType;
@@ -57,7 +55,5 @@ public class VendorOffers {
 	public String toString() {
 		return "VendorOffers [serviceType=" + serviceType + ", serviceCost=" + serviceCost + "]";
 	}
-	
-	
 
 }

@@ -10,39 +10,42 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
 
 @Entity
-@Table(name="Vendor")
+@Table(name = "Vendor")
 public class Vendor {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "vendor_id" , nullable=false)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "vendor_id", nullable = false)
 	private int vendorId;
-	
+
 	@Column(name = "firstName")
 	private String firstName;
-	
+
 	@Column(name = "lastName")
 	private String lastName;
-	
-	@Column(name="vendorContact")
-	private int vendorContact;
-	
-	@OneToMany(targetEntity=VendorOffers.class, cascade=CascadeType.ALL)
+
+	@Column(name = "vendorContact")
+	private String vendorContact;
+
+	@OneToMany(targetEntity = VendorOffers.class, cascade = CascadeType.ALL)
+	// @JoinColumn(name = "vendorOfferId", referencedColumnName = "vendorId")
 	private List<VendorOffers> vendorOffers = new ArrayList<VendorOffers>();
-	
+
 	public Vendor() {
 		super();
 	}
 
-	public Vendor(int vendorId, String firstName, String lastName, int vendorContact,List<VendorOffers> vendorOffers) {
+	public Vendor(int vendorId, String firstName, String lastName, String vendorContact,
+			List<VendorOffers> vendorOffers) {
 		super();
 		this.vendorId = vendorId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.vendorContact = vendorContact;
-		this.vendorOffers=vendorOffers;
+		this.vendorOffers = vendorOffers;
 	}
 
 	public int getVendorId() {
@@ -52,16 +55,15 @@ public class Vendor {
 	public void setVendorId(int vendorId) {
 		this.vendorId = vendorId;
 	}
-	public List<VendorOffers> getVendorOffers(){
+
+	public List<VendorOffers> getVendorOffers() {
 		return vendorOffers;
 	}
 
-
-	public void setVendorOffers(){
-		this.vendorOffers=vendorOffers;
+	public void setVendorOffers() {
+		this.vendorOffers = vendorOffers;
 	}
 
-	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -78,33 +80,31 @@ public class Vendor {
 		this.lastName = lastName;
 	}
 
-	public int getVendorContact() {
+	public String getVendorContact() {
 		return vendorContact;
 	}
 
-	public void setVendorContact(int vendorContact) {
+	public void setVendorContact(String vendorContact) {
 		this.vendorContact = vendorContact;
 	}
 
 	@Override
 	public String toString() {
 		return "Vendor [vendorId=" + vendorId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", vendorContact=" + vendorContact + ", vendorOffers="+ vendorOffers + "]";
+				+ ", vendorContact=" + vendorContact + ", vendorOffers=" + vendorOffers + "]";
 	}
 	/*
-	public double getVendorCost(Map<String,Double> vendorServicesAvailable) {
-		
-		double totalCost=0;
-		
-		for (String key: vendorServicesAvailable.keySet())
-        totalCost += vendorServicesAvailable.get(key);
-		
-		
-		return totalCost;
-		
-	}*/
-
-	
-	
+	 * public double getVendorCost(Map<String,Double> vendorServicesAvailable) {
+	 * 
+	 * double totalCost=0;
+	 * 
+	 * for (String key: vendorServicesAvailable.keySet())
+	 * totalCost += vendorServicesAvailable.get(key);
+	 * 
+	 * 
+	 * return totalCost;
+	 * 
+	 * }
+	 */
 
 }

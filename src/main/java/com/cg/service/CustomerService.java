@@ -11,6 +11,8 @@ import com.cg.entity.Hall;
 import com.cg.repository.CustomerRepository;
 import com.cg.repository.HallRepository;
 
+import com.cg.service.VendorService;
+
 @Service
 public class CustomerService {
 	@Autowired
@@ -18,6 +20,9 @@ public class CustomerService {
 
 	@Autowired
 	private HallRepository hallRepository;
+
+	@Autowired
+	private VendorService vendorService;
 
 	public String addCustomer(Customer c) {
 		customerRepository.save(c);
@@ -33,20 +38,31 @@ public class CustomerService {
 		return "Customer deleted successfully";
 	}
 
-	public String BookHall(String city, String location, int customerId) {
+	public String BookHall(int customerId, String city, String location, boolean flower, boolean catering,
+			boolean music, boolean video) {
 		Customer c = customerRepository.findById(customerId).get();
 		List<Hall> halls = hallRepository.findByCityAndLocation(city, location);
-		if(halls == null) return "Currently no halls available at your location"; 
+		if (halls == null)
+			return "Currently no halls available at your location";
 		else {
-			for(Hall h:halls) {
-			  if(!h.getBookingStatus()) {
-				    if (h.getBookedFrom() == null && h.getBookedTo() == null) {
+			for (Hall h : halls) {
+				if (!h.isBookingStatus()) {
+					if (h.getBookedFrom() == null && h.getBookedTo() == null) {
 						h.setBookedFrom(c.getBookHallFrom());
 						h.setBookedTo(c.getBookHallTo());
+					} else if (c.getBookHallFrom().after(h.getBookedTo())
+							|| c.getBookHallTo().before(h.getBookedFrom())) {
+						h.setBookedFrom(c.getBookHallFrom());
+						h.setBookedTo(c.getBookHallTo());
+					} else {
+
+						return "Hall already booked for your mentioned duration, please select another slot.";
+
 					}
-					else if(c.getBookHallFrom().after(h.getBookedTo()) || c.getBookHallTo().before(h.getBookedFrom())) {
-							h.setBookedFrom(c.getBookHallFrom());
-							h.setBookedTo(c.getBookHallTo());
+					boolean status = vendorService.bookVendor(h.getHall_id(), flower, catering, music, video);
+					if (!status) {
+
+						return "No vendor available for mentioned services, please slect another combinations.";
 					}
 
 					List<Hall> hallList = c.getHall();
@@ -56,12 +72,13 @@ public class CustomerService {
 					h.setBookingStatus(true);
 					hallRepository.save(h);
 					customerRepository.save(c);
-					return "Hall booked Successfully";
-			  }
+
+					return "Hall and vendor boooked successfully.";
+
+				}
 			}
 			return "Hall already booked at that duration";
 		}
 	}
-	
 
 }

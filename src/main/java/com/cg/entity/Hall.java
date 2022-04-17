@@ -11,7 +11,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Hall {
@@ -50,11 +54,20 @@ public class Hall {
 	@Column(name = "bookingStatus")
 	private boolean bookingStatus = false;
 
+	@OneToOne
+	private Vendor vendor;
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<HallOffers> hallOffers;
+
 	public Hall() {
+		super();
 	}
 
-	public Hall(int hall_id, String hallName, int noOfRooms, long capacity, String location, String city,
-			double price) {
+	public Hall(int hall_id, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
+			String city, @Min(5000) double price, Date bookedFrom, Date bookedTo, boolean bookingStatus, Vendor vendor,
+			List<HallOffers> hallOffers) {
 		super();
 		this.hall_id = hall_id;
 		this.hallName = hallName;
@@ -63,6 +76,11 @@ public class Hall {
 		this.location = location;
 		this.city = city;
 		this.price = price;
+		this.bookedFrom = bookedFrom;
+		this.bookedTo = bookedTo;
+		this.bookingStatus = bookingStatus;
+		this.vendor = vendor;
+		this.hallOffers = hallOffers;
 	}
 
 	public int getHall_id() {
@@ -137,7 +155,7 @@ public class Hall {
 		this.bookedTo = bookedTo;
 	}
 
-	public boolean getBookingStatus() {
+	public boolean isBookingStatus() {
 		return bookingStatus;
 	}
 
@@ -145,11 +163,28 @@ public class Hall {
 		this.bookingStatus = bookingStatus;
 	}
 
+	public Vendor getVendor() {
+		return vendor;
+	}
+
+	public void setVendor(Vendor vendor) {
+		this.vendor = vendor;
+	}
+
+	public List<HallOffers> getHallOffers() {
+		return hallOffers;
+	}
+
+	public void setHallOffers(List<HallOffers> hallOffers) {
+		this.hallOffers = hallOffers;
+	}
+
 	@Override
 	public String toString() {
 		return "Hall [hall_id=" + hall_id + ", hallName=" + hallName + ", noOfRooms=" + noOfRooms + ", capacity="
 				+ capacity + ", location=" + location + ", city=" + city + ", price=" + price + ", bookedFrom="
-				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + "]";
+				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + ", vendor=" + vendor
+				+ ", hallOffers=" + hallOffers + "]";
 	}
 
 }

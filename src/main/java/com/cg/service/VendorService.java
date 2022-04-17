@@ -12,126 +12,145 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.cg.entity.Customer;
 import com.cg.entity.Admin;
 import com.cg.entity.Vendor;
+import com.cg.repository.CustomerRepository;
+import com.cg.repository.HallRepository;
 import com.cg.repository.VendorRepository;
+import com.cg.entity.Hall;
 
 @Service
 public class VendorService {
-	
+
+	@Autowired
+	private CustomerRepository customerRepository;
+
 	@Autowired
 	private VendorRepository vendorRepo;
-	
-	public String addVendor(Vendor vendor)
-	{
+
+	@Autowired
+	private HallRepository hallRepository;
+
+	public String addVendor(Vendor vendor) {
 		vendorRepo.save(vendor);
 		return "Vendor Added Successfully..";
 	}
-	
 
 	public String removeAllVendor() {
-		
+
 		vendorRepo.deleteAll();
 		return "All vendor deleted successfully.";
 	}
-	
+
 	public String removeVendorById(int id) {
-		
-		if(vendorRepo.existsById(id)) {
-			
+
+		if (vendorRepo.existsById(id)) {
+
 			vendorRepo.deleteById(id);
 			return "Vendor deleted successfully.";
-		
+
 		}
 		return "Vendor not found.";
 	}
-	
+
 	public ResponseEntity<Object> getAllVendor() {
-	
+
 		List<Vendor> vendor = vendorRepo.findAll();
-		
-		if(vendor == null) {
-			
+
+		if (vendor == null) {
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
 		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
 	}
-	
+
 	public ResponseEntity<Object> getVendorByPage(int m, int n) {
 
 		Pageable page = PageRequest.of(m, n);
-		
-		Page<Vendor> vendor= vendorRepo.findAll(page);
 
-		if(vendor == null) {
-			
+		Page<Vendor> vendor = vendorRepo.findAll(page);
+
+		if (vendor == null) {
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
 		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
 	}
-	
+
 	public ResponseEntity<Object> getVendorById(int id) {
 
-		Optional<Vendor> vendor= vendorRepo.findById(id);
-		
-		if(vendor == null) {
-			
+		Optional<Vendor> vendor = vendorRepo.findById(id);
+
+		if (vendor == null) {
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
 		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
-		
+
 	}
-	
-	public List<ResponseEntity<Object>> getVendorByFirstName(String firstName){
-		
+
+	public ResponseEntity<Object> getVendorByFirstName(String firstName) {
+
 		List<Admin> vendor = vendorRepo.findByFirstName(firstName);
-		
-		if(vendor == null ) {
-			
-		}
-		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
-				
-	}
-	
-	public List<ResponseEntity<Object>> getVendorByLastName(String lastName){
-		
-		List<Admin> vendor = vendorRepo.findByLastName(lastName);
-		
-		if(vendor == null ) {
-			
-		}
-		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
-				
-	}
-	
-	public ResponseEntity<Object> getByVendorContact(String adminContact){
-		
-		Vendor vendor = vendorRepo.findByVendorContact(adminContact);
-		
-		if(vendor == null ) {
-			
+
+		if (vendor == null) {
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
 		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
-				
+
 	}
-	
-	public List<ResponseEntity<Object>> getVendorSortedByFirstName() {
 
-		List<Vendor> vendor = vendorRepo.findAll(Sort.by("firstName"));
+	public ResponseEntity<Object> getVendorByLastName(String lastName) {
 
-		if(vendor == null) {
-			
+		List<Admin> vendor = vendorRepo.findByLastName(lastName);
+
+		if (vendor == null) {
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
-		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
+		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
+
 	}
-	
-	public List<ResponseEntity<Object>> getVendorSortedByLastName() {
 
-		List<Vendor> vendor = vendorRepo.findAll(Sort.by("lastName"));
+	public ResponseEntity<Object> getByVendorContact(String adminContact) {
 
-		if(vendor == null) {
-			
+		Vendor vendor = vendorRepo.findByVendorContact(adminContact);
+
+		if (vendor == null) {
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
-		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
+		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
+
 	}
-	
-	
+
+	public boolean bookVendor(int hallId, boolean flower, boolean catering, boolean music, boolean video) {
+
+		List<Vendor> vendors = vendorRepo.findByServices(flower, catering, music, video);
+
+		if (vendors != null) {
+			for (Vendor v : vendors) {
+				if (v.isAvailable()) {
+
+					v.setAvailable(false);
+					Hall h = hallRepository.findById(hallId).get();
+					if (h != null)
+						h.setVendor(v);
+
+					return true;
+				}
+
+			}
+			return false;
+		}
+		return false;
+	}
+
 }
-

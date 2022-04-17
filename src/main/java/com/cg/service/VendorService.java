@@ -12,13 +12,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.cg.entity.Customer;
 import com.cg.entity.Admin;
 import com.cg.entity.Vendor;
+import com.cg.repository.CustomerRepository;
 import com.cg.repository.VendorRepository;
 
 @Service
 public class VendorService {
 	
+	@Autowired
+	private CustomerRepository customerRepository;
+
 	@Autowired
 	private VendorRepository vendorRepo;
 	
@@ -51,7 +56,8 @@ public class VendorService {
 		List<Vendor> vendor = vendorRepo.findAll();
 		
 		if(vendor == null) {
-			
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
 		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
 	}
@@ -63,7 +69,9 @@ public class VendorService {
 		Page<Vendor> vendor= vendorRepo.findAll(page);
 
 		if(vendor == null) {
-			
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
 		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
 	}
@@ -73,31 +81,37 @@ public class VendorService {
 		Optional<Vendor> vendor= vendorRepo.findById(id);
 		
 		if(vendor == null) {
-			
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
 		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
 		
 	}
 	
-	public List<ResponseEntity<Object>> getVendorByFirstName(String firstName){
+	public ResponseEntity<Object> getVendorByFirstName(String firstName){
 		
 		List<Admin> vendor = vendorRepo.findByFirstName(firstName);
 		
 		if(vendor == null ) {
-			
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
-		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
+		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
 				
 	}
 	
-	public List<ResponseEntity<Object>> getVendorByLastName(String lastName){
+	public ResponseEntity<Object> getVendorByLastName(String lastName){
 		
 		List<Admin> vendor = vendorRepo.findByLastName(lastName);
 		
 		if(vendor == null ) {
-			
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
-		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
+		return  new ResponseEntity<Object>(vendor, HttpStatus.OK);
 				
 	}
 	
@@ -106,30 +120,46 @@ public class VendorService {
 		Vendor vendor = vendorRepo.findByVendorContact(adminContact);
 		
 		if(vendor == null ) {
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 			
 		}
 		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
 				
 	}
 	
-	public List<ResponseEntity<Object>> getVendorSortedByFirstName() {
+	public ResponseEntity<Object> getVendorByType(String type) {
 
-		List<Vendor> vendor = vendorRepo.findAll(Sort.by("firstName"));
-
+		List<Vendor> vendor= vendorRepo.findByType(type);
+		
 		if(vendor == null) {
-			
+
+			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+
 		}
-		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
+		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
+		
 	}
-	
-	public List<ResponseEntity<Object>> getVendorSortedByLastName() {
 
-		List<Vendor> vendor = vendorRepo.findAll(Sort.by("lastName"));
+	public ResponseEntity<Object> bookVendor(int customerId, boolean flower,boolean catering,boolean video,boolean music){
+		
+		List<Vendor> vendors = vendorRepo.findByServices(flower, catering, video, music);
 
-		if(vendor == null) {
-			
+		if(vendors != null){
+			for(Vendor v:vendors) {
+			  if(v.isAvailable()) {
+				  	
+					v.setAvailable(false);
+					((Customer) customerRepository.findById(customerId)).setVendor(v.getVendorId());
+
+					return new ResponseEntity<Object>("Vendor booked Successfully", HttpStatus.OK);
+			  }
+
+			}
+			return new ResponseEntity<Object>("All vendors are booked.", HttpStatus.OK);
 		}
-		return (List<ResponseEntity<Object>>) new ResponseEntity<Object>(vendor, HttpStatus.OK);
+		return new ResponseEntity<Object>("No vendor available providing required services.", HttpStatus.OK);
 	}
 	
 	

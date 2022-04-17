@@ -30,21 +30,41 @@ public class Vendor {
 	@Column(name = "vendorContact")
 	private String vendorContact;
 
-	@OneToMany(targetEntity = VendorOffers.class, cascade = CascadeType.ALL)
-	// @JoinColumn(name = "vendorOfferId", referencedColumnName = "vendorId")
-	private List<VendorOffers> vendorOffers = new ArrayList<VendorOffers>();
-
+	@Column(name="flowerVendor")
+	private boolean flower;
+	
+	@Column(name="musicVendor")
+	private boolean music;
+	
+	@Column(name="cateringVendor")
+	private boolean catering;
+	
+	@Column(name="videoVendor")
+	private boolean video;
+	
+	@Column(name="status")
+	private boolean isAvailable;
+	
+	@Column(name="vendorCost")
+	private double vendorCost;	
+	
 	public Vendor() {
 		super();
 	}
 
-	public Vendor(int vendorId, String firstName, String lastName, String vendorContact) {
+	public Vendor(int vendorId, String firstName, String lastName, String vendorContact, boolean flower, boolean music,
+			boolean catering, boolean video, boolean isAvailable, double vendorCost) {
 		super();
 		this.vendorId = vendorId;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.vendorContact = vendorContact;
-		this.vendorOffers = vendorOffers;
+		this.flower = flower;
+		this.music = music;
+		this.catering = catering;
+		this.video = video;
+		this.isAvailable = isAvailable;
+		this.vendorCost = vendorCost;
 	}
 
 	public int getVendorId() {
@@ -53,14 +73,6 @@ public class Vendor {
 
 	public void setVendorId(int vendorId) {
 		this.vendorId = vendorId;
-	}
-
-	public List<VendorOffers> getVendorOffers() {
-		return vendorOffers;
-	}
-
-	public void setVendorOffers() {
-		this.vendorOffers = vendorOffers;
 	}
 
 	public String getFirstName() {
@@ -87,9 +99,62 @@ public class Vendor {
 		this.vendorContact = vendorContact;
 	}
 
+	public boolean isFlower() {
+		return flower;
+	}
+
+	public void setFlower(boolean flower) {
+		this.flower = flower;
+	}
+
+	public boolean isMusic() {
+		return music;
+	}
+
+	public void setMusic(boolean music) {
+		this.music = music;
+	}
+
+	public boolean isCatering() {
+		return catering;
+	}
+
+	public void setCatering(boolean catering) {
+		this.catering = catering;
+	}
+
+	public boolean isVideo() {
+		return video;
+	}
+
+	public void setVideo(boolean video) {
+		this.video = video;
+	}
+
+	public boolean isAvailable() {
+		return isAvailable;
+	}
+
+	public void setAvailable(boolean isAvailable) {
+		this.isAvailable = isAvailable;
+	}
+
+	public double getVendorCost() {
+		return vendorCost;
+	}
+
+	public void setVendorCost(double vendorCost) {
+		this.vendorCost = vendorCost;
+	}
+
 	@Override
 	public String toString() {
 		return "Vendor [vendorId=" + vendorId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", vendorContact=" + vendorContact + ", vendorOffers=" + vendorOffers + "]";
+				+ ", vendorContact=" + vendorContact + ", flower=" + flower + ", music=" + music + ", catering="
+				+ catering + ", video=" + video + ", isAvailable=" + isAvailable + ", vendorCost=" + vendorCost + "]";
 	}
+
+
+	
+	
 }

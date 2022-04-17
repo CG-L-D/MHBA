@@ -50,11 +50,21 @@ public class Hall {
 	@Column(name = "bookingStatus")
 	private boolean bookingStatus = false;
 
+	@Column(name = "housekeeping")
+	private List<String> housekeeping;
+
+	@Column(name = "dining")
+	private List<String> dining;
+
+	@Column(name = "electricalEquipment")
+	private List<String> electricalEquipment;
+
+
 	public Hall() {
 	}
 
 	public Hall(int hall_id, String hallName, int noOfRooms, long capacity, String location, String city,
-			double price) {
+			double price, List<String> housekeeping, List<String> dining, List<String> electricalEquipment) {
 		super();
 		this.hall_id = hall_id;
 		this.hallName = hallName;
@@ -63,6 +73,9 @@ public class Hall {
 		this.location = location;
 		this.city = city;
 		this.price = price;
+		this.housekeeping = housekeeping;
+		this.dining =dining;
+		this.electricalEquipment = electricalEquipment;
 	}
 
 	public int getHall_id() {
@@ -143,6 +156,25 @@ public class Hall {
 
 	public void setBookingStatus(boolean bookingStatus) {
 		this.bookingStatus = bookingStatus;
+	}
+
+	public void setHousekeeping(List<String> housekeeping){
+		this.housekeeping = housekeeping;
+	}
+	public void setDining(List<String> dining){
+		this.dining = dining;
+	}
+	public void setElectricalEquipment(List<String> electricalEquipment){
+		this.electricalEquipment = electricalEquipment;
+	}
+	public List<String> getHousekeeping(){
+		return this.housekeeping;
+	}
+	public List<String> getDining(){
+		return this.dining;
+	}
+	public List<String> getelectricalEquipment(){
+		return this.electricalEquipment;
 	}
 
 	@Override

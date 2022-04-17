@@ -170,14 +170,14 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/getVendorByFirstName")
-	public List<ResponseEntity<Object>> getVendorByFirstName(@RequestBody String firstName) {
+	public ResponseEntity<Object> getVendorByFirstName(@RequestBody String firstName) {
 		
 		return vendorService.getVendorByFirstName(firstName);
 	
 	}
 
 	@RequestMapping(value = "/getVendorByLastName")
-	public List<ResponseEntity<Object>> getVendorByLastName(@RequestBody String lastName) {
+	public ResponseEntity<Object> getVendorByLastName(@RequestBody String lastName) {
 		
 		return vendorService.getVendorByLastName(lastName);
 	
@@ -189,19 +189,12 @@ public class AdminController {
 		return vendorService.getByVendorContact(vendorContact);
 	
 	}
-	
-	@RequestMapping(value = "/getSortedVendorByFirstName")
-	public List<ResponseEntity<Object>> getVendorSortedByFirstName() {
+	@RequestMapping(value = "/getVendorByType/{type}")
+	public ResponseEntity<Object> getVendorByType(@PathVariable String type) {
 		
-		return vendorService.getVendorSortedByFirstName();
+		return vendorService.getVendorByType(type);
 	
 	}
 	
-	@RequestMapping(value = "/getSortedVendorByLastName")
-	public List<ResponseEntity<Object>> getVendorSortedByLastName() {
-		
-		return vendorService.getVendorSortedByLastName();
-	
-	}
 
 }

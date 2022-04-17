@@ -15,6 +15,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Hall {
 
@@ -54,8 +56,9 @@ public class Hall {
 
 	@OneToOne
 	private Vendor vendor;
-	
-	@OneToMany
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<HallOffers> hallOffers;
 
 	public Hall() {
@@ -184,5 +187,4 @@ public class Hall {
 				+ ", hallOffers=" + hallOffers + "]";
 	}
 
-	
 }

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -18,6 +19,7 @@ public class HallOffers {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+	@JoinColumn(name = "hall_id")
     @Column(name = "hallOfferId")
     private int id;
 

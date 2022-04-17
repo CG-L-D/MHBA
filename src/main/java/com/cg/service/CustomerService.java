@@ -38,32 +38,33 @@ public class CustomerService {
 		return "Customer deleted successfully";
 	}
 
-	public String BookHall(String city, String location, int customerId,  boolean flower,boolean catering,boolean video,boolean music) {
+	public String BookHall(int customerId, String city, String location, boolean flower, boolean catering,
+			boolean music, boolean video) {
 		Customer c = customerRepository.findById(customerId).get();
 		List<Hall> halls = hallRepository.findByCityAndLocation(city, location);
-		if(halls == null) return "Currently no halls available at your location"; 
+		if (halls == null)
+			return "Currently no halls available at your location";
 		else {
-			for(Hall h:halls) {
-			  if(!h.isBookingStatus()) {
-				    if (h.getBookedFrom() == null && h.getBookedTo() == null) {
+			for (Hall h : halls) {
+				if (!h.isBookingStatus()) {
+					if (h.getBookedFrom() == null && h.getBookedTo() == null) {
 						h.setBookedFrom(c.getBookHallFrom());
 						h.setBookedTo(c.getBookHallTo());
-					}
-					else if(c.getBookHallFrom().after(h.getBookedTo()) || c.getBookHallTo().before(h.getBookedFrom())) {
-							h.setBookedFrom(c.getBookHallFrom());
-							h.setBookedTo(c.getBookHallTo());
-					}
-					else{
+					} else if (c.getBookHallFrom().after(h.getBookedTo())
+							|| c.getBookHallTo().before(h.getBookedFrom())) {
+						h.setBookedFrom(c.getBookHallFrom());
+						h.setBookedTo(c.getBookHallTo());
+					} else {
 
 						return "Hall already booked for your mentioned duration, please select another slot.";
-					
+
 					}
-					boolean status = vendorService.bookVendor(h.getHall_id(), flower, catering, video, music);
-					if(!status){
-					
+					boolean status = vendorService.bookVendor(h.getHall_id(), flower, catering, music, video);
+					if (!status) {
+
 						return "No vendor available for mentioned services, please slect another combinations.";
-					}		
-					
+					}
+
 					List<Hall> hallList = c.getHall();
 					hallList.add(h);
 
@@ -72,15 +73,12 @@ public class CustomerService {
 					hallRepository.save(h);
 					customerRepository.save(c);
 
-					
 					return "Hall and vendor boooked successfully.";
 
-			  	}
+				}
 			}
 			return "Hall already booked at that duration";
 		}
 	}
-
-	
 
 }

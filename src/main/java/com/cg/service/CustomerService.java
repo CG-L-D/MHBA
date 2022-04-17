@@ -10,6 +10,7 @@ import com.cg.entity.Customer;
 import com.cg.entity.Hall;
 import com.cg.repository.CustomerRepository;
 import com.cg.repository.HallRepository;
+import com.cg.repository.VendorRepository;
 
 @Service
 public class CustomerService {
@@ -18,6 +19,9 @@ public class CustomerService {
 
 	@Autowired
 	private HallRepository hallRepository;
+
+	@Autowired
+	private VendorRepository vendorRepository;
 
 	public String addCustomer(Customer c) {
 		customerRepository.save(c);
@@ -33,13 +37,13 @@ public class CustomerService {
 		return "Customer deleted successfully";
 	}
 
-	public String BookHall(String city, String location, int customerId) {
+	public String BookHall(String city, String location, int customerId,  boolean flower,boolean catering,boolean video,boolean music) {
 		Customer c = customerRepository.findById(customerId).get();
 		List<Hall> halls = hallRepository.findByCityAndLocation(city, location);
 		if(halls == null) return "Currently no halls available at your location"; 
 		else {
 			for(Hall h:halls) {
-			  if(!h.getBookingStatus()) {
+			  if(!h.isBookingStatus()) {
 				    if (h.getBookedFrom() == null && h.getBookedTo() == null) {
 						h.setBookedFrom(c.getBookHallFrom());
 						h.setBookedTo(c.getBookHallTo());
@@ -48,7 +52,17 @@ public class CustomerService {
 							h.setBookedFrom(c.getBookHallFrom());
 							h.setBookedTo(c.getBookHallTo());
 					}
+					else{
 
+						return "Hall already booked for your mentioned duration, please select another slot.";
+					
+					}
+				//	boolean status = vendorRepository.bookVendor(h.getHall_id(), flower, catering, video, music);
+					if(false){
+					
+						return "No vendor available for mentioned services, please slect another combinations.";
+					}		
+					
 					List<Hall> hallList = c.getHall();
 					hallList.add(h);
 
@@ -56,13 +70,16 @@ public class CustomerService {
 					h.setBookingStatus(true);
 					hallRepository.save(h);
 					customerRepository.save(c);
-					return "Hall booked Successfully";
-			  }
+
+					
+					return "Hall and vendor boooked successfully.";
+
+			  	}
 			}
 			return "Hall already booked at that duration";
 		}
 	}
-   
+
 	
 
 }

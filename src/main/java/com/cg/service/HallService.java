@@ -53,9 +53,13 @@ public class HallService {
 		return new ResponseEntity<Object>("No halls available of that capacity at your location", HttpStatus.OK);
 	}
 
-	public String removeHallById(int id){
-		hallRepository.deleteById(id);
-		return "Hall removed successfully";
+	public ResponseEntity<Object> removeHall(int id){
+		if(hallRepository.existsById(id)){
+			hallRepository.deleteById(id);
+			return new ResponseEntity<Object>("Hall deleted succeccfully", HttpStatus.OK);
+		}
+
+		return new ResponseEntity<Object>("Hall not found.", HttpStatus.OK);
 	}
 
 }

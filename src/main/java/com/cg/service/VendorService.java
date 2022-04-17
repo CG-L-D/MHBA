@@ -16,7 +16,9 @@ import com.cg.entity.Customer;
 import com.cg.entity.Admin;
 import com.cg.entity.Vendor;
 import com.cg.repository.CustomerRepository;
+import com.cg.repository.HallRepository;
 import com.cg.repository.VendorRepository;
+import com.cg.entity.Hall;
 
 @Service
 public class VendorService {
@@ -26,6 +28,9 @@ public class VendorService {
 
 	@Autowired
 	private VendorRepository vendorRepo;
+
+	@Autowired
+	private HallRepository hallRepository;
 	
 	public String addVendor(Vendor vendor)
 	{
@@ -142,7 +147,7 @@ public class VendorService {
 		
 	}
 
-	public ResponseEntity<Object> bookVendor(int customerId, boolean flower,boolean catering,boolean video,boolean music){
+	public boolean bookVendor(int hallId, boolean flower,boolean catering,boolean video,boolean music){
 		
 		List<Vendor> vendors = vendorRepo.findByServices(flower, catering, video, music);
 
@@ -151,15 +156,17 @@ public class VendorService {
 			  if(v.isAvailable()) {
 				  	
 					v.setAvailable(false);
-					((Customer) customerRepository.findById(customerId)).setVendor(v.getVendorId());
+					Hall h = hallRepository.findById(hallId).get();
+					if(h != null)
+						h.setVendor(v);
 
-					return new ResponseEntity<Object>("Vendor booked Successfully", HttpStatus.OK);
+					return true;
 			  }
 
 			}
-			return new ResponseEntity<Object>("All vendors are booked.", HttpStatus.OK);
+			return false;
 		}
-		return new ResponseEntity<Object>("No vendor available providing required services.", HttpStatus.OK);
+		return false;
 	}
 	
 	

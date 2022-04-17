@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 
 @Entity
@@ -50,21 +52,19 @@ public class Hall {
 	@Column(name = "bookingStatus")
 	private boolean bookingStatus = false;
 
-	@Column(name = "housekeeping")
-	private List<String> housekeeping;
-
-	@Column(name = "dining")
-	private List<String> dining;
-
-	@Column(name = "electricalEquipment")
-	private List<String> electricalEquipment;
-
+	@OneToOne
+	private Vendor vendor;
+	
+	@OneToMany
+	private List<HallOffers> hallOffers;
 
 	public Hall() {
+		super();
 	}
 
-	public Hall(int hall_id, String hallName, int noOfRooms, long capacity, String location, String city,
-			double price, List<String> housekeeping, List<String> dining, List<String> electricalEquipment) {
+	public Hall(int hall_id, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
+			String city, @Min(5000) double price, Date bookedFrom, Date bookedTo, boolean bookingStatus, Vendor vendor,
+			List<HallOffers> hallOffers) {
 		super();
 		this.hall_id = hall_id;
 		this.hallName = hallName;
@@ -73,9 +73,11 @@ public class Hall {
 		this.location = location;
 		this.city = city;
 		this.price = price;
-		this.housekeeping = housekeeping;
-		this.dining =dining;
-		this.electricalEquipment = electricalEquipment;
+		this.bookedFrom = bookedFrom;
+		this.bookedTo = bookedTo;
+		this.bookingStatus = bookingStatus;
+		this.vendor = vendor;
+		this.hallOffers = hallOffers;
 	}
 
 	public int getHall_id() {
@@ -150,7 +152,7 @@ public class Hall {
 		this.bookedTo = bookedTo;
 	}
 
-	public boolean getBookingStatus() {
+	public boolean isBookingStatus() {
 		return bookingStatus;
 	}
 
@@ -158,30 +160,29 @@ public class Hall {
 		this.bookingStatus = bookingStatus;
 	}
 
-	public void setHousekeeping(List<String> housekeeping){
-		this.housekeeping = housekeeping;
+	public Vendor getVendor() {
+		return vendor;
 	}
-	public void setDining(List<String> dining){
-		this.dining = dining;
+
+	public void setVendor(Vendor vendor) {
+		this.vendor = vendor;
 	}
-	public void setElectricalEquipment(List<String> electricalEquipment){
-		this.electricalEquipment = electricalEquipment;
+
+	public List<HallOffers> getHallOffers() {
+		return hallOffers;
 	}
-	public List<String> getHousekeeping(){
-		return this.housekeeping;
-	}
-	public List<String> getDining(){
-		return this.dining;
-	}
-	public List<String> getelectricalEquipment(){
-		return this.electricalEquipment;
+
+	public void setHallOffers(List<HallOffers> hallOffers) {
+		this.hallOffers = hallOffers;
 	}
 
 	@Override
 	public String toString() {
 		return "Hall [hall_id=" + hall_id + ", hallName=" + hallName + ", noOfRooms=" + noOfRooms + ", capacity="
 				+ capacity + ", location=" + location + ", city=" + city + ", price=" + price + ", bookedFrom="
-				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + "]";
+				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + ", vendor=" + vendor
+				+ ", hallOffers=" + hallOffers + "]";
 	}
 
+	
 }

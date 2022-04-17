@@ -42,6 +42,7 @@ public class Customer {
    @Column(name="contactNumber")
    private String contactNumber;
    
+   
    private Date bookHallFrom;
    
    private Date bookHallTo;

@@ -119,9 +119,9 @@ public class AdminService {
 
 		if(currentAdmin != null) {
 			
-			Optional<Admin> admin = adminRepository.findById(id);
+			Admin admin = adminRepository.findById(id).get();
 			System.out.println(admin);
-			if (admin.isEmpty()) {
+			if (admin == null) {
 	
 				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
 	

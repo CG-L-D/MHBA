@@ -58,16 +58,22 @@ public class CustomerController {
     return hallService.findByCapacity(city, capacity);
   }
 
-  @PostMapping("/bookHall/{city}/{location}/{customerId}")
-  public String bookHall(@PathVariable String city, @PathVariable String location, @PathVariable int customerId) {
-    return customerService.BookHall(city, location, customerId);
+  @PostMapping("/bookHall/")
+  public String bookHall(@RequestBody int customerId, @RequestBody String city, @RequestBody String location,
+                          @RequestBody boolean flower, @RequestBody  boolean catering, @RequestBody boolean music, @RequestBody boolean video) {
+    return customerService.BookHall(
+      city, 
+      location, 
+      customerId,
+      flower,
+      catering,
+      music,
+      video
+      );
   }
   
 
-  @PostMapping("/bookVendor/{customerId}/{flower}/{catering}/{music}/{video}")
-  public String bookVendor( @PathVariable  int customerId ,@PathVariable boolean flower, @PathVariable  boolean catering, @PathVariable boolean music,@PathVariable boolean video) {
-    return vendorService.bookVendor( customerId,flower,catering,music,video);
-  }
+  
 
   
 }

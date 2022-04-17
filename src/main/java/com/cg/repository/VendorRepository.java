@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+
 import com.cg.entity.*;
 
 @Repository
@@ -26,4 +27,6 @@ public interface VendorRepository extends JpaRepository<Vendor, Integer> {
 			@Param("music") boolean music
 			);
 
+	boolean bookVendor(int hallId, boolean flower,boolean catering,boolean video,boolean music);
+	
 }

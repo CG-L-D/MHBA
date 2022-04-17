@@ -9,26 +9,29 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "Vendor")
+@Table(name="Vendor")
 public class Vendor {
-
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "vendor_id", nullable = false)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "vendor_id" , nullable=false)
 	private int vendorId;
 	@Column(name = "firstName")
 	private String firstName;
-
+	
 	@Column(name = "lastName")
 	private String lastName;
-
-	@Column(name = "vendorContact")
+	
+	@Column(name="vendorContact")
 	private String vendorContact;
+
 
 	@Column(name="flowerVendor")
 	private boolean flower;
@@ -47,6 +50,11 @@ public class Vendor {
 	
 	@Column(name="vendorCost")
 	private double vendorCost;	
+
+	@OneToOne(mappedBy="vendor", cascade= CascadeType.ALL)
+	private Hall hall;
+	
+	
 	
 	public Vendor() {
 		super();
@@ -67,6 +75,14 @@ public class Vendor {
 		this.vendorCost = vendorCost;
 	}
 
+	public boolean getIsAvailable() {
+		return isAvailable;
+	}
+	
+	public void setIsAvailable() {
+		this.isAvailable=isAvailable;
+	}
+	
 	public int getVendorId() {
 		return vendorId;
 	}
@@ -74,7 +90,6 @@ public class Vendor {
 	public void setVendorId(int vendorId) {
 		this.vendorId = vendorId;
 	}
-
 	public String getFirstName() {
 		return firstName;
 	}

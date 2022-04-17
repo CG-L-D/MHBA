@@ -15,6 +15,7 @@ import com.cg.entity.Customer;
 import com.cg.entity.Hall;
 import com.cg.service.CustomerService;
 import com.cg.service.HallService;
+import com.cg.service.VendorService;
 
 @RestController
 public class CustomerController {
@@ -23,6 +24,9 @@ public class CustomerController {
 
   @Autowired
   private HallService hallService;
+
+  @Autowired
+  private VendorService vendorService;
 
   @PostMapping("/addCustomer")
   public String addCustomer(@RequestBody Customer c) {
@@ -58,4 +62,12 @@ public class CustomerController {
   public String bookHall(@PathVariable String city, @PathVariable String location, @PathVariable int customerId) {
     return customerService.BookHall(city, location, customerId);
   }
+  
+
+  @PostMapping("/bookVendor/{customerId}/{flower}/{catering}/{music}/{video}")
+  public String bookVendor( @PathVariable  int customerId ,@PathVariable boolean flower, @PathVariable  boolean catering, @PathVariable boolean music,@PathVariable boolean video) {
+    return vendorService.bookVendor( customerId,flower,catering,music,video);
+  }
+
+  
 }

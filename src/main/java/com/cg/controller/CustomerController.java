@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.entity.Customer;
@@ -23,6 +24,18 @@ public class CustomerController {
 
   @Autowired
   private HallService hallService;
+  
+   @RequestMapping(value = "/loginCustomer/{email}/{password}")
+	public ResponseEntity<Object> loginAdmin(@PathVariable String email, @PathVariable String password){
+		return customerService.loginCustomer(email, password);
+	}
+	
+	@RequestMapping(value = "/logoutCustomer")
+	public ResponseEntity<Object> logoutCustomer(){
+		
+		return customerService.logoutCustomer();
+		
+	}
 
   @PostMapping("/addCustomer")
   public String addCustomer(@RequestBody Customer c) {

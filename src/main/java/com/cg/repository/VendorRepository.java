@@ -3,6 +3,7 @@ package com.cg.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -18,8 +19,7 @@ public interface VendorRepository extends JpaRepository<Vendor, Integer> {
 
 	Vendor findByVendorContact(String adminContact);
 	
-	List<Vendor> findByType(String type);
-	
+	@Query("select vendor from Vendor vendor where vendor.flower=:flower and vendor.catering=:catering and vendor.music=:music and vendor.video=:video")
 	List<Vendor> findByServices(
 			@Param("flower") boolean flower, 
 			@Param("catering") boolean catering,
@@ -27,6 +27,6 @@ public interface VendorRepository extends JpaRepository<Vendor, Integer> {
 			@Param("music") boolean music
 			);
 
-	boolean bookVendor(int hallId, boolean flower,boolean catering,boolean video,boolean music);
+	// boolean bookVendor(int hallId, boolean flower,boolean catering,boolean video,boolean music);
 	
 }

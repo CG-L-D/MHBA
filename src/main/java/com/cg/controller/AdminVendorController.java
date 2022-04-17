@@ -77,12 +77,7 @@ public class AdminVendorController {
 		return vendorService.getByVendorContact(vendorContact);
 	
 	}
-	@RequestMapping(value = "/getVendorByType/{type}")
-	public ResponseEntity<Object> getVendorByType(@PathVariable String type) {
-		
-		return vendorService.getVendorByType(type);
 	
-	}
 	
 	
 	

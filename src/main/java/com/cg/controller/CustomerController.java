@@ -25,7 +25,7 @@ public class CustomerController {
 
   @Autowired
   private HallService hallService;
-  
+  /*
    @RequestMapping(value = "/loginCustomer/{email}/{password}")
 	public ResponseEntity<Object> loginAdmin(@PathVariable String email, @PathVariable String password){
 		return customerService.loginCustomer(email, password);
@@ -37,7 +37,7 @@ public class CustomerController {
 		return customerService.logoutCustomer();
 		
 	}
-
+*/
   @Autowired
   private VendorService vendorService;
 

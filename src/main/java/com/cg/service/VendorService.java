@@ -134,18 +134,7 @@ public class VendorService {
 				
 	}
 	
-	public ResponseEntity<Object> getVendorByType(String type) {
-
-		List<Vendor> vendor= vendorRepo.findByType(type);
-		
-		if(vendor == null) {
-
-			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
-
-		}
-		return new ResponseEntity<Object>(vendor, HttpStatus.OK);
-		
-	}
+	
 
 	public boolean bookVendor(int hallId, boolean flower,boolean catering,boolean video,boolean music){
 		

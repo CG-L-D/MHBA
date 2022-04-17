@@ -232,14 +232,18 @@ public class AdminService {
 
 	public ResponseEntity<Object> getAdminSortedByLastName() {
 
-		List<Admin> admin = adminRepository.findAll(Sort.by("lastName"));
-
-		if (admin == null) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
+		if(currentAdmin != null) {
+			
+			List<Admin> admin = adminRepository.findAll(Sort.by("lastName"));
+	
+			if (admin == null) {
+	
+				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+	
+			}
+			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
+		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);	
 	}
-
+	
 }

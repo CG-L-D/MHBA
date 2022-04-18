@@ -56,8 +56,6 @@ public class Hall {
 	@Column(name = "bookingStatus")
 	private boolean bookingStatus = false;
 
-	@Column(name = "revenue")
-	private double revenue;
 	
 	@OneToOne
 	private Vendor vendor;
@@ -202,9 +200,6 @@ public class Hall {
 		this.hallOffers = hallOffers;
 	}
 	
-	public double getRevenue() {
-		return revenue;
-	}
 
 	public void setRevenue(double revenue) {
 		this.revenue = revenue;

@@ -9,14 +9,14 @@ import com.cg.entity.Admin;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Integer>{
 
-	List<Admin> findByFirstName(String firstName);
+	List<Admin> findByAdminFirstName(String firstName);
 
-	List<Admin> findByLastName(String lastName);
+	List<Admin> findByAdminLastName(String lastName);
 
 	Admin findByAdminContact(String adminContact);
 	
-	Admin findByEmail(String email);
+	Admin findByAdminEmail(String email);
 
-	Admin findByEmailAndPassword(String email, String password);
+	Admin findByAdminEmailAndAdminPassword(String email, String password);
 	
 }

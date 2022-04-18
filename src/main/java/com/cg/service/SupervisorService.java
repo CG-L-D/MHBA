@@ -68,12 +68,12 @@ public class SupervisorService {
 	public ResponseEntity<Object> sortByName() {
 		return new ResponseEntity<Object>(superRepo.findAll(Sort.by("supervisorName")), HttpStatus.OK);
 	}
-	
+	/*
 	public ResponseEntity<Object> getHallDetailsForSupervisor(int id){
 		Supervisor supervisor = superRepo.getById(id);
 		int hallId = supervisor.getHallId();
 		Hall hall = hallRepository.getById(hallId);
-		/* Get hall details yet to be added */
+		 Get hall details yet to be added 
 		//return new ResponseEntity<Object>(hall.getDetails());
 		return new ResponseEntity<Object>(hall, HttpStatus.OK);
 	}
@@ -89,6 +89,6 @@ public class SupervisorService {
 		billAmount *= 1.18; // adding GST 
 		return new ResponseEntity<Object>(billAmount, HttpStatus.OK);
 	}
-
+*/
 }
 

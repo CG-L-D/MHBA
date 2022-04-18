@@ -18,21 +18,21 @@ public class AdminVendorController {
 	VendorService vendorService;
 
 	@PostMapping("/addVendor")
-	public String addVendor(@RequestBody Vendor vendor)
+	public ResponseEntity<Object> addVendor(@RequestBody Vendor vendor)
 	{
 		return vendorService.addVendor(vendor);
 		
 	}
 
 	@RequestMapping(value = "/removeAllVendor")
-	public String removeAllVendor() {
+	public ResponseEntity<Object> removeAllVendor() {
 		
 		return vendorService.removeAllVendor();
 		
 	}
 	
 	@RequestMapping(value = "/removeVendorById/{id}")
-	public String removeVendorById(@PathVariable int id) {
+	public ResponseEntity<Object> removeVendorById(@PathVariable int id) {
 		
 		return vendorService.removeVendorById(id);
 		

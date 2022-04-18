@@ -2,6 +2,8 @@ package com.cg.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,21 +34,20 @@ public class Supervisor {
 	@Column(name = "supervisorContact")
 	private String supervisorContact;
 	
-	@NotBlank
-	@Column(name = "hallId")
-	private int hallId;
+	@OneToOne(mappedBy="supervisor", cascade=CascadeType.ALL)
+	private Hall hall;
 	
 	public Supervisor() {
 		super();
 	}
 
-	public Supervisor(int supervisorId, String supervisorName, String supervisorEmail, String supervisorContact, int hallId) {
+	public Supervisor(int supervisorId, String supervisorName, String supervisorEmail, String supervisorContact, Hall hall) {
 		super();
 		this.supervisorId = supervisorId;
 		this.supervisorName = supervisorName;
 		this.supervisorEmail = supervisorEmail;
 		this.supervisorContact = supervisorContact;
-		this.hallId = hallId;
+		this.hall = hall;
 	}
 
 	public int getSupervisorId() {
@@ -81,18 +82,18 @@ public class Supervisor {
 		this.supervisorContact = supervisorContact;
 	}
 	
-	public int getHallId() {
-		return hallId;
+	public Hall getHall() {
+		return hall;
 	}
 	
-	public void setHallId(int id) {
-		hallId = id;
+	public void setHall(Hall hall) {
+		this.hall = hall;
 	}
 
 	@Override
 	public String toString() {
 		return "Supervisor [supervisorId = " + supervisorId + ", SupervisorName = " + supervisorName
-				+ "', supervisorEmail = " + supervisorEmail + ", supervisorContact = " + supervisorContact + ", hallId = " + hallId + "]";
+				+ "', supervisorEmail = " + supervisorEmail + ", supervisorContact = " + supervisorContact + ", hallId = " + hall + "]";
 
 	}
 

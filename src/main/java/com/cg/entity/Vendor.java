@@ -23,11 +23,12 @@ public class Vendor {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "vendor_id" , nullable=false)
 	private int vendorId;
+
 	@Column(name = "firstName")
-	private String firstName;
+	private String vendorFirstName;
 	
 	@Column(name = "lastName")
-	private String lastName;
+	private String vendorLastName;
 	
 	@Column(name="vendorContact")
 	private String vendorContact;
@@ -46,7 +47,7 @@ public class Vendor {
 	private boolean video;
 	
 	@Column(name="status")
-	private boolean isAvailable;
+	private boolean isVendorAvailable;
 	
 	@Column(name="vendorCost")
 	private double vendorCost;	
@@ -60,27 +61,19 @@ public class Vendor {
 		super();
 	}
 
-	public Vendor(int vendorId, String firstName, String lastName, String vendorContact, boolean flower, boolean music,
-			boolean catering, boolean video, boolean isAvailable, double vendorCost) {
+	public Vendor(int vendorId, String vendorFirstName, String vendorLastName, String vendorContact, boolean flower, boolean music,
+			boolean catering, boolean video, boolean isVendorAvailable, double vendorCost) {
 		super();
 		this.vendorId = vendorId;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.vendorFirstName = vendorFirstName;
+		this.vendorLastName = vendorLastName;
 		this.vendorContact = vendorContact;
 		this.flower = flower;
 		this.music = music;
 		this.catering = catering;
 		this.video = video;
-		this.isAvailable = isAvailable;
+		this.isVendorAvailable = isVendorAvailable;
 		this.vendorCost = vendorCost;
-	}
-
-	public boolean getIsAvailable() {
-		return isAvailable;
-	}
-	
-	public void setIsAvailable() {
-		this.isAvailable=isAvailable;
 	}
 	
 	public int getVendorId() {
@@ -90,20 +83,20 @@ public class Vendor {
 	public void setVendorId(int vendorId) {
 		this.vendorId = vendorId;
 	}
-	public String getFirstName() {
-		return firstName;
+	public String getVendorFirstName() {
+		return vendorFirstName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setVendorFirstName(String firstName) {
+		this.vendorFirstName = firstName;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getVendorLastName() {
+		return vendorLastName;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setVendorLastName(String lastName) {
+		this.vendorLastName = lastName;
 	}
 
 	public String getVendorContact() {
@@ -146,12 +139,12 @@ public class Vendor {
 		this.video = video;
 	}
 
-	public boolean isAvailable() {
-		return isAvailable;
+	public boolean getIsVendorAvailable() {
+		return isVendorAvailable;
 	}
-
-	public void setAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
+	
+	public void setIsVendorAvailable(boolean isVendorAvailable) {
+		this.isVendorAvailable=isVendorAvailable;
 	}
 
 	public double getVendorCost() {
@@ -164,12 +157,10 @@ public class Vendor {
 
 	@Override
 	public String toString() {
-		return "Vendor [vendorId=" + vendorId + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", vendorContact=" + vendorContact + ", flower=" + flower + ", music=" + music + ", catering="
-				+ catering + ", video=" + video + ", isAvailable=" + isAvailable + ", vendorCost=" + vendorCost + "]";
-	}
-
-
-	
+		return "Vendor [vendorId=" + vendorId + ", vendorFirstName=" + vendorFirstName + ", vendorLastName="
+				+ vendorLastName + ", vendorContact=" + vendorContact + ", flower=" + flower + ", music=" + music
+				+ ", catering=" + catering + ", video=" + video + ", isVendorAvailable=" + isVendorAvailable
+				+ ", vendorCost=" + vendorCost + ", hall=" + hall + "]";
+	}	
 	
 }

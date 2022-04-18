@@ -27,21 +27,21 @@ public class Admin {
 	
 	@Column(name = "firstName", nullable = false)
 	@Pattern(regexp = "^[A-Za-z]+$", message="First name is invalid, must contain alphabets only.")
-	private String firstName;
+	private String adminFirstName;
 	
 	@Column(name = "lastName", nullable = false)
 	@Pattern(regexp = "^[A-Za-z]+$", message="Last name is invalid, must contain alphabets only.")
-	private String lastName;
+	private String adminLastName;
 	
 	@Column(name = "age", nullable = false)
 //	@Min(value = 20, message= "Age is too low.")
 //	@Max(value = 80, message = "Age limit exceeded.")
-	private int age;
+	private int adminAge;
 	
 	@Email
 	@Size(min = 3, max = 30, message = "Email must be between 3 to 30 characters.")
 	@Column(name = "email", nullable = false)
-	private String email;
+	private String adminEmail;
 	
 	@Pattern(regexp = "[0-9]{10}", message="Contact number is not valid, must be of 10 digit numeric value.")
 	@Column(name = "adminContact")
@@ -49,7 +49,7 @@ public class Admin {
 	
 	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message="Password does not match the policy.")
 	@Column(name = "password")
-	private String password;
+	private String adminPassword;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "adminId")
@@ -68,83 +68,79 @@ public class Admin {
 			String adminContact, String password) {
 		super();
 		this.adminId = adminId;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
+		this.adminFirstName = firstName;
+		this.adminLastName = lastName;
+		this.adminEmail = email;
 		this.adminContact = adminContact;
-		this.password = password;
+		this.adminPassword = password;
 	}
 	
 	//Parameterized Overloaded Constructor
 	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
 			String adminContact, String password) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
+		this.adminFirstName = firstName;
+		this.adminLastName = lastName;
+		this.adminEmail = email;
 		this.adminContact = adminContact;
-		this.password = password;
+		this.adminPassword = password;
 	}
 
 	
 	//Getters and setters
-	public long getId() {
+	public long getAdminId() {
 		return adminId;
 	}
 
-	public void setId(int id) {
-		this.adminId = id;
+	public void setAdminId(int adminId) {
+		this.adminId = adminId;
 	}
 
-	public String getFirstName() {
-		return firstName;
+	public String getAdminFirstName() {
+		return adminFirstName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setAdminFirstName(String adminFirstName) {
+		this.adminFirstName = adminFirstName;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getAdminLastName() {
+		return adminLastName;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setAdminLastName(String adminLastName) {
+		this.adminLastName = adminLastName;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getAdminEmail() {
+		return adminEmail;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setAdminEmail(String adminEmail) {
+		this.adminEmail = adminEmail;
 	}
 
 	public String getAdminContact() {
 		return adminContact;
 	}
 
-	public void setContact(String contact) {
-		this.adminContact = contact;
-	}
-
-	public void setMobileNumber(String adminContact) {
+	public void setAdminContact(String adminContact) {
 		this.adminContact = adminContact;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getAdminPassword() {
+		return adminPassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setAdminPassword(String adminPassword) {
+		this.adminPassword = adminPassword;
 	}
 
-	
-	//toString method
+
 	@Override
 	public String toString() {
-		return "Admin [Id=" + adminId + ", First_Name=" + firstName + ", Last_Name=" + lastName + ", Email=" + email
-				+ ", Contact_Number=" + adminContact + ", Password=" + password + "]";
+		return "Admin [adminId=" + adminId + ", adminFirstName=" + adminFirstName + ", adminLastName=" + adminLastName
+				+ ", adminAge=" + adminAge + ", adminEmail=" + adminEmail + ", adminContact=" + adminContact
+				+ ", adminPassword=" + adminPassword + ", supervisors=" + supervisors + ", vendors=" + vendors + "]";
 	}
-	
+
 }

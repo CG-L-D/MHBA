@@ -32,26 +32,25 @@ public class VendorService {
 	@Autowired
 	private HallRepository hallRepository;
 
-	public String addVendor(Vendor vendor) {
+	public ResponseEntity<Object> addVendor(Vendor vendor) {
 		vendorRepo.save(vendor);
-		return "Vendor Added Successfully..";
+		return new ResponseEntity<Object>( "Vendor Added Successfully..", HttpStatus.OK);
 	}
 
-	public String removeAllVendor() {
+	public ResponseEntity<Object> removeAllVendor() {
 
 		vendorRepo.deleteAll();
-		return "All vendor deleted successfully.";
+		return new ResponseEntity<Object>("All vendor deleted successfully.",HttpStatus.OK);
 	}
 
-	public String removeVendorById(int id) {
+	public ResponseEntity<Object> removeVendorById(int id) {
 
 		if (vendorRepo.existsById(id)) {
 
 			vendorRepo.deleteById(id);
-			return "Vendor deleted successfully.";
-
+			return new ResponseEntity<Object>( "Vendor deleted successfully", HttpStatus.OK);
 		}
-		return "Vendor not found.";
+		return new ResponseEntity<Object>( "Vendor not found", HttpStatus.OK);
 	}
 
 	public ResponseEntity<Object> getAllVendor() {
@@ -94,7 +93,7 @@ public class VendorService {
 
 	public ResponseEntity<Object> getVendorByFirstName(String firstName) {
 
-		List<Admin> vendor = vendorRepo.findByFirstName(firstName);
+		List<Admin> vendor = vendorRepo.findByVendorFirstName(firstName);
 
 		if (vendor == null) {
 
@@ -107,7 +106,7 @@ public class VendorService {
 
 	public ResponseEntity<Object> getVendorByLastName(String lastName) {
 
-		List<Admin> vendor = vendorRepo.findByLastName(lastName);
+		List<Admin> vendor = vendorRepo.findByVendorLastName(lastName);
 
 		if (vendor == null) {
 
@@ -137,9 +136,9 @@ public class VendorService {
 
 		if (vendors != null) {
 			for (Vendor v : vendors) {
-				if (v.isAvailable()) {
+				if (v.getIsVendorAvailable()) {
 
-					v.setAvailable(false);
+					v.setIsVendorAvailable(false);
 					Hall h = hallRepository.findById(hallId).get();
 					if (h != null)
 						h.setVendor(v);

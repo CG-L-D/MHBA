@@ -139,7 +139,7 @@ class AdminTest {
 		
 		adminController.addAdmin(new Admin(10, "First", "Last", "email@gmail.com", "9000000000", "Password@123"));
 
-		assertEquals("Admin deleted successfully.", adminController.removeAdminByAdminId(10));
+		assertEquals("Admin deleted successfully.", adminController.removeByAdminId(10));
 		
 	}
 	
@@ -148,7 +148,7 @@ class AdminTest {
 
 		adminController.removeAllAdmin();
 		
-		assertEquals("Admin not found.", adminController.removeAdminByAdminId(101));
+		assertEquals("Admin not found.", adminController.removeByAdminId(101));
 		
 	}
 
@@ -181,7 +181,7 @@ class AdminTest {
 		
 		adminController.addAdmin(new Admin(101, "First", "Last", "email@gmail.com", "9000000000", "Password@123"));
 		
-		ResponseEntity<Object> admin = adminController.getAdminByAdminId(101);
+		ResponseEntity<Object> admin = adminController.getByAdminId(101);
 		
 		assertNotNull(admin);
 		
@@ -192,7 +192,7 @@ class AdminTest {
 	
 		adminController.removeAllAdmin();
 		
-		assertEquals("<200 OK OK,Optional.empty,[]>", adminController.getAdminByAdminId(101).toString());
+		assertEquals("<200 OK OK,Optional.empty,[]>", adminController.getByAdminId(101).toString());
 		
 	}
 	
@@ -204,7 +204,7 @@ class AdminTest {
 		adminController.addAdmin(new Admin(101, "First", "Last", "email@gmail.com", "9000000000", "Password@123"));
 		
 		assertEquals("<200 OK OK,[Admin [First_Name=First, Last_Name=Last, Email=email@gmail.com, Contact_Number=9000000000, Password=Password@123]],[]>",
-					adminController.getAdminByFirstName("First").toString());
+					adminController.getByAdminFirstName("First").toString());
 		
 	}
 	
@@ -213,7 +213,7 @@ class AdminTest {
 
 		adminController.removeAllAdmin();
 		
-		assertEquals("<200 OK OK,[],[]>", adminController.getAdminByFirstName("FirstNew").toString());
+		assertEquals("<200 OK OK,[],[]>", adminController.getByAdminFirstName("FirstNew").toString());
 		
 	}
 
@@ -224,7 +224,7 @@ class AdminTest {
 		
 		adminController.addAdmin(new Admin(101, "First", "Last", "email@gmail.com", "9000000000", "Password@123"));
 		
-		ResponseEntity<Object> admin = adminController.getAdminByLastName("Last");
+		ResponseEntity<Object> admin = adminController.getByAdminLastName("Last");
 		
 		assertNotNull(admin);
 		
@@ -235,7 +235,7 @@ class AdminTest {
 
 		adminController.removeAllAdmin();
 		
-		assertEquals("<200 OK OK,[],[]>", adminController.getAdminByLastName("LastNew").toString());
+		assertEquals("<200 OK OK,[],[]>", adminController.getByAdminLastName("LastNew").toString());
 		
 	}
 	
@@ -268,7 +268,7 @@ class AdminTest {
 		
 		adminController.addAdmin(new Admin(101, "First", "Last", "email@gmail.com", "9000000000", "Password@123"));
 		
-		ResponseEntity<Object> admin = adminController.getAdminByEmail("email@gmail.com");
+		ResponseEntity<Object> admin = adminController.getByAdminEmail("email@gmail.com");
 		
 		assertNotNull(admin);
 		
@@ -279,7 +279,7 @@ class AdminTest {
 
 		adminController.removeAllAdmin();
 		
-		assertEquals("<200 OK OK,Admin not found.,[]>", adminController.getAdminByEmail("emailnew@gmail.com").toString());
+		assertEquals("<200 OK OK,Admin not found.,[]>", adminController.getByAdminEmail("emailnew@gmail.com").toString());
 		
 	}
 
@@ -300,7 +300,7 @@ class AdminTest {
 				+ "Admin [First_Name=Mno, Last_Name=Pqr, Email=email3@gmail.com, Contact_Number=7000000000, Password=Password@123], "
 				+ "Admin [First_Name=Onkar, Last_Name=Magadum, Email=email1@gmail.com, Contact_Number=9000000000, Password=Password@123]],"
 				+ "[]>", 
-				adminController.getAdminSortedByFirstName().toString());
+				adminController.getSortedByAdminFirstName().toString());
 	}
 
 	@Test
@@ -319,7 +319,7 @@ class AdminTest {
 				+ "Admin [First_Name=Mno, Last_Name=Pqr, Email=email3@gmail.com, Contact_Number=7000000000, Password=Password@123], "
 				+ "Admin [First_Name=Abc, Last_Name=Xyz, Email=email2@gmail.com, Contact_Number=8000000000, Password=Password@123]],"
 				+ "[]>",
-				adminController.getAdminSortedByLastName().toString());
+				adminController.getSortedByAdminLastName().toString());
 	}
 
 }

@@ -33,7 +33,7 @@ public class SupervisorController {
 	  public ResponseEntity<Object> removeSupervisor(@PathVariable int id) {
 	    return supervisorService.removeById(id);
 	  }
-	  
+	  /*
 	  @GetMapping("/getHallDetailsForSupervisor/{id}")
 	  public ResponseEntity<Object> getHallDetailsForSupervisor(@PathVariable int id){
 		  return supervisorService.getHallDetailsForSupervisor(id);
@@ -43,5 +43,5 @@ public class SupervisorController {
 	  public ResponseEntity<Object> generateBill(@PathVariable int supervisorId, @PathVariable int vendorId){
 		  return supervisorService.generateBill(supervisorId, vendorId);
 	  }
-
+*/
 }

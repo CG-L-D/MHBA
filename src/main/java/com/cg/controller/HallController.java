@@ -16,12 +16,12 @@ import com.cg.service.HallService;
 
 @RestController
 public class HallController {
-
+/*
 	@Autowired
 	public HallService hallService;
 
 	@RequestMapping("/addHall")
-	public String addHall(@RequestBody Hall hall) {
+	public ResponseEntity<Object> addHall(@RequestBody Hall hall) {
 		return hallService.addHall(hall);
 	}
 
@@ -29,5 +29,5 @@ public class HallController {
 	public ResponseEntity<Object> getHall() {
 		return hallService.getAllHall();
 	}
-
+*/
 }

@@ -12,9 +12,9 @@ import com.cg.entity.*;
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor, Integer> {
 
-	List<Admin> findByFirstName(String firstName);
+	List<Admin> findByVendorFirstName(String firstName);
 
-	List<Admin> findByLastName(String lastName);
+	List<Admin> findByVendorLastName(String lastName);
 
 	Vendor findByVendorContact(String adminContact);
 

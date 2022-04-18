@@ -8,13 +8,10 @@ import com.cg.entity.Hall;
 
 public interface HallRepository extends JpaRepository<Hall, Integer> {
 
-	public List<Hall> findByCity(String city);
+	public List<Hall> findByHallCity(String city);
 
-	public List<Hall> findByCityAndLocation(String city, String location);
+	public List<Hall> findByHallCityAndHallLocation(String city, String location);
 
-	public List<Hall> findByCityAndCapacity(String city, int capacity);
+	public List<Hall> findByHallCityAndHallCapacity(String city, int capacity);
 
-	public void addRevenue(int id);
-	
-	public double getHallRevenue(int id);
 }

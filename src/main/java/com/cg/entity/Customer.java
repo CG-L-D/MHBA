@@ -23,6 +23,7 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "customer")
 public class Customer {
+
    @Id
    @GeneratedValue(strategy=GenerationType.AUTO)
    
@@ -36,11 +37,12 @@ public class Customer {
    @Column(name="customerEmail")
    private String customerEmail;
    
-   private String password;
+   @Column(name = "customerPassword")
+   private String customerPassword;
    
    @NotBlank
-   @Column(name="contactNumber")
-   private String contactNumber;
+   @Column(name="customerContact")
+   private String customerContact;
    
    
    private Date bookHallFrom;
@@ -50,20 +52,20 @@ public class Customer {
    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	  @JoinTable(name = "customers_halls", joinColumns = 
 	  @JoinColumn(name = "customerId", referencedColumnName = "customerId"),
-	  inverseJoinColumns = @JoinColumn(name = "hallId", referencedColumnName = "hall_id"))
+	  inverseJoinColumns = @JoinColumn(name = "hallId", referencedColumnName = "hallId"))
    private List<Hall> halls;
    
    public Customer() {
 	   
    }
 
-	public Customer(int customerId,String customerName, String customerEmail,String password, String contactNumber) {
+	public Customer(int customerId,String customerName, String customerEmail,String customerPassword, String customerContact) {
 	super();
     this.customerId = customerId;
 	this.customerName = customerName;
 	this.customerEmail = customerEmail;
-	this.password = password;
-	this.contactNumber = contactNumber;
+	this.customerPassword = customerPassword;
+	this.customerContact = customerContact;
 	
     }
 
@@ -104,14 +106,14 @@ public class Customer {
 
 
 
-	public String getContactNumber() {
-		return contactNumber;
+	public String getCustomerContact() {
+		return customerContact;
 	}
 
 
 
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
+	public void setCustomerContact(String customerContact) {
+		this.customerContact = customerContact;
 	}
 
 
@@ -140,28 +142,27 @@ public class Customer {
 
 
 
-	public List<Hall> getHall() {
+	public List<Hall> getHalls() {
 		return halls;
 	}
 
-	public void setHall(List<Hall> hall) {
-		this.halls = halls	;
+	public void setHalls(List<Hall> halls) {
+		this.halls = halls;
 	}
 	
-	public String getPassword() {
-		return password;
+	public String getCustomerPassword() {
+		return customerPassword;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setCustomerPassword(String customerPassword) {
+		this.customerPassword = customerPassword;
 	}
-
-
 
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", customerName=" + customerName + ", customerEmail="
-				+ customerEmail + ", contactNumber=" + contactNumber + "]";
+				+ customerEmail + ", customerPassword=" + customerPassword + ", customerContact=" + customerContact
+				+ ", bookHallFrom=" + bookHallFrom + ", bookHallTo=" + bookHallTo + ", halls=" + halls + "]";
 	}
 	
 }

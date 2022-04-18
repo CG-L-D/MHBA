@@ -16,10 +16,10 @@ public class HallService {
 	@Autowired
 	private HallRepository hallRepository;
 
-	public String addHall(Hall hall) {
+	public ResponseEntity<Object> addHall(Hall hall) {
 
 		hallRepository.save(hall);
-		return "hall added successfully";
+		return new ResponseEntity<Object>("hall added successfully",HttpStatus.OK);
 	}
 
 	public ResponseEntity<Object> getAllHall() {
@@ -31,7 +31,7 @@ public class HallService {
 	}
 
 	public ResponseEntity<Object> findHallByCity(String city) {
-		List<Hall> halls = hallRepository.findByCity(city);
+		List<Hall> halls = hallRepository.findByHallCity(city);
 
 		if (halls != null)
 			return new ResponseEntity<Object>(halls, HttpStatus.OK);
@@ -39,14 +39,14 @@ public class HallService {
 	}
 
 	public ResponseEntity<Object> findHallByLocation(String city, String location) {
-		List<Hall> halls = hallRepository.findByCityAndLocation(city, location);
+		List<Hall> halls = hallRepository.findByHallCityAndHallLocation(city, location);
 		if (halls != null)
 			return new ResponseEntity<Object>(halls.get(0), HttpStatus.OK);
 		return new ResponseEntity<Object>("No halls available at your location.", HttpStatus.OK);
 	}
 
 	public ResponseEntity<Object> findByCapacity(String city, int capacity) {
-		List<Hall> halls = hallRepository.findByCityAndCapacity(city, capacity);
+		List<Hall> halls = hallRepository.findByHallCityAndHallCapacity(city, capacity);
 
 		if (halls != null)
 			return new ResponseEntity<Object>(halls, HttpStatus.OK);
@@ -62,13 +62,4 @@ public class HallService {
 		return new ResponseEntity<Object>("Hall not found.", HttpStatus.OK);
 	}
 
-	public void addRevenue(int id){
-		Hall h = hallRepository.getById(id);
-		h.setRevenue(h.getRevenue() + h.getPrice());
-	}
-	
-	public double getHallRevenue(int id) {
-		
-		return hallRepository.getById(id).getRevenue();
-	}
 }

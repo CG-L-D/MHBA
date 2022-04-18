@@ -25,7 +25,7 @@ public class AdminService {
 	
 	public ResponseEntity<Object> loginAdmin(String email, String password){
 		
-		if((currentAdmin = adminRepository.findByEmailAndPassword(email, password)) != null){
+		if((currentAdmin = adminRepository.findByAdminEmailAndAdminPassword(email, password)) != null){
 			return new ResponseEntity<Object>("Admin login successfull.", HttpStatus.OK);
 		}
 		
@@ -64,7 +64,7 @@ public class AdminService {
 		
 	}
 
-	public ResponseEntity<Object> removeAdminByAdminId(int id) {
+	public ResponseEntity<Object> removeByAdminId(int id) {
 
 		if(currentAdmin != null) {
 			if (adminRepository.existsById(id)) {
@@ -95,7 +95,7 @@ public class AdminService {
 			
 	}
 
-	public ResponseEntity<Object> getAdminByPage(int m, int n) {
+	public ResponseEntity<Object> getByAdminPage(int m, int n) {
 
 		if(currentAdmin != null) {
 			Pageable page = PageRequest.of(m, n);
@@ -113,7 +113,7 @@ public class AdminService {
 			
 	}
 
-	public ResponseEntity<Object> getAdminByAdminId(int id) {
+	public ResponseEntity<Object> getByAdminId(int id) {
 
 		if(currentAdmin != null) {
 			
@@ -130,11 +130,11 @@ public class AdminService {
 
 	}
 
-	public ResponseEntity<Object> getAdminByFirstName(String firstName) {
+	public ResponseEntity<Object> getByAdminFirstName(String adminFirstName) {
 
 		if(currentAdmin != null) {
 			
-			List<Admin> admin = adminRepository.findByFirstName(firstName);
+			List<Admin> admin = adminRepository.findByAdminFirstName(adminFirstName);
 	
 			if (admin == null) {
 	
@@ -147,10 +147,10 @@ public class AdminService {
 
 	}
 
-	public ResponseEntity<Object> getAdminByLastName(String lastName) {
+	public ResponseEntity<Object> getByAdminLastName(String adminLastName) {
 
 
-		List<Admin> admin = adminRepository.findByLastName(lastName);
+		List<Admin> admin = adminRepository.findByAdminLastName(adminLastName);
 		
 		if(admin == null ) {
 			
@@ -159,7 +159,7 @@ public class AdminService {
 				
 	}
 	
-	public ResponseEntity<Object> getAdminByContact(String adminContact){
+	public ResponseEntity<Object> getByAdminContact(String adminContact){
 			
 		if(currentAdmin != null) {
 			
@@ -177,11 +177,11 @@ public class AdminService {
 
 	}
 
-	public ResponseEntity<Object> getAdminByEmail(String email) {
+	public ResponseEntity<Object> getByAdminEmail(String email) {
 
 		if(currentAdmin != null) {
 			
-			Admin admin = adminRepository.findByEmail(email);
+			Admin admin = adminRepository.findByAdminEmail(email);
 	
 			if (admin == null) {
 	
@@ -194,11 +194,11 @@ public class AdminService {
 
 	}
 
-	public ResponseEntity<Object> getAdminSortedByFirstName() {
+	public ResponseEntity<Object> getSortedByAdminFirstName() {
 
 		if(currentAdmin != null) {
 			
-			List<Admin> admin = adminRepository.findAll(Sort.by("firstName"));
+			List<Admin> admin = adminRepository.findAll(Sort.by("adminFirstName"));
 	
 			if (admin == null) {
 	
@@ -211,11 +211,11 @@ public class AdminService {
 	
 	}
 
-	public ResponseEntity<Object> getAdminSortedByLastName() {
+	public ResponseEntity<Object> getSortedByAdminLastName() {
 
 		if(currentAdmin != null) {
 			
-			List<Admin> admin = adminRepository.findAll(Sort.by("lastName"));
+			List<Admin> admin = adminRepository.findAll(Sort.by("adminLastName"));
 	
 			if (admin == null) {
 	

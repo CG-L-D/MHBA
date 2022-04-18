@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.cg.entity.Customer;
@@ -24,61 +26,65 @@ public class CustomerService {
 	@Autowired
 	private VendorService vendorService;
 
-	public String addCustomer(Customer c) {
+	public ResponseEntity<Object> addCustomer(Customer c) {
 		customerRepository.save(c);
-		return "Customer added successfully";
+		return new ResponseEntity<Object>( "Customer Added successfully", HttpStatus.OK);
 	}
 
-	public List<Customer> getAllCustomers() {
-		return customerRepository.findAll();
+	public ResponseEntity<Object> getAllCustomers() {
+		List<Customer> customers =  customerRepository.findAll();
+		return new ResponseEntity<Object>( customers, HttpStatus.OK);
+		
 	}
 
-	public String removeCustomer(int id) {
+	public ResponseEntity<Object> removeCustomer(int id) {
 		customerRepository.deleteById(id);
-		return "Customer deleted successfully";
+		return new ResponseEntity<Object>( "Customer deleted successfully", HttpStatus.OK);
 	}
 
-	public String BookHall(int customerId, String city, String location, boolean flower, boolean catering,
+	public ResponseEntity<Object> BookHall(int customerId, String city, String location, boolean flower, boolean catering,
 			boolean music, boolean video) {
 		Customer c = customerRepository.findById(customerId).get();
-		List<Hall> halls = hallRepository.findByCityAndLocation(city, location);
+		List<Hall> halls = hallRepository.findByHallCityAndHallLocation(city, location);
 		if (halls == null)
-			return "Currently no halls available at your location";
+			return new ResponseEntity<Object>("Currently no halls available at your location", HttpStatus.OK);
 		else {
 			for (Hall h : halls) {
-				if (!h.isBookingStatus()) {
-					if (h.getBookedFrom() == null && h.getBookedTo() == null) {
-						h.setBookedFrom(c.getBookHallFrom());
-						h.setBookedTo(c.getBookHallTo());
-					} else if (c.getBookHallFrom().after(h.getBookedTo())
-							|| c.getBookHallTo().before(h.getBookedFrom())) {
-						h.setBookedFrom(c.getBookHallFrom());
-						h.setBookedTo(c.getBookHallTo());
+				if (!h.isHallBookingStatus()) {
+					if (h.getHallBookedFrom() == null && h.getHallBookedTo() == null) {
+						h.setHallBookedFrom(c.getBookHallFrom());
+						h.setHallBookedTo(c.getBookHallTo());
+					} else if (c.getBookHallFrom().after(h.getHallBookedTo())
+							|| c.getBookHallTo().before(h.getHallBookedFrom())) {
+						h.setHallBookedFrom(c.getBookHallFrom());
+						h.setHallBookedTo(c.getBookHallTo());
 					} else {
 
-						return "Hall already booked for your mentioned duration, please select another slot.";
-
+						return new ResponseEntity<Object>("Hall already booked for your mentioned duration, please select another slot.", HttpStatus.OK);
+						
 					}
-					boolean status = vendorService.bookVendor(h.getHall_id(), flower, catering, music, video);
+					boolean status = vendorService.bookVendor(h.getHallId(), flower, catering, music, video);
 					if (!status) {
 
-						return "No vendor available for mentioned services, please slect another combinations.";
+						return new ResponseEntity<Object>("No vendor available for mentioned services, please slect another combinations.", HttpStatus.OK);
+					
 					}
 
-					List<Hall> hallList = c.getHall();
+					List<Hall> hallList = c.getHalls();
 					hallList.add(h);
 
-					c.setHall(hallList);
-					h.setBookingStatus(true);
-					hallRepository.addRevenue(h.getHall_id());
+					c.setHalls(hallList);
+					h.setHallBookingStatus(true);
+					
 					hallRepository.save(h);
 					customerRepository.save(c);
 
-					return "Hall and vendor boooked successfully.";
+					return new ResponseEntity<Object>("Hall and vendor boooked successfully.", HttpStatus.OK);
 
 				}
 			}
-			return "Hall already booked at that duration";
+			return new ResponseEntity<Object>("Hall already booked at that duration", HttpStatus.OK);
+
 		}
 	}
 

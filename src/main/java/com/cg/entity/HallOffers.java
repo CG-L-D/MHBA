@@ -19,7 +19,6 @@ public class HallOffers {
 
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-	@JoinColumn(name = "hall_id")
     @Column(name = "hallOfferId")
     private int hallOfferId;
 

@@ -14,15 +14,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class Hall {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int hall_id;
+	private int hallId;
 
-	@Column(name = "hallName")
+	@Column(name = "hallName", nullable =  false)
+	@Pattern(regexp = "^[A-Za-z]+$", message="Name is invalid, must contain alphabets only.")
 	private String hallName;
 
 	@Min(value = 5)
@@ -58,15 +60,18 @@ public class Hall {
 	@OneToMany
 	private List<HallOffers> hallOffers;
 
+	@Column(name="revenue")
+	private double revenue = 0;
+
 	public Hall() {
 		super();
 	}
 
-	public Hall(int hall_id, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
+	public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
 			String city, @Min(5000) double price, Date bookedFrom, Date bookedTo, boolean bookingStatus, Vendor vendor,
 			List<HallOffers> hallOffers) {
 		super();
-		this.hall_id = hall_id;
+		this.hallId = hallId;
 		this.hallName = hallName;
 		this.noOfRooms = noOfRooms;
 		this.capacity = capacity;
@@ -79,13 +84,28 @@ public class Hall {
 		this.vendor = vendor;
 		this.hallOffers = hallOffers;
 	}
+	public Hall(int hall_id, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
+			String city, @Min(5000) double price, boolean bookingStatus, Vendor vendor,
+			List<HallOffers> hallOffers) {
+		super();
+		this.hallId = hall_id;
+		this.hallName = hallName;
+		this.noOfRooms = noOfRooms;
+		this.capacity = capacity;
+		this.location = location;
+		this.city = city;
+		this.price = price;
+		this.bookingStatus = bookingStatus;
+		this.vendor = vendor;
+		this.hallOffers = hallOffers;
+	}
 
 	public int getHall_id() {
-		return hall_id;
+		return hallId;
 	}
 
 	public void setHall_id(int hall_id) {
-		this.hall_id = hall_id;
+		this.hallId = hall_id;
 	}
 
 	public String getHallName() {
@@ -176,9 +196,14 @@ public class Hall {
 		this.hallOffers = hallOffers;
 	}
 
+	public double getRevenue(){
+		return this.revenue;
+	}
+	
+
 	@Override
 	public String toString() {
-		return "Hall [hall_id=" + hall_id + ", hallName=" + hallName + ", noOfRooms=" + noOfRooms + ", capacity="
+		return "Hall [hall_id=" + hallId + ", hallName=" + hallName + ", noOfRooms=" + noOfRooms + ", capacity="
 				+ capacity + ", location=" + location + ", city=" + city + ", price=" + price + ", bookedFrom="
 				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + ", vendor=" + vendor
 				+ ", hallOffers=" + hallOffers + "]";

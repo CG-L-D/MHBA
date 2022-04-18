@@ -19,7 +19,7 @@ public class HallOffers {
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "hallOfferId")
-    private int id;
+    private int hallOfferId;
 
     @Column(name = "serviceType")
     private String serviceType;
@@ -34,20 +34,20 @@ public class HallOffers {
     	super();
     }
 
-	public HallOffers(int id, String serviceType, String serviceDetails, boolean isAvailable) {
+	public HallOffers(int hallOfferId, String serviceType, String serviceDetails, boolean isAvailable) {
 		super();
-		this.id = id;
+		this.hallOfferId = hallOfferId;
 		this.serviceType = serviceType;
 		this.serviceDetails = serviceDetails;
 		this.isAvailable = isAvailable;
 	}
 
-	public int getId() {
-		return id;
+	public int getHallOfferId() {
+		return hallOfferId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setHallOfferId(int id) {
+		this.hallOfferId = id;
 	}
 
 	public String getServiceType() {
@@ -76,7 +76,7 @@ public class HallOffers {
 
 	@Override
 	public String toString() {
-		return "HallOffers [id=" + id + ", serviceType=" + serviceType + ", serviceDetails=" + serviceDetails
+		return "HallOffers [id=" + hallOfferId + ", serviceType=" + serviceType + ", serviceDetails=" + serviceDetails
 				+ ", isAvailable=" + isAvailable + "]";
 	}
     

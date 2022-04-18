@@ -11,6 +11,7 @@ import com.cg.entity.Admin;
 import com.cg.service.AdminService;
 
 @RestController
+@RequestMapping("/admin")
 public class AdminController {
 
 	@Autowired
@@ -91,7 +92,7 @@ public class AdminController {
 	@RequestMapping(value = "/getByAdminContact")
 	public ResponseEntity<Object> getByAdminContact(@RequestBody String adminContact) {
 		
-		return adminService.getByAdminContact(adminContact);
+		return adminService.getAdminByContact(adminContact);
 	
 	}
 	

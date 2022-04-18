@@ -54,6 +54,9 @@ public class Hall {
 	@Column(name = "bookingStatus")
 	private boolean bookingStatus = false;
 
+	@Column(name = "revenue")
+	private double revenue;
+	
 	@OneToOne
 	private Vendor vendor;
 
@@ -178,13 +181,21 @@ public class Hall {
 	public void setHallOffers(List<HallOffers> hallOffers) {
 		this.hallOffers = hallOffers;
 	}
+	
+	public double getRevenue() {
+		return revenue;
+	}
+
+	public void setRevenue(double revenue) {
+		this.revenue = revenue;
+	}
 
 	@Override
 	public String toString() {
 		return "Hall [hall_id=" + hall_id + ", hallName=" + hallName + ", noOfRooms=" + noOfRooms + ", capacity="
 				+ capacity + ", location=" + location + ", city=" + city + ", price=" + price + ", bookedFrom="
-				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + ", vendor=" + vendor
-				+ ", hallOffers=" + hallOffers + "]";
+				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + ", revenue=" + revenue
+				+ ", vendor=" + vendor + ", hallOffers=" + hallOffers + "]";
 	}
 
 }

@@ -62,4 +62,13 @@ public class HallService {
 		return new ResponseEntity<Object>("Hall not found.", HttpStatus.OK);
 	}
 
+	public void addRevenue(int id){
+		Hall h = hallRepository.getById(id);
+		h.setRevenue(h.getRevenue() + h.getPrice());
+	}
+	
+	public double getHallRevenue(int id) {
+		
+		return hallRepository.getById(id).getRevenue();
+	}
 }

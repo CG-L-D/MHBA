@@ -14,4 +14,7 @@ public interface HallRepository extends JpaRepository<Hall, Integer> {
 
 	public List<Hall> findByCityAndCapacity(String city, int capacity);
 
+	public void addRevenue(int id);
+	
+	public double getHallRevenue(int id);
 }

@@ -70,6 +70,7 @@ public class CustomerService {
 
 					c.setHall(hallList);
 					h.setBookingStatus(true);
+					hallRepository.addRevenue(h.getHall_id());
 					hallRepository.save(h);
 					customerRepository.save(c);
 

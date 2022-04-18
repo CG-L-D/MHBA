@@ -2,8 +2,6 @@ package com.cg.service;
 
 import java.util.List;
 
-import java.util.Optional;
-import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -161,7 +159,7 @@ public class AdminService {
 				
 	}
 	
-	public ResponseEntity<Object> getByAdminContact(String adminContact){
+	public ResponseEntity<Object> getAdminByContact(String adminContact){
 			
 		if(currentAdmin != null) {
 			
@@ -174,23 +172,6 @@ public class AdminService {
 			}
 			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 
-		}
-		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getByContact(String contact) {
-
-		if(currentAdmin != null) {
-			
-			Admin admin = adminRepository.findByAdminContact(contact);
-	
-			if (admin == null) {
-	
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-	
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
 		return new ResponseEntity<Object>("Please sign in.", HttpStatus.OK);
 

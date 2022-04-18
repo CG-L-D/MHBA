@@ -16,6 +16,8 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Hall {
 
@@ -54,10 +56,14 @@ public class Hall {
 	@Column(name = "bookingStatus")
 	private boolean bookingStatus = false;
 
+	@Column(name = "revenue")
+	private double revenue;
+	
 	@OneToOne
 	private Vendor vendor;
-	
-	@OneToMany
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<HallOffers> hallOffers;
 
 	@Column(name="revenue")
@@ -195,6 +201,14 @@ public class Hall {
 	public void setHallOffers(List<HallOffers> hallOffers) {
 		this.hallOffers = hallOffers;
 	}
+	
+	public double getRevenue() {
+		return revenue;
+	}
+
+	public void setRevenue(double revenue) {
+		this.revenue = revenue;
+	}
 
 	public double getRevenue(){
 		return this.revenue;
@@ -205,9 +219,8 @@ public class Hall {
 	public String toString() {
 		return "Hall [hall_id=" + hallId + ", hallName=" + hallName + ", noOfRooms=" + noOfRooms + ", capacity="
 				+ capacity + ", location=" + location + ", city=" + city + ", price=" + price + ", bookedFrom="
-				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + ", vendor=" + vendor
-				+ ", hallOffers=" + hallOffers + "]";
+				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + ", revenue=" + revenue
+				+ ", vendor=" + vendor + ", hallOffers=" + hallOffers + "]";
 	}
 
-	
 }

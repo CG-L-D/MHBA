@@ -2,6 +2,8 @@ package com.cg.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.ManyToAny;
 
 @Entity
 @Table(name = "supervisor")
@@ -33,15 +37,21 @@ public class Supervisor {
 	@NotBlank
 	@Column(name = "supervisorContact")
 	private String supervisorContact;
-	
-	@OneToOne(mappedBy="supervisor", cascade=CascadeType.ALL)
+
+	@ManyToOne
+	@JoinColumn(name = "adminId")
+	private Admin admin;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	// @JoinColumn(name = "hallId")
 	private Hall hall;
-	
+
 	public Supervisor() {
 		super();
 	}
 
-	public Supervisor(int supervisorId, String supervisorName, String supervisorEmail, String supervisorContact, Hall hall) {
+	public Supervisor(int supervisorId, String supervisorName, String supervisorEmail, String supervisorContact,
+			Hall hall) {
 		super();
 		this.supervisorId = supervisorId;
 		this.supervisorName = supervisorName;
@@ -81,20 +91,28 @@ public class Supervisor {
 	public void setSupervisorContact(String supervisorContact) {
 		this.supervisorContact = supervisorContact;
 	}
-	
+
 	public Hall getHall() {
 		return hall;
 	}
-	
+
 	public void setHall(Hall hall) {
 		this.hall = hall;
 	}
 
+	public Admin getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
+
 	@Override
 	public String toString() {
-		return "Supervisor [supervisorId = " + supervisorId + ", SupervisorName = " + supervisorName
-				+ "', supervisorEmail = " + supervisorEmail + ", supervisorContact = " + supervisorContact + ", hallId = " + hall + "]";
-
+		return "Supervisor [supervisorId=" + supervisorId + ", supervisorName=" + supervisorName + ", supervisorEmail="
+				+ supervisorEmail + ", supervisorContact=" + supervisorContact + ", admin=" + admin + ", hall=" + hall
+				+ "]";
 	}
 
 }

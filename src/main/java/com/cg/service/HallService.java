@@ -19,7 +19,7 @@ public class HallService {
 	public ResponseEntity<Object> addHall(Hall hall) {
 
 		hallRepository.save(hall);
-		return new ResponseEntity<Object>("hall added successfully",HttpStatus.OK);
+		return new ResponseEntity<Object>("hall added successfully", HttpStatus.OK);
 	}
 
 	public ResponseEntity<Object> getAllHall() {
@@ -53,8 +53,8 @@ public class HallService {
 		return new ResponseEntity<Object>("No halls available of that capacity at your location", HttpStatus.OK);
 	}
 
-	public ResponseEntity<Object> removeHall(int id){
-		if(hallRepository.existsById(id)){
+	public ResponseEntity<Object> removeHall(int id) {
+		if (hallRepository.existsById(id)) {
 			hallRepository.deleteById(id);
 			return new ResponseEntity<Object>("Hall deleted succeccfully", HttpStatus.OK);
 		}
@@ -62,4 +62,15 @@ public class HallService {
 		return new ResponseEntity<Object>("Hall not found.", HttpStatus.OK);
 	}
 
+	public ResponseEntity<Object> removeAllHall() {
+		hallRepository.deleteAll();
+		return new ResponseEntity<Object>("all Hall removed succcessfully", HttpStatus.OK);
+	}
+
+	public void updateRevenue(int id, double bill) {
+
+		Hall hall = hallRepository.getById(id);
+		hall.setHallRevenue(hall.getHallRevenue() + bill);
+
+	}
 }

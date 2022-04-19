@@ -10,8 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
@@ -25,15 +27,15 @@ public class Hall {
 	@Column(name = "hallId")
 	private int hallId;
 
-	@Column(name = "hallName", nullable =  false)
-	@Pattern(regexp = "^[A-Za-z]+$", message="Name is invalid, must contain alphabets only.")
+	@Column(name = "hallName", nullable = false)
+	@Pattern(regexp = "^[A-Za-z]+$", message = "Name is invalid, must contain alphabets only.")
 	private String hallName;
 
-	@Min(value = 5)
+	// @Min(value = 5)
 	@Column(name = "noOfRooms")
 	private int noOfRooms;
 
-	@Min(value = 100)
+	// @Min(value = 100)
 	@Column(name = "capacity")
 	private long hallCapacity;
 
@@ -43,7 +45,7 @@ public class Hall {
 	@Column(name = "city")
 	private String hallCity;
 
-	@Min(value = 5000)
+	// @Min(value = 5000)
 	@Column(name = "price")
 	private double hallPrice;
 
@@ -58,23 +60,24 @@ public class Hall {
 	@Min(value = 0)
 	@Column(name = "hallRevenue")
 	private double hallRevenue;
-	
-	@OneToOne
-	private Vendor vendor;
 
-	@OneToOne
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "halls_vendors", joinColumns = @JoinColumn(name = "hallId", referencedColumnName = "hallId"), inverseJoinColumns = @JoinColumn(name = "vendorId", referencedColumnName = "vendorId"))
+	private List<Vendor> vendors;
+
+	@OneToOne(mappedBy = "hall")
 	private Supervisor supervisor;
 
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<HallOffers> hallOffers;
-
 
 	public Hall() {
 		super();
 	}
 
 	public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
-			String city, @Min(5000) double hallPrice, Date bookedFrom, Date bookedTo, boolean bookingStatus, Vendor vendor,
+			String city, @Min(5000) double hallPrice, Date bookedFrom, Date bookedTo, boolean bookingStatus,
+			List<Vendor> vendors,
 			List<HallOffers> hallOffers) {
 		super();
 		this.hallId = hallId;
@@ -87,11 +90,12 @@ public class Hall {
 		this.hallBookedFrom = bookedFrom;
 		this.hallBookedTo = bookedTo;
 		this.hallBookingStatus = bookingStatus;
-		this.vendor = vendor;
+		this.vendors = vendors;
 		this.hallOffers = hallOffers;
 	}
+
 	public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
-			String city, @Min(5000) double hallPrice, boolean bookingStatus, Vendor vendor,
+			String city, @Min(5000) double hallPrice, boolean bookingStatus, List<Vendor> vendors,
 			List<HallOffers> hallOffers) {
 		super();
 		this.hallId = hallId;
@@ -102,7 +106,7 @@ public class Hall {
 		this.hallCity = city;
 		this.hallPrice = hallPrice;
 		this.hallBookingStatus = bookingStatus;
-		this.vendor = vendor;
+		this.vendors = vendors;
 		this.hallOffers = hallOffers;
 	}
 
@@ -186,12 +190,12 @@ public class Hall {
 		this.hallBookingStatus = hallBookingStatus;
 	}
 
-	public Vendor getVendor() {
-		return vendor;
+	public List<Vendor> getVendors() {
+		return vendors;
 	}
 
-	public void setVendor(Vendor vendor) {
-		this.vendor = vendor;
+	public void setVendors(List<Vendor> vendors) {
+		this.vendors = vendors;
 	}
 
 	public List<HallOffers> getHallOffers() {
@@ -201,7 +205,7 @@ public class Hall {
 	public void setHallOffers(List<HallOffers> hallOffers) {
 		this.hallOffers = hallOffers;
 	}
-	
+
 	public double getHallRevenue() {
 		return hallRevenue;
 	}
@@ -210,10 +214,10 @@ public class Hall {
 		this.hallRevenue = hallRevenue;
 	}
 
-	public void addRevenue(double cost){
-		
+	public void addRevenue(double cost) {
+
 		this.hallRevenue += cost;
-		
+
 	}
 
 	@Override
@@ -221,9 +225,8 @@ public class Hall {
 		return "Hall [hallId=" + hallId + ", hallName=" + hallName + ", noOfRooms=" + noOfRooms + ", hallCapacity="
 				+ hallCapacity + ", hallLocation=" + hallLocation + ", hallCity=" + hallCity + ", hallPrice="
 				+ hallPrice + ", hallBookedFrom=" + hallBookedFrom + ", hallBookedTo=" + hallBookedTo
-				+ ", hallBookingStatus=" + hallBookingStatus + ", hallRevenue=" + hallRevenue + ", vendor=" + vendor
+				+ ", hallBookingStatus=" + hallBookingStatus + ", hallRevenue=" + hallRevenue + ", vendor=" + vendors
 				+ ", hallOffers=" + hallOffers + "]";
 	}
-	
 
 }

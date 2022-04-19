@@ -33,6 +33,9 @@ public class HallTest {
         assertEquals("<400 BAD_REQUEST Bad Request,Name should not contain digit.,[]>", hallController.addHall(new Hall(101, "Hall1",6, 9000, "kakadeo", "Kanpur", 500000, false,vendor,hallOffersList)).toString());
     }
 	
-	
+	@Test
+    final void testFindHallByCity(){
+        hallController.removeAllHall();
+    }
 
 }

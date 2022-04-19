@@ -16,7 +16,7 @@ import com.cg.service.HallService;
 
 @RestController
 public class HallController {
-/*
+
 	@Autowired
 	public HallService hallService;
 
@@ -29,5 +29,9 @@ public class HallController {
 	public ResponseEntity<Object> getHall() {
 		return hallService.getAllHall();
 	}
-*/
+
+	@RequestMapping("/removeAllHall")
+	public ResponseEntity<Object> removeAllHall(){
+		return hallService.removeAllHall();
+	}
 }

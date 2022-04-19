@@ -62,4 +62,8 @@ public class HallService {
 		return new ResponseEntity<Object>("Hall not found.", HttpStatus.OK);
 	}
 
+	public ResponseEntity<Object> removeAllHall(){
+		return new ResponseEntity<Object> ("all halls removed successfully", HttpStatus.OK);
+	}
+
 }

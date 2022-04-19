@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import net.bytebuddy.matcher.MethodSortMatcher.Sort;
-
 import com.cg.entity.Vendor;
 import com.cg.exception.HallNotFoundException;
 import com.cg.entity.Hall;
@@ -73,20 +71,17 @@ public class SupervisorService {
 
 	}
 
-	public ResponseEntity<Object> getHallDetailsForSupervisor(int id) {
-		Hall hall = supervisorRepository.getById(id).getHall();
-		return new ResponseEntity<Object>(hall.toString(), HttpStatus.OK);
-
-	}
-
-	public double generateBill(int hallId, boolean flower, boolean catering, boolean music,
-			boolean video) {
+	public double generateBill(int hallId, boolean flower, boolean catering, boolean music, boolean video) {
 
 		double billAmount = 0.0;
+
 		Hall hall = hallRepository.getById(hallId);
+
 		billAmount += hall.getHallPrice();
+
 		List<Vendor> vendors = vendorRepository.findByServices(flower, catering, music, video);
 		billAmount += vendors.get(0).getVendorCost();
+
 		billAmount *= 1.18;
 
 		log.info("Hall with ID, " + hallId + ", generated bill: " + billAmount);

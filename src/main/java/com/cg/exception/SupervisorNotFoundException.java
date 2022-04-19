@@ -1,11 +1,11 @@
 package com.cg.exception;
 
-public class SupervisorNotFoundException extends RuntimeException {
+public class SupervisorNotFoundException extends RuntimeException{
 
-	public SupervisorNotFoundException() {
+    public SupervisorNotFoundException() {
 		super("Supervisor not found");
 	}
-
+	
 	public SupervisorNotFoundException(String str) {
 		super(str);
 	}

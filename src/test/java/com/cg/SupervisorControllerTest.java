@@ -44,7 +44,7 @@ public class SupervisorControllerTest extends MhbaApplicationTests {
 
 	 @Test
 	 public void removeHallTest() {
-	 assertEquals("Hall removed successfully.", supervisorService.removeHall(101).getBody().toString());
+	 	assertEquals("Hall removed successfully.", supervisorService.removeHall(101).getBody().toString());
 	 }
 
 	 @Test

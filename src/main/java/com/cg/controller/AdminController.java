@@ -42,80 +42,24 @@ public class AdminController {
 
 	}
 
-	@RequestMapping(value = "/removeAllAdmin")
-	public ResponseEntity<Object> removeAllAdmin() {
+	@RequestMapping(value = "/removeAdmin")
+	public ResponseEntity<Object> removeAdmin() {
 
-		return adminService.removeAllAdmin();
-
-	}
-
-	@RequestMapping(value = "/removeByAdminId/{id}")
-	public ResponseEntity<Object> removeByAdminId(@PathVariable int id) {
-
-		return adminService.removeByAdminId(id);
+		return adminService.removeAdmin();
 
 	}
 
-	@RequestMapping(value = "/getAllAdmin")
-	public ResponseEntity<Object> getAllAdmin() {
+	@RequestMapping(value = "/getAdmin")
+	public ResponseEntity<Object> getAdmin() {
 
-		return adminService.getAllAdmin();
-
-	}
-
-	@RequestMapping(value = "/getByAdminPage/{m}/{n}")
-	public ResponseEntity<Object> getByAdminPage(@PathVariable int m, @PathVariable int n) {
-
-		return adminService.getByAdminPage(m, n);
+		return adminService.getAdmin();
 
 	}
-
-	@RequestMapping(value = "/getByAdminId/{id}")
-	public ResponseEntity<Object> getByAdminId(@PathVariable int id) {
-
-		return adminService.getByAdminId(id);
-
-	}
-
-	@RequestMapping(value = "/getByAdminFirstName")
-	public ResponseEntity<Object> getByAdminFirstName(@RequestBody String firstName) {
-
-		return adminService.getByAdminFirstName(firstName);
-
-	}
-
-	@RequestMapping(value = "/getByAdminLastName")
-	public ResponseEntity<Object> getByAdminLastName(@RequestBody String lastName) {
-
-		return adminService.getByAdminLastName(lastName);
-
-	}
-
-	@RequestMapping(value = "/getByAdminContact")
-	public ResponseEntity<Object> getByAdminContact(@RequestBody String adminContact) {
-
-		return adminService.getByAdminContact(adminContact);
-
-	}
-
-	@RequestMapping(value = "/getByAdminEmail")
-	public ResponseEntity<Object> getByAdminEmail(@RequestBody String email) {
-
-		return adminService.getByAdminEmail(email);
-
-	}
-
+	
 	@RequestMapping(value = "/getAdminRevenue")
 	public ResponseEntity<Object> getAdminRevenue() {
 
 		return adminService.getAdminRevenue();
-
-	}
-
-	@RequestMapping(value = "/getAdminRevenueById/{adminId}")
-	public ResponseEntity<Object> getAdminRevenueById(@PathVariable int adminId) {
-
-		return adminService.getAdminRevenueById(adminId);
 
 	}
 	
@@ -125,45 +69,6 @@ public class AdminController {
 		return adminService.collectAdminRevenue();
 
 	}
-
-	@RequestMapping(value = "/getSortedByAdminFirstName")
-	public ResponseEntity<Object> getSortedByAdminFirstName() {
-
-		return adminService.getSortedByAdminFirstName();
-
-	}
-
-	@RequestMapping(value = "/getSortedByAdminLastName")
-	public ResponseEntity<Object> getSortedByAdminLastName() {
-
-		return adminService.getSortedByAdminLastName();
-
-	}
-
-	@RequestMapping(value = "/getSortedByAdminRevenue")
-	public ResponseEntity<Object> getSortedByAdminRevenue() {
-
-		return adminService.getSortedByAdminRevenue();
-
-	}
-
-	@RequestMapping(value = "/makeAdminActive/{adminId}")
-	public ResponseEntity<Object> makeAdminActive(@PathVariable int adminId) {
-
-		return adminService.makeAdminActive(adminId);
-
-	}
-
-	@RequestMapping(value = "/makeAdminDeactive/{adminId}")
-	public ResponseEntity<Object> makeAdminDeactive(@PathVariable int adminId) {
-
-		return adminService.makeAdminDeactive(adminId);
-
-	}
-	
-	
-	
-	
 	
 	@RequestMapping(value = "/addSupervisor")
 	public ResponseEntity<Object> addSupervisor(@RequestBody Supervisor supervisor) {
@@ -197,27 +102,6 @@ public class AdminController {
 	public ResponseEntity<Object> getBySupervisorId(@PathVariable int id) {
 
 		return adminService.getBySupervisorId(id);
-
-	}
-
-	@RequestMapping(value = "/getBySupervisorName")
-	public ResponseEntity<Object> getBySupervisorName(@RequestBody String  name) {
-
-		return adminService.getBySupervisorName(name);
-
-	}
-
-	@RequestMapping(value = "/getBySupervisorContact")
-	public ResponseEntity<Object> getBySupervisorContact(@RequestBody String contact) {
-
-		return adminService.getBySupervisorContact(contact);
-
-	}
-
-	@RequestMapping(value = "/getBySupervisorEmail")
-	public ResponseEntity<Object> getBySupervisorEmail(@RequestBody String email) {
-
-		return adminService.getBySupervisorEmail(email);
 
 	}
 
@@ -272,24 +156,17 @@ public class AdminController {
 
 	}
 
-	@RequestMapping(value = "/getByVendorFirstName")
-	public ResponseEntity<Object> getByVendorFirstName(@RequestBody String firstName) {
+	@RequestMapping(value = "/getAllCustomers")
+	public ResponseEntity<Object> getAllCustomers() {
 
-		return adminService.getByVendorFirstName(firstName);
-
+		return adminService.getAllCustomers();
+		
 	}
 
-	@RequestMapping(value = "/getByVendorLastName")
-	public ResponseEntity<Object> getByVendorLastName(@RequestBody String lastName) {
+	@RequestMapping(value = "/removeCustomerById/{id}")
+	public ResponseEntity<Object> removeCustomerById(@PathVariable int id){
 
-		return adminService.getByVendorLastName(lastName);
-
-	}
-
-	@RequestMapping(value = "/getByVendorContact")
-	public ResponseEntity<Object> getByVendorContact(@RequestBody String vendorContact) {
-
-		return adminService.getByVendorContact(vendorContact);
+		return adminService.removeCustomerById(id);
 
 	}
 

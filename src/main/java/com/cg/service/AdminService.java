@@ -2,6 +2,7 @@ package com.cg.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,13 +12,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.cg.entity.Admin;
+import com.cg.entity.Customer;
 import com.cg.entity.Hall;
 import com.cg.entity.Supervisor;
 import com.cg.entity.Vendor;
+import com.cg.exception.AdminAvailableException;
+import com.cg.exception.AdminNotFoundException;
+import com.cg.exception.CustomerNotFoundException;
+import com.cg.exception.AdminLoggedInException;
+import com.cg.exception.AdminLoggedOutException;
+import com.cg.exception.InvalidCredentialsException;
+import com.cg.exception.SupervisorNotFoundException;
 import com.cg.repository.AdminRepository;
+import com.cg.repository.CustomerRepository;
 import com.cg.repository.HallRepository;
 import com.cg.repository.SupervisorRepository;
 import com.cg.repository.VendorRepository;
+import com.cg.exception.VendorNotFoundException;
 
 @Service
 public class AdminService {
@@ -35,221 +46,115 @@ public class AdminService {
 	@Autowired
 	private HallRepository hallRepository;
 
+	@Autowired
+	private CustomerRepository customerRepository;
+
 	Admin currentAdmin = null;
+
+	static Logger log = Logger.getLogger(AdminService.class.getName());
 
 	public ResponseEntity<Object> loginAdmin(String email, String password) {
 
-		if ((currentAdmin = adminRepository.findByAdminEmailAndAdminPassword(email, password)) != null) {
+		if (currentAdmin != null) {
 
-			if (currentAdmin.getActive())
-				return new ResponseEntity<Object>("Admin login successfull.", HttpStatus.OK);
-
-			return new ResponseEntity<Object>("Admin is deactivated.", HttpStatus.OK);
+			log.error("Admin with ID, " + currentAdmin.getAdminId() + ", was already logged in.");
+			throw new AdminLoggedInException("Admin is already logged in.");
 
 		}
 
-		return new ResponseEntity<Object>("Admin login failed, invalid credentials.", HttpStatus.FORBIDDEN);
+		if ((currentAdmin = adminRepository.findByAdminEmailAndAdminPassword(email, password)) != null) {
+
+			log.info("Admin with ID, " + currentAdmin.getAdminId() + ", logged in successfully.");
+			return new ResponseEntity<Object>("Admin login successfull.", HttpStatus.OK);
+
+		}
+
+		log.error("Admin with email, " + email + ", tried to login, invalid credentials.");
+
+		throw new InvalidCredentialsException("Admin login failed, invalid credentials.");
 	}
 
 	public ResponseEntity<Object> logoutAdmin() {
 
 		if (currentAdmin != null) {
+
+			log.info("Admin with ID, " + currentAdmin.getAdminId() + ", logged out successfully.");
+
 			currentAdmin = null;
+
 			return new ResponseEntity<Object>("Admin logout successfull.", HttpStatus.OK);
+
 		}
 
-		return new ResponseEntity<Object>("Error, currently no admin logged-in.", HttpStatus.BAD_REQUEST);
+		log.error("Admin tried to logout, but no admin logged-in.");
+
+		throw new AdminLoggedOutException("Currently no admin logged-in.");
 	}
 
 	public ResponseEntity<Object> addAdmin(Admin admin) {
 
-		if (!admin.getActive())
+		if (adminRepository.findAll().isEmpty()) {
+
 			adminRepository.save(admin);
-		else {
-			List<Admin> admins = adminRepository.getActiveAdmin();
-			if (admins.isEmpty()) {
+			log.info("Admin with ID " + admin.getAdminId() + ", added successfully");
 
-				adminRepository.save(admin);
-
-				return new ResponseEntity<Object>("Admin added successfully.", HttpStatus.BAD_REQUEST);
-
-			}
-			return new ResponseEntity<Object>("Error, currently admin is available.", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Object>("Admin added successfully.", HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Object>("Admin added successfully", HttpStatus.OK);
+
+		log.error("Tried to add, but admin is available.");
+
+		throw new AdminAvailableException("Error, currently admin is available.");
 
 	}
 
-	public ResponseEntity<Object> removeAllAdmin() {
-
-		if (currentAdmin != null) {
-			if (adminRepository.count() != 0) {
-
-				adminRepository.deleteAll();
-				return new ResponseEntity<Object>("All admin deleted successfully.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> removeByAdminId(int id) {
-
-		if (currentAdmin != null) {
-			if (adminRepository.existsById(id)) {
-
-				adminRepository.deleteById(id);
-				return new ResponseEntity<Object>("Admin deleted successfully.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getAllAdmin() {
-
-		if (currentAdmin != null) {
-			List<Admin> admin = adminRepository.findAll();
-
-			if (admin.isEmpty()) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getByAdminPage(int m, int n) {
-
-		if (currentAdmin != null) {
-			Pageable page = PageRequest.of(m, n);
-
-			Page<Admin> admin = adminRepository.findAll(page);
-
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getByAdminId(int id) {
+	public ResponseEntity<Object> removeAdmin() {
 
 		if (currentAdmin != null) {
 
-			Admin admin = adminRepository.findById(id).get();
+			adminRepository.deleteById(currentAdmin.getAdminId());
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", deleted successfully.");
 
-			if (admin == null) {
+			return new ResponseEntity<Object>("Admin deleted successfully.", HttpStatus.OK);
 
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Tried to remove admin, but no admin logged in");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
-	public ResponseEntity<Object> getByAdminFirstName(String adminFirstName) {
+	public ResponseEntity<Object> getAdmin() {
 
 		if (currentAdmin != null) {
 
-			List<Admin> admin = adminRepository.findByAdminFirstName(adminFirstName);
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", accessed all admins.");
 
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getByAdminLastName(String adminLastName) {
-
-		List<Admin> admin = adminRepository.findByAdminLastName(adminLastName);
-
-		if (admin == null) {
-
-			return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
+			return new ResponseEntity<Object>(currentAdmin, HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Object>(admin, HttpStatus.OK);
 
-	}
+		log.error("Tried to access admin, but no admin logged in");
 
-	public ResponseEntity<Object> getByAdminContact(String adminContact) {
-
-		if (currentAdmin != null) {
-
-			Admin admin = adminRepository.findByAdminContact(adminContact);
-
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
-
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getByAdminEmail(String email) {
-
-		if (currentAdmin != null) {
-
-			Admin admin = adminRepository.findByAdminEmail(email);
-
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
 	public ResponseEntity<Object> getAdminRevenue() {
 
-		return this.getAdminRevenueById(currentAdmin.getAdminId());
-
-	}
-
-	public ResponseEntity<Object> getAdminRevenueById(int id) {
-
 		if (currentAdmin != null) {
 
-			Admin admin = adminRepository.getAdminTotalRevenue(id);
-
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", accessed revenue.");
 
 			return new ResponseEntity<Object>("Revenue for admin with ID: " +
-					admin.getAdminRevenue() + " is:" + admin.getAdminRevenue(), HttpStatus.OK);
+					currentAdmin.getAdminId() + " is:" + currentAdmin.getAdminRevenue(), HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Tried to access admin revenue, but no admin logged in");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
@@ -257,18 +162,16 @@ public class AdminService {
 
 		if (currentAdmin != null) {
 
-			List<Supervisor> supervisors = adminRepository.getAllSupervisors(currentAdmin.getAdminId());
+			List<Hall> halls = hallRepository.findAll();
 			double totalRevenue = 0;
 
-			for (Supervisor supervisor : supervisors) {
+			for (Hall hall : halls) {
 
-				Hall hall = hallRepository.findById(supervisor.getHall().getHallId()).get();
 				totalRevenue += hall.getHallRevenue();
 
-				hall.setHallRevenue(0);
+				hall.setHallRevenue(0.0);
+
 				hallRepository.save(hall);
-				
-				supervisorRepository.save(supervisor);
 
 			}
 
@@ -276,97 +179,16 @@ public class AdminService {
 
 			adminRepository.save(currentAdmin);
 
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", collected revenue.");
+
 			return new ResponseEntity<Object>("Admin revenue collected.", HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
 
-	}
+		log.error("Tried to collect admin revenue, but no admin logged in");
 
-	public ResponseEntity<Object> getSortedByAdminFirstName() {
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
-		if (currentAdmin != null) {
-
-			List<Admin> admin = adminRepository.findAll(Sort.by("adminFirstName"));
-
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getSortedByAdminLastName() {
-
-		if (currentAdmin != null) {
-
-			List<Admin> admin = adminRepository.findAll(Sort.by("adminLastName"));
-
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-	}
-
-	public ResponseEntity<Object> getSortedByAdminRevenue() {
-
-		if (currentAdmin != null) {
-
-			List<Admin> admin = adminRepository.findAll(Sort.by("adminRevenue"));
-
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(admin, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-	}
-
-	public ResponseEntity<Object> makeAdminActive(int adminId) {
-
-		if (currentAdmin != null) {
-
-			Admin admin = adminRepository.findById(adminId).get();
-
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-
-			currentAdmin.setActive(false);
-			admin.setActive(true);
-			currentAdmin = null;
-			return new ResponseEntity<Object>("New admin is activated, login with new to use services.", HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-	}
-
-	public ResponseEntity<Object> makeAdminDeactive(int adminId) {
-
-		if (currentAdmin != null) {
-
-			Admin admin = adminRepository.findById(adminId).get();
-
-			if (admin == null) {
-
-				return new ResponseEntity<Object>("Admin not found.", HttpStatus.OK);
-
-			}
-			admin.setActive(false);
-			return new ResponseEntity<Object>("Admin is deactivated.", HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
 	}
 
 	// supervisor services
@@ -376,10 +198,18 @@ public class AdminService {
 
 			s.setAdmin(currentAdmin);
 			supervisorRepository.save(s);
+
+			log.info(
+					"Admin with ID " + currentAdmin.getAdminId() + ", added supervisor with ID," + s.getSupervisorId());
+
 			return new ResponseEntity<Object>("Supervisor added successfully", HttpStatus.OK);
+
 		}
 
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+		log.error("Admin tried to add supervisor, but no admin logged in");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
+
 	}
 
 	public ResponseEntity<Object> getAllSupervisor() {
@@ -390,12 +220,21 @@ public class AdminService {
 
 			if (supervisors.isEmpty()) {
 
-				return new ResponseEntity<Object>("Supervisors not found.", HttpStatus.OK);
+				log.error("Admin tried to access supervisors, but no supervisors present.");
+
+				throw new SupervisorNotFoundException("Supervisors not found.");
 
 			}
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", accessed supervisors.");
+
 			return new ResponseEntity<Object>(supervisors, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Admin tried to access supervisors without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
+
 	}
 
 	public ResponseEntity<Object> removeAllSupervisor() {
@@ -406,13 +245,20 @@ public class AdminService {
 
 			if (supervisors.isEmpty()) {
 
-				return new ResponseEntity<Object>("Supervisors not found.", HttpStatus.OK);
+				log.error("Admin tried to access supervisors, but no supervisors present.");
+
+				throw new SupervisorNotFoundException("Supervisors not found.");
 
 			}
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", deleted all supervisors.");
+
 			return new ResponseEntity<Object>("All supervisors deleted successfully.", HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Admin tried to delete supervisors without login.");
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
@@ -424,13 +270,20 @@ public class AdminService {
 
 			if (supervisor == null) {
 
-				return new ResponseEntity<Object>("Supervisors not found.", HttpStatus.OK);
+				log.error("Admin tried to remove supervisor, but no supervisor present.");
+
+				throw new SupervisorNotFoundException();
 
 			}
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", deleted supervisor with ID, " + id);
 			return new ResponseEntity<Object>("Supervisor deleted successfully.", HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Admin tried to delete supervisor without login.");
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
+
 	}
 
 	public ResponseEntity<Object> getBySupervisorId(Integer id) {
@@ -441,64 +294,21 @@ public class AdminService {
 
 			if (supervisor == null) {
 
-				return new ResponseEntity<Object>("Supervisors not found.", HttpStatus.OK);
+				log.error("Admin tried to access supervisors, but no supervisors present.");
+
+				throw new SupervisorNotFoundException();
 
 			}
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", accessed supervisor with ID, " + id);
+
 			return new ResponseEntity<Object>(supervisor, HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
 
-	}
+		log.error("Admin tried to access supervisor without login.");
 
-	public ResponseEntity<Object> getBySupervisorName(String name) {
-
-		if (currentAdmin != null) {
-
-			List<Supervisor> supervisors = supervisorRepository.findBySupervisorName(name);
-
-			if (supervisors.isEmpty()) {
-
-				return new ResponseEntity<Object>("Supervisors not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(supervisors, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getBySupervisorContact(String contact) {
-
-		if (currentAdmin != null) {
-
-			List<Supervisor> supervisors = supervisorRepository.findBySupervisorContact(contact);
-
-			if (supervisors.isEmpty()) {
-
-				return new ResponseEntity<Object>("Supervisors not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(supervisors, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getBySupervisorEmail(String email) {
-
-		if (currentAdmin != null) {
-
-			List<Supervisor> supervisors = supervisorRepository.findBySupervisorEmail(email);
-
-			if (supervisors.isEmpty()) {
-
-				return new ResponseEntity<Object>("Supervisors not found.", HttpStatus.OK);
-
-			}
-			return new ResponseEntity<Object>(supervisors, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
@@ -510,12 +320,20 @@ public class AdminService {
 
 			if (supervisors.isEmpty()) {
 
-				return new ResponseEntity<Object>("Supervisors not found.", HttpStatus.OK);
+				log.error("Admin tried to access supervisors, but no supervisors present.");
+
+				throw new SupervisorNotFoundException();
 
 			}
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", accessed all supervisors.");
+
 			return new ResponseEntity<Object>(supervisors, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Admin tried to access supervisor without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
@@ -527,10 +345,14 @@ public class AdminService {
 
 			vendor.setAdmin(currentAdmin);
 			vendorRepository.save(vendor);
-			return new ResponseEntity<Object>("Vendor added successfully.", HttpStatus.BAD_REQUEST);
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", added vendor with ID," + vendor.getVendorId());
+
+			return new ResponseEntity<Object>("Vendor added successfully.", HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+		log.error("Admin tried to add vendor, but no admin logged in");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
@@ -541,12 +363,18 @@ public class AdminService {
 			if (vendorRepository.count() != 0) {
 
 				vendorRepository.deleteAll();
+				log.info("Admin with ID " + currentAdmin.getAdminId() + " deleted all vendors succesfully.");
+
 				return new ResponseEntity<Object>("All vendors deleted successfully.", HttpStatus.OK);
 
 			}
-			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+			log.error("No vendors are present");
+			throw new VendorNotFoundException("Vendor not found.");
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Admin tried to remove vendors without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
@@ -557,13 +385,18 @@ public class AdminService {
 			if (vendorRepository.existsById(id)) {
 
 				vendorRepository.deleteById(id);
+				log.info("Admin with ID " + currentAdmin.getAdminId() + ", removed vendor with ID," + id);
+
 				return new ResponseEntity<Object>("Vendor deleted successfully.", HttpStatus.OK);
 
 			}
-			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+			log.error("No vendor present");
+			throw new VendorNotFoundException("Vendor not found.");
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
 
+		log.error("Admin tried to remove vendor without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 	}
 
 	public ResponseEntity<Object> getAllVendor() {
@@ -573,13 +406,20 @@ public class AdminService {
 			List<Vendor> vendors = vendorRepository.findAll();
 
 			if (vendors.isEmpty()) {
+				log.error("Admin tried to access vendors, but no vendors present.");
 
-				return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+				throw new VendorNotFoundException("Vendor not found.");
 
 			}
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", accessed vendors.");
+
 			return new ResponseEntity<Object>(vendors, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Admin tried to access vendors without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
@@ -593,12 +433,17 @@ public class AdminService {
 
 			if (vendors == null) {
 
-				return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+				log.error("No vendors are present");
+				throw new VendorNotFoundException("Vendor not found.");
 
 			}
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", accessed vendors with ID " + m + " to " + n);
 			return new ResponseEntity<Object>(vendors, HttpStatus.OK);
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Admin tried to access vendors without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
@@ -610,61 +455,67 @@ public class AdminService {
 
 			if (vendors == null) {
 
-				return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+				log.error("Admin tried to access vendors, but no vendors present.");
+
+				throw new VendorNotFoundException("Vendor Not Found");
 
 			}
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", accessed vendor with id " + id);
 			return new ResponseEntity<Object>(vendors, HttpStatus.OK);
+
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Admin tried to access vendor without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
-	public ResponseEntity<Object> getByVendorFirstName(String adminFirstName) {
+	public ResponseEntity<Object> getAllCustomers() {
 
 		if (currentAdmin != null) {
 
-			List<Vendor> vendors = vendorRepository.findByVendorFirstName(adminFirstName);
+			List<Customer> customers = customerRepository.findAll();
 
-			if (vendors == null) {
+			if (customers.isEmpty()) {
 
-				return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+				log.error("Admin tried to access customers, but no customers present.");
 
+				throw new CustomerNotFoundException("Customers not found.");
 			}
-			return new ResponseEntity<Object>(vendors, HttpStatus.OK);
+
+			return new ResponseEntity<Object>(customers, HttpStatus.OK);
+
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
+
+		log.error("Admin tried to access customers without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 
 	}
 
-	public ResponseEntity<Object> getByVendorLastName(String vendorLastName) {
-
-		List<Vendor> vendors = vendorRepository.findByVendorLastName(vendorLastName);
-
-		if (vendors == null) {
-
-			return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
-
-		}
-		return new ResponseEntity<Object>(vendors, HttpStatus.OK);
-
-	}
-
-	public ResponseEntity<Object> getByVendorContact(String vendorContact) {
+	public ResponseEntity<Object> removeCustomerById(int id) {
 
 		if (currentAdmin != null) {
 
-			Vendor vendors = vendorRepository.findByVendorContact(vendorContact);
+			Customer customer = customerRepository.findById(id).get();
+			if (customer == null) {
 
-			if (vendors == null) {
+				log.error("Admin tried to access supervisors, but no customers present.");
 
-				return new ResponseEntity<Object>("Vendor not found.", HttpStatus.OK);
+				throw new CustomerNotFoundException("Customers not found.");
 
 			}
-			return new ResponseEntity<Object>(vendors, HttpStatus.OK);
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", deleted customer with ID, " + id);
+
+			return new ResponseEntity<Object>("Customer deleted successfully.", HttpStatus.OK);
 
 		}
-		return new ResponseEntity<Object>("Please log in as ADMIN.", HttpStatus.OK);
 
+		log.error("Admin tried to remove customer without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 	}
-
 }

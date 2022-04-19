@@ -17,8 +17,6 @@ import javax.persistence.JoinTable;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Hall {
 
@@ -75,24 +73,26 @@ public class Hall {
 		super();
 	}
 
-	public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
-			String city, @Min(5000) double hallPrice, Date bookedFrom, Date bookedTo, boolean bookingStatus,
-			List<Vendor> vendors,
-			List<HallOffers> hallOffers) {
-		super();
-		this.hallId = hallId;
-		this.hallName = hallName;
-		this.noOfRooms = noOfRooms;
-		this.hallCapacity = capacity;
-		this.hallLocation = location;
-		this.hallCity = city;
-		this.hallPrice = hallPrice;
-		this.hallBookedFrom = bookedFrom;
-		this.hallBookedTo = bookedTo;
-		this.hallBookingStatus = bookingStatus;
-		this.vendors = vendors;
-		this.hallOffers = hallOffers;
-	}
+	// public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100)
+	// long capacity, String location,
+	// String city, @Min(5000) double hallPrice, Date bookedFrom, Date bookedTo,
+	// boolean bookingStatus,
+	// List<Vendor> vendors,
+	// List<HallOffers> hallOffers) {
+	// super();
+	// this.hallId = hallId;
+	// this.hallName = hallName;
+	// this.noOfRooms = noOfRooms;
+	// this.hallCapacity = capacity;
+	// this.hallLocation = location;
+	// this.hallCity = city;
+	// this.hallPrice = hallPrice;
+	// this.hallBookedFrom = bookedFrom;
+	// this.hallBookedTo = bookedTo;
+	// this.hallBookingStatus = bookingStatus;
+	// this.vendors = vendors;
+	// this.hallOffers = hallOffers;
+	// }
 
 	public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
 			String city, @Min(5000) double hallPrice, boolean bookingStatus, List<Vendor> vendors,

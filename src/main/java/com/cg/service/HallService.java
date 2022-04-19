@@ -2,6 +2,7 @@ package com.cg.service;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cg.entity.Hall;
 import com.cg.repository.HallRepository;
+import com.cg.exception.HallNotFoundException;
 
 @Service
 public class HallService {
@@ -16,10 +18,14 @@ public class HallService {
 	@Autowired
 	private HallRepository hallRepository;
 
+	static Logger log = Logger.getLogger(HallService.class.getName());
+
 	public ResponseEntity<Object> addHall(Hall hall) {
 
 		hallRepository.save(hall);
+		log.info("Hall added");
 		return new ResponseEntity<Object>("hall added successfully", HttpStatus.OK);
+
 	}
 
 	public ResponseEntity<Object> getAllHall() {
@@ -27,7 +33,8 @@ public class HallService {
 
 		if (halls != null)
 			return new ResponseEntity<Object>(halls, HttpStatus.OK);
-		return new ResponseEntity<Object>("No halls available.", HttpStatus.OK);
+
+		throw new HallNotFoundException("No hall found.");
 	}
 
 	public ResponseEntity<Object> findHallByCity(String city) {
@@ -35,42 +42,43 @@ public class HallService {
 
 		if (halls != null)
 			return new ResponseEntity<Object>(halls, HttpStatus.OK);
-		return new ResponseEntity<Object>("No halls available of at your city.", HttpStatus.OK);
+
+		log.error("No hall available in " + city);
+		throw new HallNotFoundException("No halls available of at your city.");
 	}
 
 	public ResponseEntity<Object> findHallByLocation(String city, String location) {
 		List<Hall> halls = hallRepository.findByHallCityAndHallLocation(city, location);
 		if (halls != null)
 			return new ResponseEntity<Object>(halls.get(0), HttpStatus.OK);
-		return new ResponseEntity<Object>("No halls available at your location.", HttpStatus.OK);
+		log.error("No hall available in " + city + " at " + location);
+		throw new HallNotFoundException("No halls available of at your city and location.");
 	}
 
 	public ResponseEntity<Object> findByCapacity(String city, int capacity) {
 		List<Hall> halls = hallRepository.findByHallCityAndHallCapacity(city, capacity);
-
 		if (halls != null)
 			return new ResponseEntity<Object>(halls, HttpStatus.OK);
-		return new ResponseEntity<Object>("No halls available of that capacity at your location", HttpStatus.OK);
+		log.error("No hall available in " + city + " for " + capacity + " people");
+		throw new HallNotFoundException("No halls available of that capacity at your location");
 	}
 
 	public ResponseEntity<Object> removeHall(int id) {
 		if (hallRepository.existsById(id)) {
 			hallRepository.deleteById(id);
+			log.info("Hall deleted with id" + id);
 			return new ResponseEntity<Object>("Hall deleted succeccfully", HttpStatus.OK);
 		}
 
-		return new ResponseEntity<Object>("Hall not found.", HttpStatus.OK);
-	}
-
-	public ResponseEntity<Object> removeAllHall() {
-		hallRepository.deleteAll();
-		return new ResponseEntity<Object>("all Hall removed succcessfully", HttpStatus.OK);
+		throw new HallNotFoundException("Hall not Found");
 	}
 
 	public void updateRevenue(int id, double bill) {
 
 		Hall hall = hallRepository.getById(id);
 		hall.setHallRevenue(hall.getHallRevenue() + bill);
+
+		log.info("Hall with id, " + id + " updated revenue.");
 
 	}
 }

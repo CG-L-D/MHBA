@@ -67,16 +67,13 @@ public class Admin {
 	@JsonIgnore
 	private List<Vendor> vendors;
 
-	@Column(name = "active")
-	private boolean active;
-
 	// Default Constructor
 	public Admin() {
 	}
 
 	// Parameterized Constructor
 	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email,
-			String adminContact, String password, boolean active) {
+			String adminContact, String password) {
 		super();
 		this.adminId = adminId;
 		this.adminFirstName = firstName;
@@ -84,18 +81,16 @@ public class Admin {
 		this.adminEmail = email;
 		this.adminContact = adminContact;
 		this.adminPassword = password;
-		this.active = active;
 	}
 
 	// Parameterized Overloaded Constructor
 	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
-			String adminContact, String password, boolean active) {
+			String adminContact, String password) {
 		this.adminFirstName = firstName;
 		this.adminLastName = lastName;
 		this.adminEmail = email;
 		this.adminContact = adminContact;
 		this.adminPassword = password;
-		this.active = active;
 	}
 
 	// Getters and setters
@@ -179,21 +174,12 @@ public class Admin {
 		this.vendors = vendors;
 	}
 
-	public boolean getActive() {
-		return active;
-	}
-
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
 	@Override
 	public String toString() {
 		return "Admin [adminId=" + adminId + ", adminFirstName=" + adminFirstName + ", adminLastName=" + adminLastName
 				+ ", adminAge=" + adminAge + ", adminEmail=" + adminEmail + ", adminContact=" + adminContact
 				+ ", adminPassword=" + adminPassword + ", adminRevenue=" + adminRevenue + ", supervisors=" + supervisors
-				+ ", vendors=" + vendors
-				+ ", active=" + active + "]";
+				+ ", vendors=" + vendors + "]";
 	}
 
 }

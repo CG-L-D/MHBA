@@ -26,7 +26,6 @@ public class Customer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-
 	private int customerId;
 
 	@NotBlank
@@ -147,5 +146,5 @@ public class Customer {
 				+ ", bookHallFrom=" + bookHallFrom + ", bookHallTo=" + bookHallTo + ", customerBill=" + customerBill
 				+ ", halls=" + halls + "]";
 	}
-	
+
 }

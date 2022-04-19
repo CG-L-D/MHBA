@@ -25,36 +25,25 @@ public class CustomerController {
 
   @Autowired
   private HallService hallService;
-  /*
-   * @RequestMapping(value = "/loginCustomer/{email}/{password}")
-   * public ResponseEntity<Object> loginAdmin(@PathVariable String
-   * email, @PathVariable String password){
-   * return customerService.loginCustomer(email, password);
-   * }
-   * 
-   * @RequestMapping(value = "/logoutCustomer")
-   * public ResponseEntity<Object> logoutCustomer(){
-   * 
-   * return customerService.logoutCustomer();
-   * 
-   * }
-   */
+
   @Autowired
   private VendorService vendorService;
+  
+   @RequestMapping(value = "/loginCustomer/{email}/{password}")
+   public ResponseEntity<Object> loginAdmin(@PathVariable String
+   email, @PathVariable String password){
+   return customerService.loginCustomer(email, password);
+   }
+   
+   @RequestMapping(value = "/logoutCustomer")
+   public ResponseEntity<Object> logoutCustomer(){
+   
+    return customerService.logoutCustomer();
+  }
 
   @PostMapping("/addCustomer")
   public ResponseEntity<Object> addCustomer(@RequestBody Customer c) {
     return customerService.addCustomer(c);
-  }
-
-  @GetMapping("/getAllCustomers")
-  public ResponseEntity<Object> getAllCustomers() {
-    return customerService.getAllCustomers();
-  }
-
-  @DeleteMapping("/removeCustomer/{id}")
-  public ResponseEntity<Object> removeCustomer(@PathVariable int id) {
-    return customerService.removeCustomer(id);
   }
 
   @GetMapping("/getHallByCity/{city}")

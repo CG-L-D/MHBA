@@ -69,7 +69,7 @@ public class Vendor {
 
 	public Vendor(int vendorId, String vendorFirstName, String vendorLastName, String vendorContact, boolean flower,
 			boolean music,
-			boolean catering, boolean video, boolean isVendorAvailable, double vendorCost) {
+			boolean catering, boolean video, boolean isVendorAvailable) {
 		super();
 		this.vendorId = vendorId;
 		this.vendorFirstName = vendorFirstName;
@@ -80,7 +80,7 @@ public class Vendor {
 		this.catering = catering;
 		this.video = video;
 		this.isVendorAvailable = isVendorAvailable;
-		// this.vendorCost = vendorCost;
+
 	}
 
 	public int getVendorId() {

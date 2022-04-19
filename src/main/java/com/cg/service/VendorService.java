@@ -30,7 +30,7 @@ public class VendorService {
 	@Autowired
 	private HallRepository hallRepository;
 
-	public boolean bookVendor(int hallId, Date from, Date to, boolean flower, boolean catering, boolean music,
+	public boolean BookVendor(int hallId, Date from, Date to, boolean flower, boolean catering, boolean music,
 			boolean video) {
 
 		List<Vendor> vendors = vendorRepo.findByServices(flower, catering, music, video);

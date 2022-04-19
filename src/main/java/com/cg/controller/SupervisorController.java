@@ -47,15 +47,6 @@ public class SupervisorController {
 	    return supervisorService.removeById(id);
 	  }
 	  
-	  @GetMapping("/getHallDetailsForSupervisor/{id}")
-	  public ResponseEntity<Object> getHallDetailsForSupervisor(@PathVariable int id){
-		  return supervisorService.getHallDetailsForSupervisor(id);
-	  }
-	  
-	  @GetMapping("/generateBill/{supervisorId}/{vendorId}")
-	  public ResponseEntity<Object> generateBill(@PathVariable int supervisorId, @PathVariable int vendorId){
-		  return supervisorService.generateBill(supervisorId);
-	  }
 	@GetMapping("/addHall")
 	public ResponseEntity<Object> addHall(@RequestBody int id, @RequestBody Hall hall){
 		return supervisorService.addHall(id, hall);

@@ -39,10 +39,6 @@ public class Supervisor {
 	@Column(name = "supervisorContact")
 	private String supervisorContact;
 	
-	@NotBlank
-	@Column(name = "hallId")
-	private int hallId;
-	
 	@NotNull
 	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message="Password does not match the policy.")
 	@Column(name = "password")

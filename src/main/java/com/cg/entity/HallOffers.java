@@ -14,26 +14,26 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="hallFeatures")
+@Table(name = "hallOffers")
 public class HallOffers {
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name = "hallOfferId")
-    private int hallOfferId;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "hallOfferId")
+	private int hallOfferId;
 
-    @Column(name = "serviceType")
-    private String serviceType;
+	@Column(name = "serviceType")
+	private String serviceType;
 
-    @Column(name = "serviceDetails")
-    private String serviceDetails;
-	
-    @Column(name = "available")
-    private boolean isAvailable;
-    
-    public HallOffers() {
-    	super();
-    }
+	@Column(name = "serviceDetails")
+	private String serviceDetails;
+
+	@Column(name = "available")
+	private boolean isAvailable;
+
+	public HallOffers() {
+		super();
+	}
 
 	public HallOffers(int hallOfferId, String serviceType, String serviceDetails, boolean isAvailable) {
 		super();
@@ -80,6 +80,5 @@ public class HallOffers {
 		return "HallOffers [id=" + hallOfferId + ", serviceType=" + serviceType + ", serviceDetails=" + serviceDetails
 				+ ", isAvailable=" + isAvailable + "]";
 	}
-    
-	
+
 }

@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.ManyToAny;
 
@@ -37,6 +38,12 @@ public class Supervisor {
 	@NotBlank
 	@Column(name = "supervisorContact")
 	private String supervisorContact;
+	
+	@NotNull
+	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message="Password does not match the policy.")
+	@Column(name = "password")
+	private String password;
+	
 
 	@ManyToOne
 	@JoinColumn(name = "adminId")

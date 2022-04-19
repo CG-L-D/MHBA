@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "supervisor")
@@ -35,6 +36,11 @@ public class Supervisor {
 	@NotBlank
 	@Column(name = "hallId")
 	private int hallId;
+	
+	@NotNull
+	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message="Password does not match the policy.")
+	@Column(name = "password")
+	private String password;
 	
 	public Supervisor() {
 		super();

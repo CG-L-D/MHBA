@@ -1,6 +1,5 @@
 package com.cg.service;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -12,7 +11,6 @@ import com.cg.entity.Supervisor;
 import com.cg.entity.Vendor;
 import com.cg.repository.HallRepository;
 import com.cg.repository.SupervisorRepository;
-import com.cg.repository.VendorRepository;
 
 
 @Service
@@ -23,8 +21,22 @@ public class SupervisorService {
 	@Autowired
 	private HallRepository hallRepository;
 	
-	@Autowired
-	private VendorRepository vendorRepository;
+	Supervisor currentSupervisor = new Supervisor();
+	
+	public ResponseEntity<Object> loginSupervisor(String email, String password){
+		if((currentSupervisor = superRepo.findByEmailAndPassword(email, password)) != null){
+			return new ResponseEntity<Object>("Supervisor login successful.", HttpStatus.OK);
+		}
+		return new ResponseEntity<Object>("Supervisor login failed, invalid credentials.", HttpStatus.FORBIDDEN);
+	}
+	
+	public ResponseEntity<Object> logoutSupervisor(){
+		if(currentSupervisor != null){
+			currentSupervisor = null;
+			return new ResponseEntity<Object>("Supervisor logout successful.", HttpStatus.OK);
+		}
+		return new ResponseEntity<Object>("Error, currently no Supervisor logged-in.", HttpStatus.BAD_REQUEST);
+	}
 	
 	public ResponseEntity<Object> addSupervisor(Supervisor s) {
 		  superRepo.save(s);
@@ -73,20 +85,18 @@ public class SupervisorService {
 		Supervisor supervisor = superRepo.getById(id);
 		int hallId = supervisor.getHallId();
 		Hall hall = hallRepository.getById(hallId);
-		/* Get hall details yet to be added */
-		//return new ResponseEntity<Object>(hall.getDetails());
-		return new ResponseEntity<Object>(hall, HttpStatus.OK);
+		return new ResponseEntity<Object>(hall.toString(), HttpStatus.OK);
 	}
 	
-	public ResponseEntity<Object> generateBill(int sid, int vid){
+	public ResponseEntity<Object> generateBill(int supervisorId){
 		double billAmount = 0.0;
-		Supervisor supervisor = superRepo.getById(sid);
+		Supervisor supervisor = superRepo.getById(supervisorId);
 		int hallId = supervisor.getHallId();
 		Hall hall = hallRepository.getById(hallId);
-		// billAmount += hall.getBillingAmount();
-		Vendor vendor = vendorRepository.getById(vid);
-		// billAmount += vendor.getVendorBillingAmount();
-		billAmount *= 1.18; // adding GST 
+		billAmount += hall.getPrice();
+		Vendor vendor = hall.getVendor();
+		billAmount += vendor.getVendorCost();
+		billAmount *= 1.18;
 		return new ResponseEntity<Object>(billAmount, HttpStatus.OK);
 	}
 

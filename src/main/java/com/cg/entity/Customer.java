@@ -23,145 +23,129 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name = "customer")
 public class Customer {
-   @Id
-   @GeneratedValue(strategy=GenerationType.AUTO)
-   
-   private int customerId;
-   
-   @NotBlank
-   @Column(name="customerName")
-   private String customerName;
-   
-  
-   @Column(name="customerEmail")
-   private String customerEmail;
-   
-   private String password;
-   
-   @NotBlank
-   @Column(name="contactNumber")
-   private String contactNumber;
-   
-   
-   private Date bookHallFrom;
-   
-   private Date bookHallTo;
-   
-   @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-	  @JoinTable(name = "customers_halls", joinColumns = 
-	  @JoinColumn(name = "customerId", referencedColumnName = "customerId"),
-	  inverseJoinColumns = @JoinColumn(name = "hallId", referencedColumnName = "hall_id"))
-   private List<Hall> halls;
-   
-   public Customer() {
-	   
-   }
 
-	public Customer(int customerId,String customerName, String customerEmail,String password, String contactNumber) {
-	super();
-    this.customerId = customerId;
-	this.customerName = customerName;
-	this.customerEmail = customerEmail;
-	this.password = password;
-	this.contactNumber = contactNumber;
-	
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 
-	
+	private int customerId;
+
+	@NotBlank
+	@Column(name = "customerName")
+	private String customerName;
+
+	@Column(name = "customerEmail")
+	private String customerEmail;
+
+	@Column(name = "customerPassword")
+	private String customerPassword;
+
+	@NotBlank
+	@Column(name = "customerContact")
+	private String customerContact;
+
+	private Date bookHallFrom;
+
+	private Date bookHallTo;
+
+	private double customerBill;
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "customers_halls", joinColumns = @JoinColumn(name = "customerId", referencedColumnName = "customerId"), inverseJoinColumns = @JoinColumn(name = "hallId", referencedColumnName = "hallId"))
+	private List<Hall> halls;
+
+	public Customer() {
+
+	}
+
+	public Customer(int customerId, String customerName, String customerEmail, String customerPassword,
+			String customerContact) {
+		super();
+		this.customerId = customerId;
+		this.customerName = customerName;
+		this.customerEmail = customerEmail;
+		this.customerPassword = customerPassword;
+		this.customerContact = customerContact;
+
+	}
+
 	public int getCustomerId() {
 		return customerId;
 	}
-
-
 
 	public void setCustomerId(int customerId) {
 		this.customerId = customerId;
 	}
 
-
-
 	public String getCustomerName() {
 		return customerName;
 	}
-
-
 
 	public void setCustomerName(String customerName) {
 		this.customerName = customerName;
 	}
 
-
-
 	public String getCustomerEmail() {
 		return customerEmail;
 	}
-
-
 
 	public void setCustomerEmail(String customerEmail) {
 		this.customerEmail = customerEmail;
 	}
 
-
-
-	public String getContactNumber() {
-		return contactNumber;
+	public String getCustomerContact() {
+		return customerContact;
 	}
 
-
-
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
+	public void setCustomerContact(String customerContact) {
+		this.customerContact = customerContact;
 	}
-
-
 
 	public Date getBookHallFrom() {
 		return bookHallFrom;
 	}
 
-
-
 	public void setBookHallFrom(Date bookHallFrom) {
 		this.bookHallFrom = bookHallFrom;
 	}
-
-
 
 	public Date getBookHallTo() {
 		return bookHallTo;
 	}
 
-
-
 	public void setBookHallTo(Date bookHallTo) {
 		this.bookHallTo = bookHallTo;
 	}
 
-
-
-	public List<Hall> getHall() {
+	public List<Hall> getHalls() {
 		return halls;
 	}
 
-	public void setHall(List<Hall> hall) {
-		this.halls = halls	;
-	}
-	
-	public String getPassword() {
-		return password;
+	public void setHalls(List<Hall> halls) {
+		this.halls = halls;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public String getCustomerPassword() {
+		return customerPassword;
 	}
 
+	public void setCustomerPassword(String customerPassword) {
+		this.customerPassword = customerPassword;
+	}
 
+	public double getCustomerBill() {
+		return customerBill;
+	}
+
+	public void setCustomerBill(double customerBill) {
+		this.customerBill = customerBill;
+	}
 
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", customerName=" + customerName + ", customerEmail="
-				+ customerEmail + ", contactNumber=" + contactNumber + "]";
+				+ customerEmail + ", customerPassword=" + customerPassword + ", customerContact=" + customerContact
+				+ ", bookHallFrom=" + bookHallFrom + ", bookHallTo=" + bookHallTo + ", customerBill=" + customerBill
+				+ ", halls=" + halls + "]";
 	}
 	
 }

@@ -1,6 +1,5 @@
 package com.cg.entity;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -10,10 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,73 +24,98 @@ public class Hall {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int hall_id;
+	@Column(name = "hallId")
+	private int hallId;
 
-	@Column(name = "hallName")
+	@Column(name = "hallName", nullable = false)
+	@Pattern(regexp = "^[A-Za-z]+$", message = "Name is invalid, must contain alphabets only.")
 	private String hallName;
 
-	@Min(value = 5)
+	// @Min(value = 5)
 	@Column(name = "noOfRooms")
 	private int noOfRooms;
 
-	@Min(value = 100)
+	// @Min(value = 100)
 	@Column(name = "capacity")
-	private long capacity;
+	private long hallCapacity;
 
 	@Column(name = "location")
-	private String location;
+	private String hallLocation;
 
 	@Column(name = "city")
-	private String city;
+	private String hallCity;
 
-	@Min(value = 5000)
+	// @Min(value = 5000)
 	@Column(name = "price")
-	private double price;
+	private double hallPrice;
 
 	@Column(name = "bookedFrom")
-	private Date bookedFrom;
+	private Date hallBookedFrom;
 
 	@Column(name = "bookedTo")
-	private Date bookedTo;
+	private Date hallBookedTo;
 
 	@Column(name = "bookingStatus")
-	private boolean bookingStatus = false;
+	private boolean hallBookingStatus = false;
+	@Min(value = 0)
+	@Column(name = "hallRevenue")
+	private double hallRevenue;
 
-	@OneToOne
-	private Vendor vendor;
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "halls_vendors", joinColumns = @JoinColumn(name = "hallId", referencedColumnName = "hallId"), inverseJoinColumns = @JoinColumn(name = "vendorId", referencedColumnName = "vendorId"))
+	private List<Vendor> vendors;
+
+	@OneToOne(mappedBy = "hall")
+	private Supervisor supervisor;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JsonIgnore
 	private List<HallOffers> hallOffers;
 
 	public Hall() {
 		super();
 	}
 
-	public Hall(int hall_id, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
-			String city, @Min(5000) double price, Date bookedFrom, Date bookedTo, boolean bookingStatus, Vendor vendor,
+	public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
+			String city, @Min(5000) double hallPrice, Date bookedFrom, Date bookedTo, boolean bookingStatus,
+			List<Vendor> vendors,
 			List<HallOffers> hallOffers) {
 		super();
-		this.hall_id = hall_id;
+		this.hallId = hallId;
 		this.hallName = hallName;
 		this.noOfRooms = noOfRooms;
-		this.capacity = capacity;
-		this.location = location;
-		this.city = city;
-		this.price = price;
-		this.bookedFrom = bookedFrom;
-		this.bookedTo = bookedTo;
-		this.bookingStatus = bookingStatus;
-		this.vendor = vendor;
+		this.hallCapacity = capacity;
+		this.hallLocation = location;
+		this.hallCity = city;
+		this.hallPrice = hallPrice;
+		this.hallBookedFrom = bookedFrom;
+		this.hallBookedTo = bookedTo;
+		this.hallBookingStatus = bookingStatus;
+		this.vendors = vendors;
 		this.hallOffers = hallOffers;
 	}
 
-	public int getHall_id() {
-		return hall_id;
+	public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
+			String city, @Min(5000) double hallPrice, boolean bookingStatus, List<Vendor> vendors,
+			List<HallOffers> hallOffers) {
+		super();
+		this.hallId = hallId;
+		this.hallName = hallName;
+		this.noOfRooms = noOfRooms;
+		this.hallCapacity = capacity;
+		this.hallLocation = location;
+		this.hallCity = city;
+		this.hallPrice = hallPrice;
+		this.hallBookingStatus = bookingStatus;
+		this.vendors = vendors;
+		this.hallOffers = hallOffers;
 	}
 
-	public void setHall_id(int hall_id) {
-		this.hall_id = hall_id;
+	public int getHallId() {
+		return hallId;
+	}
+
+	public void setHallId(int hall_id) {
+		this.hallId = hall_id;
 	}
 
 	public String getHallName() {
@@ -107,68 +134,68 @@ public class Hall {
 		this.noOfRooms = noOfRooms;
 	}
 
-	public long getCapacity() {
-		return capacity;
+	public long getHallCapacity() {
+		return hallCapacity;
 	}
 
-	public void setCapacity(long capacity) {
-		this.capacity = capacity;
+	public void setHallCapacity(long capacity) {
+		this.hallCapacity = capacity;
 	}
 
-	public String getLocation() {
-		return location;
+	public String getHallLocation() {
+		return hallLocation;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setHallLocation(String location) {
+		this.hallLocation = location;
 	}
 
-	public String getCity() {
-		return city;
+	public String getHallCity() {
+		return hallCity;
 	}
 
-	public void setCity(String city) {
-		this.city = city;
+	public void setHallCity(String city) {
+		this.hallCity = city;
 	}
 
-	public double getPrice() {
-		return price;
+	public double getHallPrice() {
+		return hallPrice;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setPrice(double hallPrice) {
+		this.hallPrice = hallPrice;
 	}
 
-	public Date getBookedFrom() {
-		return bookedFrom;
+	public Date getHallBookedFrom() {
+		return hallBookedFrom;
 	}
 
-	public void setBookedFrom(Date bookedFrom) {
-		this.bookedFrom = bookedFrom;
+	public void setHallBookedFrom(Date hallBookedFrom) {
+		this.hallBookedFrom = hallBookedFrom;
 	}
 
-	public Date getBookedTo() {
-		return bookedTo;
+	public Date getHallBookedTo() {
+		return hallBookedTo;
 	}
 
-	public void setBookedTo(Date bookedTo) {
-		this.bookedTo = bookedTo;
+	public void setHallBookedTo(Date hallBookedTo) {
+		this.hallBookedTo = hallBookedTo;
 	}
 
-	public boolean isBookingStatus() {
-		return bookingStatus;
+	public boolean isHallBookingStatus() {
+		return hallBookingStatus;
 	}
 
-	public void setBookingStatus(boolean bookingStatus) {
-		this.bookingStatus = bookingStatus;
+	public void setHallBookingStatus(boolean hallBookingStatus) {
+		this.hallBookingStatus = hallBookingStatus;
 	}
 
-	public Vendor getVendor() {
-		return vendor;
+	public List<Vendor> getVendors() {
+		return vendors;
 	}
 
-	public void setVendor(Vendor vendor) {
-		this.vendor = vendor;
+	public void setVendors(List<Vendor> vendors) {
+		this.vendors = vendors;
 	}
 
 	public List<HallOffers> getHallOffers() {
@@ -179,11 +206,26 @@ public class Hall {
 		this.hallOffers = hallOffers;
 	}
 
+	public double getHallRevenue() {
+		return hallRevenue;
+	}
+
+	public void setHallRevenue(double hallRevenue) {
+		this.hallRevenue = hallRevenue;
+	}
+
+	public void addRevenue(double cost) {
+
+		this.hallRevenue += cost;
+
+	}
+
 	@Override
 	public String toString() {
-		return "Hall [hall_id=" + hall_id + ", hallName=" + hallName + ", noOfRooms=" + noOfRooms + ", capacity="
-				+ capacity + ", location=" + location + ", city=" + city + ", price=" + price + ", bookedFrom="
-				+ bookedFrom + ", bookedTo=" + bookedTo + ", bookingStatus=" + bookingStatus + ", vendor=" + vendor
+		return "Hall [hallId=" + hallId + ", hallName=" + hallName + ", noOfRooms=" + noOfRooms + ", hallCapacity="
+				+ hallCapacity + ", hallLocation=" + hallLocation + ", hallCity=" + hallCity + ", hallPrice="
+				+ hallPrice + ", hallBookedFrom=" + hallBookedFrom + ", hallBookedTo=" + hallBookedTo
+				+ ", hallBookingStatus=" + hallBookingStatus + ", hallRevenue=" + hallRevenue + ", vendor=" + vendors
 				+ ", hallOffers=" + hallOffers + "]";
 	}
 

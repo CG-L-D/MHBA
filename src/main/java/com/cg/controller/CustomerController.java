@@ -43,17 +43,17 @@ public class CustomerController {
   private VendorService vendorService;
 
   @PostMapping("/addCustomer")
-  public String addCustomer(@RequestBody Customer c) {
+  public ResponseEntity<Object> addCustomer(@RequestBody Customer c) {
     return customerService.addCustomer(c);
   }
 
   @GetMapping("/getAllCustomers")
-  public List<Customer> getAllCustomers() {
+  public ResponseEntity<Object> getAllCustomers() {
     return customerService.getAllCustomers();
   }
 
   @DeleteMapping("/removeCustomer/{id}")
-  public String removeCustomer(@PathVariable int id) {
+  public ResponseEntity<Object> removeCustomer(@PathVariable int id) {
     return customerService.removeCustomer(id);
   }
 
@@ -72,8 +72,13 @@ public class CustomerController {
     return hallService.findByCapacity(city, capacity);
   }
 
+  @GetMapping("/getAllHall")
+	public ResponseEntity<Object> getHall() {
+		return hallService.getAllHall();
+	}
+
   @PostMapping("/bookHall/{customerId}/{city}/{location}/{flower}/{catering}/{music}/{video}")
-  public String bookHall(@PathVariable int customerId, @PathVariable String city,
+  public ResponseEntity<Object> bookHall(@PathVariable int customerId, @PathVariable String city,
       @PathVariable String location, @PathVariable boolean flower,
       @PathVariable boolean catering, @PathVariable boolean music, @PathVariable boolean video) {
     return customerService.BookHall(

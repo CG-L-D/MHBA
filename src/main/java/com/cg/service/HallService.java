@@ -16,10 +16,10 @@ public class HallService {
 	@Autowired
 	private HallRepository hallRepository;
 
-	public String addHall(Hall hall) {
+	public ResponseEntity<Object> addHall(Hall hall) {
 
 		hallRepository.save(hall);
-		return "hall added successfully";
+		return new ResponseEntity<Object>("hall added successfully", HttpStatus.OK);
 	}
 
 	public ResponseEntity<Object> getAllHall() {
@@ -31,7 +31,7 @@ public class HallService {
 	}
 
 	public ResponseEntity<Object> findHallByCity(String city) {
-		List<Hall> halls = hallRepository.findByCity(city);
+		List<Hall> halls = hallRepository.findByHallCity(city);
 
 		if (halls != null)
 			return new ResponseEntity<Object>(halls, HttpStatus.OK);
@@ -39,22 +39,22 @@ public class HallService {
 	}
 
 	public ResponseEntity<Object> findHallByLocation(String city, String location) {
-		List<Hall> halls = hallRepository.findByCityAndLocation(city, location);
+		List<Hall> halls = hallRepository.findByHallCityAndHallLocation(city, location);
 		if (halls != null)
 			return new ResponseEntity<Object>(halls.get(0), HttpStatus.OK);
 		return new ResponseEntity<Object>("No halls available at your location.", HttpStatus.OK);
 	}
 
 	public ResponseEntity<Object> findByCapacity(String city, int capacity) {
-		List<Hall> halls = hallRepository.findByCityAndCapacity(city, capacity);
+		List<Hall> halls = hallRepository.findByHallCityAndHallCapacity(city, capacity);
 
 		if (halls != null)
 			return new ResponseEntity<Object>(halls, HttpStatus.OK);
 		return new ResponseEntity<Object>("No halls available of that capacity at your location", HttpStatus.OK);
 	}
 
-	public ResponseEntity<Object> removeHall(int id){
-		if(hallRepository.existsById(id)){
+	public ResponseEntity<Object> removeHall(int id) {
+		if (hallRepository.existsById(id)) {
 			hallRepository.deleteById(id);
 			return new ResponseEntity<Object>("Hall deleted succeccfully", HttpStatus.OK);
 		}
@@ -62,4 +62,15 @@ public class HallService {
 		return new ResponseEntity<Object>("Hall not found.", HttpStatus.OK);
 	}
 
+	public ResponseEntity<Object> removeAllHall() {
+		hallRepository.deleteAll();
+		return new ResponseEntity<Object>("all Hall removed succcessfully", HttpStatus.OK);
+	}
+
+	public void updateRevenue(int id, double bill) {
+
+		Hall hall = hallRepository.getById(id);
+		hall.setHallRevenue(hall.getHallRevenue() + bill);
+
+	}
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cg.entity.Hall;
 import com.cg.entity.Supervisor;
 import com.cg.service.SupervisorService;
 
@@ -55,5 +56,19 @@ public class SupervisorController {
 	  public ResponseEntity<Object> generateBill(@PathVariable int supervisorId, @PathVariable int vendorId){
 		  return supervisorService.generateBill(supervisorId);
 	  }
+	@GetMapping("/addHall")
+	public ResponseEntity<Object> addHall(@RequestBody int id, @RequestBody Hall hall){
+		return supervisorService.addHall(id, hall);
+	}
+	
+	@GetMapping("/removeHall/{id}")
+	public ResponseEntity<Object> removeHall(@PathVariable int id){
+		return supervisorService.removeHall(id);
+	}
+	  
+	@GetMapping("/getSupervisorHallDetails/{id}")
+	public ResponseEntity<Object> getSupervisorHallDetails(@PathVariable int id){
+		return supervisorService.getSupervisorHallDetails(id);
+	}
 
 }

@@ -6,18 +6,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.cg.entity.Vendor;
+
 import com.cg.entity.Hall;
 import com.cg.entity.Supervisor;
-import com.cg.entity.Vendor;
 import com.cg.repository.HallRepository;
 import com.cg.repository.SupervisorRepository;
 
-
 @Service
 public class SupervisorService {
+
 	@Autowired
-	private SupervisorRepository superRepo;
-	
+	private VendorRepository vendorRepository;
+
 	@Autowired
 	private HallRepository hallRepository;
 	
@@ -62,18 +63,26 @@ public class SupervisorService {
 				return new ResponseEntity<Object>(supervisor, HttpStatus.OK);
 		}
 		return new ResponseEntity<Object>("No supervisor found", HttpStatus.OK);
+		
+	public ResponseEntity<Object> addHall(int id, Hall hall) {
+		supervisorRepository.getById(id).setHall(hall);
+		return new ResponseEntity<Object>("Hall added successfully.", HttpStatus.OK);
 	}
-	public ResponseEntity<Object> getByContact(String contact) {
-		for(Supervisor supervisor:superRepo.findAll()) {
-			if(supervisor.getSupervisorContact().equalsIgnoreCase(contact))
-				return new ResponseEntity<Object>(supervisor, HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("No supervisor found", HttpStatus.OK);
+
+	public ResponseEntity<Object> removeHall(int id) {
+		supervisorRepository.deleteById(id);
+		;
+		return new ResponseEntity<Object>("Hall deleted successfully.", HttpStatus.OK);
 	}
-	public ResponseEntity<Object> getByEmail(String email) {
-		for(Supervisor supervisor:superRepo.findAll()) {
-			if(supervisor.getSupervisorEmail().equalsIgnoreCase(email))
-				return new ResponseEntity<Object>(supervisor, HttpStatus.OK);
+
+	public ResponseEntity<Object> getSupervisorHallDetails(int id) {
+
+		Supervisor supervisor = supervisorRepository.getById(id);
+
+		if (supervisor == null) {
+
+			return new ResponseEntity<Object>("Currently, no hall is assigned to supervisor.", HttpStatus.OK);
+
 		}
 		return new ResponseEntity<Object>("No supervisor found", HttpStatus.OK);
 	}
@@ -88,17 +97,21 @@ public class SupervisorService {
 		return new ResponseEntity<Object>(hall.toString(), HttpStatus.OK);
 	}
 	
-	public ResponseEntity<Object> generateBill(int supervisorId){
+	public double generateBill(int hallId, boolean flower, boolean catering, boolean music, boolean video) {
+
 		double billAmount = 0.0;
-		Supervisor supervisor = superRepo.getById(supervisorId);
-		int hallId = supervisor.getHallId();
+
 		Hall hall = hallRepository.getById(hallId);
-		billAmount += hall.getPrice();
-		Vendor vendor = hall.getVendor();
-		billAmount += vendor.getVendorCost();
+
+		billAmount += hall.getHallPrice();
+
+		List<Vendor> vendors = vendorRepository.findByServices(flower, catering, music, video);
+
+		billAmount += vendors.get(0).getVendorCost();
+
 		billAmount *= 1.18;
-		return new ResponseEntity<Object>(billAmount, HttpStatus.OK);
+
+		return billAmount;
+
 	}
-
 }
-

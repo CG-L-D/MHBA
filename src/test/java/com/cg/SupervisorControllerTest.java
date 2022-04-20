@@ -13,7 +13,7 @@ import com.cg.repository.SupervisorRepository;
 import com.cg.service.AdminService;
 import com.cg.service.SupervisorService;
 
-public class SupervisorControllerTest extends MhbaApplicationTests {
+class SupervisorControllerTest extends MhbaApplicationTests {
 	@Autowired
 	SupervisorService supervisorService;
 	
@@ -38,25 +38,25 @@ public class SupervisorControllerTest extends MhbaApplicationTests {
 	}
 	
 	@Test
-	public void addHallTest() {
+	void addHallTest() {
 		assertEquals("Hall added successfully.", supervisorService.addHall(101, hall).getBody().toString());
-	 }
+	}
 
-	 @Test
-	 public void removeHallTest() {
+	@Test
+	void removeHallTest() {
 	 	assertEquals("Hall removed successfully.", supervisorService.removeHall(101).getBody().toString());
-	 }
+	}
 
-	 @Test
-	 public void getSupervisorHallDetailsTest() {
+	@Test
+	void getSupervisorHallDetailsTest() {
 		 when(supervisorRepository.getById(101).getHall()).thenReturn(hall);
 		 assertEquals(hall.toString(), supervisorService.getSupervisorHallDetails(101).getBody().toString());
-	 }
+	}
 
-	 @Test
-	 public void generateBillTest() {
+	@Test
+	void generateBillTest() {
 		 when(supervisorService.generateBill(101, false, false, false, false)).thenReturn(amount);
 		 assertEquals(amount, supervisorService.generateBill(101, false, false, false, false));
-	 }
+	}
 	
  }

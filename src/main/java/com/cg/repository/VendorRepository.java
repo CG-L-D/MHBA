@@ -25,7 +25,4 @@ public interface VendorRepository extends JpaRepository<Vendor, Integer> {
 			@Param("music") boolean music,
 			@Param("video") boolean video);
 
-	// boolean bookVendor(int hallId, boolean flower,boolean catering,boolean
-	// video,boolean music);
-
 }

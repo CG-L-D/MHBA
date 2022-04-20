@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.cg.entity.Vendor;
 import com.cg.exception.HallNotFoundException;
 import com.cg.entity.Hall;
+import com.cg.entity.Supervisor;
 import com.cg.repository.HallRepository;
 import com.cg.repository.SupervisorRepository;
 import com.cg.repository.VendorRepository;
@@ -35,7 +36,7 @@ public class SupervisorService {
 
 		log.info("Supervisor with ID, " + id + " added hall, with ID, " + hall.getHallId());
 
-		return new ResponseEntity<Object>("Hall added successfully.", HttpStatus.OK);
+		return new ResponseEntity<>("Hall added successfully.", HttpStatus.OK);
 
 	}
 
@@ -43,10 +44,17 @@ public class SupervisorService {
 
 		if (supervisorRepository.existsById(id)) {
 
-			supervisorRepository.deleteById(id);
-			log.info("Supervisor deleted hall, with hall ID, " + id);
+			Supervisor supervisor = supervisorRepository.getById(id);
 
-			return new ResponseEntity<Object>("Hall deleted successfully.", HttpStatus.OK);
+			Hall hall = supervisor.getHall();
+
+			hallRepository.deleteById(hall.getHallId());
+			supervisor.setHall(null);
+			supervisorRepository.save(supervisor);
+
+			log.info("Supervisor deleted hall.");
+
+			return new ResponseEntity<>("Hall deleted successfully.", HttpStatus.OK);
 		}
 
 		log.error("No hall found.");
@@ -67,7 +75,7 @@ public class SupervisorService {
 
 		log.info("Supervisor with ID, " + id + " accessed hall, with ID, " + hall.getHallId());
 
-		return new ResponseEntity<Object>(hall, HttpStatus.OK);
+		return new ResponseEntity<>(hall, HttpStatus.OK);
 
 	}
 

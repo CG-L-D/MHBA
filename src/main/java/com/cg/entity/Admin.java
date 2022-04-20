@@ -5,13 +5,13 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import java.util.List;
@@ -24,8 +24,9 @@ public class Admin {
 
 	// Properties
 	@Id
-	@Column(name = "adminId", nullable = false)
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "adminId")
+	@GeneratedValue(generator = "ADMIN_ID", strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "ADMIN_ID", sequenceName = "ADMIN_SEQUENCE", allocationSize = 1, initialValue = 101)
 	private int adminId;
 
 	@Column(name = "firstName", nullable = false)
@@ -37,8 +38,6 @@ public class Admin {
 	private String adminLastName;
 
 	@Column(name = "age", nullable = false)
-	// @Min(value = 20, message= "Age is too low.")
-	// @Max(value = 80, message = "Age limit exceeded.")
 	private int adminAge;
 
 	@Email
@@ -47,14 +46,15 @@ public class Admin {
 	private String adminEmail;
 
 	@Pattern(regexp = "[0-9]{10}", message = "Contact number is not valid, must be of 10 digit numeric value.")
-	@Column(name = "adminContact")
+	@Column(name = "adminContact", nullable = false)
 	private String adminContact;
 
-	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+{8,30}", message = "Password does not match the policy.")
-	@Column(name = "password")
+	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+", message = "Password does not match the policy.")
+	@Column(name = "password", nullable = false)
 	private String adminPassword;
 
 	@Column(name = "adminRevenue")
+	@Min(value = 0)
 	private double adminRevenue;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -67,12 +67,10 @@ public class Admin {
 	@JsonIgnore
 	private List<Vendor> vendors;
 
-	
 	// Default Constructor
 	public Admin() {
 	}
 
-	
 	// Parameterized Constructor
 	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email,
 			String adminContact, String password) {
@@ -85,7 +83,6 @@ public class Admin {
 		this.adminPassword = password;
 	}
 
-	
 	// Parameterized Overloaded Constructor
 	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
 			String adminContact, String password) {
@@ -177,7 +174,7 @@ public class Admin {
 		this.vendors = vendors;
 	}
 
-	
+	// toString method
 	@Override
 	public String toString() {
 		return "Admin [adminId=" + adminId + ", adminFirstName=" + adminFirstName + ", adminLastName=" + adminLastName

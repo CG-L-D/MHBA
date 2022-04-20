@@ -1,20 +1,14 @@
 package com.cg.test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
-
-import com.cg.entity.Admin;
 import com.cg.entity.Hall;
-import com.cg.entity.Supervisor;
-import com.cg.entity.Vendor;
 import com.cg.repository.HallRepository;
 import com.cg.service.HallService;
 import com.cg.MhbaApplicationTests;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import static org.junit.jupiter.api.Assertions.*;
 
 class HallServiceTest extends MhbaApplicationTests {
 
@@ -24,9 +18,19 @@ class HallServiceTest extends MhbaApplicationTests {
     @Autowired
     HallService hallService;
 
+    Hall hall;
+
     @BeforeEach
     void setUp() {
-        Hall hall = hall = new Hall(101, "palace", 40, 500, "civil line", "city", 70000, false, null, null);
+        hall = new Hall(101, "palace", 40, 500, "civil line", "city", 70000, false, null, null);
+    }
+
+    @Test
+    final void testAddHall() {
+
+        hallRepository.save(hall);
+        assertEquals("<200 OK OK,Hall added successfully,[]>",
+                hallService.addHall(hall).toString());
     }
 
 }

@@ -1,8 +1,12 @@
 package com.cg.controller;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,21 +25,21 @@ public class AdminController {
 
 	// admin services
 
-	@RequestMapping(value = "/loginAdmin/{email}/{password}")
+	@PostMapping(value = "/loginAdmin/{email}/{password}")
 	public ResponseEntity<Object> loginAdmin(@PathVariable String email, @PathVariable String password) {
 
 		return adminService.loginAdmin(email, password);
 
 	}
 
-	@RequestMapping(value = "/logoutAdmin")
+	@GetMapping(value = "/logoutAdmin")
 	public ResponseEntity<Object> logoutAdmin() {
 
 		return adminService.logoutAdmin();
 
 	}
 
-	@RequestMapping(value = "/addAdmin")
+	@PostMapping(value = "/addAdmin")
 	public ResponseEntity<Object> addAdmin(@RequestBody Admin admin) {
 
 		return adminService.addAdmin(admin);
@@ -160,6 +164,13 @@ public class AdminController {
 	public ResponseEntity<Object> getAllCustomers() {
 
 		return adminService.getAllCustomers();
+		
+	}
+	
+	@RequestMapping(value = "/getCustomersBetween")
+	public ResponseEntity<Object> getCustomersBetween(@RequestBody Date from, @RequestBody Date to) {
+
+		return adminService.getCustomersBetween(from, to);
 		
 	}
 

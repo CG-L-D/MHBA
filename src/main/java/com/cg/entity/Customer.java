@@ -12,13 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "customer")
@@ -30,15 +30,20 @@ public class Customer {
 
 	@NotBlank
 	@Column(name = "customerName")
+	@Pattern(regexp = "^[A-Za-z]+ [A-Za-z]+$", message = "First name is invalid, must contain alphabets only.")
 	private String customerName;
 
+	@Email
+	@Size(min = 3, max = 30, message = "Email must be between 3 to 30 characters.")
 	@Column(name = "customerEmail")
 	private String customerEmail;
 
 	@Column(name = "customerPassword")
+	@Pattern(regexp = "[A-Za-z0-9!@#$%&*]+$", message = "Password does not match the policy.")
 	private String customerPassword;
 
 	@NotBlank
+	@Pattern(regexp = "[0-9]{10}", message = "Contact number is not valid, must be of 10 digit numeric value.")
 	@Column(name = "customerContact")
 	private String customerContact;
 
@@ -48,7 +53,7 @@ public class Customer {
 
 	private double customerBill;
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "customers_halls", joinColumns = @JoinColumn(name = "customerId", referencedColumnName = "customerId"), inverseJoinColumns = @JoinColumn(name = "hallId", referencedColumnName = "hallId"))
 	private List<Hall> halls;
 
@@ -57,14 +62,15 @@ public class Customer {
 	}
 
 	public Customer(int customerId, String customerName, String customerEmail, String customerPassword,
-			String customerContact) {
+			String customerContact, Date bookHallFrom, Date bookHallTo) {
 		super();
 		this.customerId = customerId;
 		this.customerName = customerName;
 		this.customerEmail = customerEmail;
 		this.customerPassword = customerPassword;
 		this.customerContact = customerContact;
-
+		this.bookHallFrom = bookHallFrom;
+		this.bookHallTo = bookHallTo;
 	}
 
 	public int getCustomerId() {

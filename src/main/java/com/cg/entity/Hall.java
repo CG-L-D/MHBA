@@ -11,29 +11,27 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinTable;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
 
+//Hall Class
 @Entity
 public class Hall {
-
+	// Properties
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "hallId")
 	private int hallId;
 
 	@Column(name = "hallName", nullable = false)
-	@Pattern(regexp = "^[A-Za-z]+$", message = "Name is invalid, must contain alphabets only.")
+	@Pattern(regexp = "^[A-Za-z ]*$", message = "Name is invalid, must contain alphabets only.")
 	private String hallName;
 
-	// @Min(value = 5)
 	@Column(name = "noOfRooms")
 	private int noOfRooms;
 
-	// @Min(value = 100)
 	@Column(name = "capacity")
 	private long hallCapacity;
 
@@ -43,7 +41,6 @@ public class Hall {
 	@Column(name = "city")
 	private String hallCity;
 
-	// @Min(value = 5000)
 	@Column(name = "price")
 	private double hallPrice;
 
@@ -59,41 +56,21 @@ public class Hall {
 	@Column(name = "hallRevenue")
 	private double hallRevenue;
 
+	// many to many relationship with vendor
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "halls_vendors", joinColumns = @JoinColumn(name = "hallId", referencedColumnName = "hallId"), inverseJoinColumns = @JoinColumn(name = "vendorId", referencedColumnName = "vendorId"))
 	private List<Vendor> vendors;
 
-	@OneToOne(mappedBy = "hall")
-	private Supervisor supervisor;
-
+	// HallOffers list
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<HallOffers> hallOffers;
 
+	// Hall Constructor
 	public Hall() {
 		super();
 	}
 
-	// public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100)
-	// long capacity, String location,
-	// String city, @Min(5000) double hallPrice, Date bookedFrom, Date bookedTo,
-	// boolean bookingStatus,
-	// List<Vendor> vendors,
-	// List<HallOffers> hallOffers) {
-	// super();
-	// this.hallId = hallId;
-	// this.hallName = hallName;
-	// this.noOfRooms = noOfRooms;
-	// this.hallCapacity = capacity;
-	// this.hallLocation = location;
-	// this.hallCity = city;
-	// this.hallPrice = hallPrice;
-	// this.hallBookedFrom = bookedFrom;
-	// this.hallBookedTo = bookedTo;
-	// this.hallBookingStatus = bookingStatus;
-	// this.vendors = vendors;
-	// this.hallOffers = hallOffers;
-	// }
-
+	// Parameterized constructor for Hall
 	public Hall(int hallId, String hallName, @Min(5) int noOfRooms, @Min(100) long capacity, String location,
 			String city, @Min(5000) double hallPrice, boolean bookingStatus, List<Vendor> vendors,
 			List<HallOffers> hallOffers) {
@@ -110,12 +87,13 @@ public class Hall {
 		this.hallOffers = hallOffers;
 	}
 
+	// getters and setters
 	public int getHallId() {
 		return hallId;
 	}
 
-	public void setHallId(int hall_id) {
-		this.hallId = hall_id;
+	public void setHallId(int hallId) {
+		this.hallId = hallId;
 	}
 
 	public String getHallName() {
@@ -182,6 +160,7 @@ public class Hall {
 		this.hallBookedTo = hallBookedTo;
 	}
 
+	// function to check whether hall is booked or not
 	public boolean isHallBookingStatus() {
 		return hallBookingStatus;
 	}

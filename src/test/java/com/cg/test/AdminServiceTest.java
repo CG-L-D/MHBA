@@ -9,14 +9,13 @@ import com.cg.entity.Supervisor;
 import com.cg.entity.Vendor;
 import com.cg.repository.AdminRepository;
 import com.cg.service.AdminService;
-import com.cg.MhbaApplicationTests;
+import com.cg.MhbaApplication;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-class AdminServiceTest extends MhbaApplicationTests {
+class AdminServiceTest extends MhbaApplication {
 
 	@MockBean
 	AdminRepository adminRepository;
@@ -37,7 +36,7 @@ class AdminServiceTest extends MhbaApplicationTests {
 	}
 
 	@Test
-	public void testLoginAdmin() {
+	final void testLoginAdmin() {
 
 		when(adminRepository.findByAdminEmailAndAdminPassword("onkarmagadum@gmail.com",
 				"Abc@123"))
@@ -49,7 +48,7 @@ class AdminServiceTest extends MhbaApplicationTests {
 	}
 
 	@Test
-	public void testLogoutAdmin() {
+	final void testLogoutAdmin() {
 
 		when(adminRepository.findByAdminEmailAndAdminPassword("onkarmagadum@gmail.com",
 				"Abc@123"))
@@ -63,7 +62,7 @@ class AdminServiceTest extends MhbaApplicationTests {
 	}
 
 	// @Test
-	public void testAddAdmin() {
+	final void testAddAdmin() {
 
 		adminRepository.save(admin);
 
@@ -73,7 +72,7 @@ class AdminServiceTest extends MhbaApplicationTests {
 	}
 
 	// @Test
-	public void testGetAdmin() {
+	final void testGetAdmin() {
 
 		when(adminRepository.findByAdminEmailAndAdminPassword("onkarmagadum@gmail.com", "Abc@123")).thenReturn(admin);
 
@@ -85,7 +84,7 @@ class AdminServiceTest extends MhbaApplicationTests {
 	}
 
 	// @Test
-	public void testGetAdminRevenue() {
+	final void testGetAdminRevenue() {
 		when(adminRepository.findByAdminEmailAndAdminPassword("onkarmagadum@gmail.com",
 				"Abc@123"))
 				.thenReturn(admin);
@@ -98,7 +97,7 @@ class AdminServiceTest extends MhbaApplicationTests {
 	}
 
 	// @Test
-	public void testCollectAdminRevenue() {
+	final void testCollectAdminRevenue() {
 
 		assertEquals("<200 OK OK,Admin revenue collected.,[]>",
 				adminService.collectAdminRevenue().toString());

@@ -12,9 +12,11 @@ import com.cg.entity.Hall;
 import com.cg.repository.HallRepository;
 import com.cg.exception.HallNotFoundException;
 
+//HallService
 @Service
 public class HallService {
 
+	// Hall repository instance
 	@Autowired
 	private HallRepository hallRepository;
 
@@ -24,15 +26,15 @@ public class HallService {
 
 		hallRepository.save(hall);
 		log.info("Hall added");
-		return new ResponseEntity<Object>("hall added successfully", HttpStatus.OK);
+		return new ResponseEntity<>("Hall added successfully", HttpStatus.OK);
 
 	}
 
 	public ResponseEntity<Object> getAllHall() {
 		List<Hall> halls = hallRepository.findAll();
 
-		if (halls != null)
-			return new ResponseEntity<Object>(halls, HttpStatus.OK);
+		if (halls.isEmpty())
+			return new ResponseEntity<>(halls, HttpStatus.OK);
 
 		throw new HallNotFoundException("No hall found.");
 	}
@@ -40,8 +42,8 @@ public class HallService {
 	public ResponseEntity<Object> findHallByCity(String city) {
 		List<Hall> halls = hallRepository.findByHallCity(city);
 
-		if (halls != null)
-			return new ResponseEntity<Object>(halls, HttpStatus.OK);
+		if (halls.isEmpty())
+			return new ResponseEntity<>(halls, HttpStatus.OK);
 
 		log.error("No hall available in " + city);
 		throw new HallNotFoundException("No halls available of at your city.");
@@ -49,16 +51,16 @@ public class HallService {
 
 	public ResponseEntity<Object> findHallByLocation(String city, String location) {
 		List<Hall> halls = hallRepository.findByHallCityAndHallLocation(city, location);
-		if (halls != null)
-			return new ResponseEntity<Object>(halls.get(0), HttpStatus.OK);
+		if (halls.isEmpty())
+			return new ResponseEntity<>(halls.get(0), HttpStatus.OK);
 		log.error("No hall available in " + city + " at " + location);
 		throw new HallNotFoundException("No halls available of at your city and location.");
 	}
 
 	public ResponseEntity<Object> findByCapacity(String city, int capacity) {
 		List<Hall> halls = hallRepository.findByHallCityAndHallCapacity(city, capacity);
-		if (halls != null)
-			return new ResponseEntity<Object>(halls, HttpStatus.OK);
+		if (halls.isEmpty())
+			return new ResponseEntity<>(halls, HttpStatus.OK);
 		log.error("No hall available in " + city + " for " + capacity + " people");
 		throw new HallNotFoundException("No halls available of that capacity at your location");
 	}
@@ -67,7 +69,7 @@ public class HallService {
 		if (hallRepository.existsById(id)) {
 			hallRepository.deleteById(id);
 			log.info("Hall deleted with id" + id);
-			return new ResponseEntity<Object>("Hall deleted succeccfully", HttpStatus.OK);
+			return new ResponseEntity<>("Hall deleted succeccfully", HttpStatus.OK);
 		}
 
 		throw new HallNotFoundException("Hall not Found");

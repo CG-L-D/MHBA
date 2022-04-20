@@ -1,22 +1,18 @@
 package com.cg.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.ManyToAny;
 
 @Entity
 @Table(name = "supervisor")
@@ -42,8 +38,7 @@ public class Supervisor {
 	@JoinColumn(name = "adminId")
 	private Admin admin;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	// @JoinColumn(name = "hallId")
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Hall hall;
 
 	public Supervisor() {

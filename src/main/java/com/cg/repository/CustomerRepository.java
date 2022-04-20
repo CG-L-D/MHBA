@@ -7,6 +7,6 @@ import com.cg.entity.Customer;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
-	
-	public Customer findByCustomerEmailAndCustomerPassword(String email,String Password);
+
+	public Customer findByCustomerEmailAndCustomerPassword(String email, String password);
 }

@@ -1,20 +1,17 @@
 package com.cg.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Date;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "Vendor")
@@ -25,13 +22,16 @@ public class Vendor {
 	@Column(name = "vendorId", nullable = false)
 	private int vendorId;
 
-	@Column(name = "firstName")
-	private String vendorFirstName;
+	@Column(name = "firstName" , nullable =false)
+	@Pattern(regexp = "^[A-Za-z]+$", message = "First name is invalid, it must contain only alphabets.")
+    private String vendorFirstName;
 
-	@Column(name = "lastName")
-	private String vendorLastName;
-
-	@Column(name = "vendorContact")
+	@Column(name = "lastName" , nullable=false)
+	@Pattern(regexp = "^[A-Za-z]+$", message = "Last name is invalid, it must contain only alphabets.")
+    private String vendorLastName;
+    	
+	@Pattern(regexp = "[0-9]{10}", message = "Contact number is invalid, it must contain only 10 digits.")
+    @Column(name = "vendorContact" , nullable=false)
 	private String vendorContact;
 
 	@Column(name = "flowerVendor")
@@ -48,11 +48,8 @@ public class Vendor {
 
 	@Column(name = "status")
 	private boolean isVendorAvailable;
-	/*
-	 * "vendorCost")
-	 * private double vendorCost;
-	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Hall hall;
 
 	@ManyToOne

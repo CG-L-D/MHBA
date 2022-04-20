@@ -67,10 +67,12 @@ public class Admin {
 	@JsonIgnore
 	private List<Vendor> vendors;
 
+	
 	// Default Constructor
 	public Admin() {
 	}
 
+	
 	// Parameterized Constructor
 	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email,
 			String adminContact, String password) {
@@ -83,6 +85,7 @@ public class Admin {
 		this.adminPassword = password;
 	}
 
+	
 	// Parameterized Overloaded Constructor
 	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
 			String adminContact, String password) {
@@ -174,6 +177,7 @@ public class Admin {
 		this.vendors = vendors;
 	}
 
+	
 	@Override
 	public String toString() {
 		return "Admin [adminId=" + adminId + ", adminFirstName=" + adminFirstName + ", adminLastName=" + adminLastName

@@ -30,7 +30,7 @@ class SupervisorControllerTest extends MhbaApplicationTests {
 
 	@BeforeEach
 	void setUp() {
-		admin = new Admin(101, "onkar", "M", "onkar@gmail.com", "893821128312", "qazwsx");
+		admin = new Admin(101, "onkar", "M", "onkar@gmail.com", 31, "893821128312", "qazwsx");
 		hall = new Hall(101, "palace", 40, 500, "civil line", "city", 70000, false, null, null);
 		supervisor = new Supervisor(101, "Surya", "surya@gmail.com", "90909022339",hall);
 		adminService.addAdmin(admin);

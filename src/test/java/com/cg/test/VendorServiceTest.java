@@ -34,7 +34,7 @@ class VendorServiceTest extends MhbaApplicationTests {
     @BeforeEach
     void setUp() {
         vendor = new Vendor(501, "Bhavya", "Aggarwal", "9999999998", true, true, true, true, true);
-        admin = new Admin(101, "Onkar", "Magadum", "onkarmagadum@gmail.com", "9000000000", "Abc@123");
+        admin = new Admin(101, "Onkar", "Magadum", "onkarmagadum@gmail.com", 31, "9000000000", "Abc@123");
 
     }
 

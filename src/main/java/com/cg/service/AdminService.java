@@ -6,9 +6,6 @@ import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,29 +28,38 @@ import com.cg.repository.SupervisorRepository;
 import com.cg.repository.VendorRepository;
 import com.cg.exception.VendorNotFoundException;
 
+//Admin repository
 @Service
 public class AdminService {
 
-	// Admin repository instance
+	// Admin repository instance autowired
 	@Autowired
 	AdminRepository adminRepository;
 
+	// Supervisor repository instance autowired
 	@Autowired
 	private SupervisorRepository supervisorRepository;
 
+	// Vendor repository instance autowired
 	@Autowired
 	private VendorRepository vendorRepository;
 
+	// Hall repository instance autowired
 	@Autowired
 	private HallRepository hallRepository;
 
+	// Customer repository instance autowired
 	@Autowired
 	private CustomerRepository customerRepository;
 
 	Admin currentAdmin = null;
 
+	// Logger object initialized
 	static Logger log = Logger.getLogger(AdminService.class.getName());
 
+	// Admin services
+
+	// Method for admin login, stores admin instance in currentAdmin
 	public ResponseEntity<Object> loginAdmin(String email, String password) {
 
 		if (currentAdmin != null) {
@@ -75,6 +81,7 @@ public class AdminService {
 		throw new InvalidCredentialsException("Admin login failed, invalid credentials.");
 	}
 
+	// Method for admin logout, makes currentAdmin instance null
 	public ResponseEntity<Object> logoutAdmin() {
 
 		if (currentAdmin != null) {
@@ -92,15 +99,28 @@ public class AdminService {
 		throw new AdminLoggedOutException("Currently no admin logged-in.");
 	}
 
+	// Method for addition of admin
 	public ResponseEntity<Object> addAdmin(Admin admin) {
 
 		if (adminRepository.findAll().isEmpty()) {
 
-			adminRepository.save(admin);
-			log.info("Admin with ID " + admin.getAdminId() + ", added successfully");
+			try {
 
-			return new ResponseEntity<>("Admin added successfully.", HttpStatus.OK);
+				adminRepository.save(admin);
+				log.info("Admin with ID " + admin.getAdminId() + ", added successfully");
 
+				return new ResponseEntity<>("Admin added successfully.", HttpStatus.OK);
+
+			} catch (Exception e) {
+
+				log.error("Tried to add, but admin data is invalid.");
+
+				if (e.getCause().toString()
+						.equals("javax.persistence.RollbackException: Error while committing the transaction")) {
+					return new ResponseEntity<>("Please provide valid data for admin.", HttpStatus.BAD_REQUEST);
+				}
+				return new ResponseEntity<>("Error while adding admin.", HttpStatus.FORBIDDEN);
+			}
 		}
 
 		log.error("Tried to add, but admin is available.");
@@ -109,6 +129,7 @@ public class AdminService {
 
 	}
 
+	// Method for removal of admin with adminId equals to currentAdmin Id
 	public ResponseEntity<Object> removeAdmin() {
 
 		if (currentAdmin != null) {
@@ -126,6 +147,70 @@ public class AdminService {
 
 	}
 
+	// Method for updating email of admin who is currently logged in.
+	public ResponseEntity<Object> updateAdminEmail(String email) {
+
+		if (currentAdmin != null) {
+
+			currentAdmin.setAdminEmail(email);
+			adminRepository.save(currentAdmin);
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", updated their email.");
+
+			return new ResponseEntity<>("Admin email updated successfully.", HttpStatus.OK);
+
+		}
+
+		log.error("Admin tried to update email, but no admin logged in");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
+
+	}
+
+	// Method for updating password of admin who is currently logged in.
+	public ResponseEntity<Object> updateAdminPassword(String password) {
+
+		if (currentAdmin != null) {
+
+			currentAdmin.setAdminPassword(password);
+			adminRepository.save(currentAdmin);
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", updated their password.");
+
+			return new ResponseEntity<>("Admin password updated successfully.", HttpStatus.OK);
+
+		}
+
+		log.error("Admin tried to update password, but no admin logged in");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
+
+	}
+
+	// Method for updating admin who is currently logged in.
+	public ResponseEntity<Object> updateAdmin(Admin newAdmin) {
+
+		if (currentAdmin != null) {
+
+			newAdmin.setAdminId(currentAdmin.getAdminId());
+
+			currentAdmin = newAdmin;
+
+			adminRepository.save(currentAdmin);
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", updated their data.");
+
+			return new ResponseEntity<>("Admin data updated successfully.", HttpStatus.OK);
+
+		}
+
+		log.error("Admin tried to update data, but no admin logged in");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
+
+	}
+
+	// Method for getting admin, returns currentAdmin
 	public ResponseEntity<Object> getAdmin() {
 
 		if (currentAdmin != null) {
@@ -142,6 +227,7 @@ public class AdminService {
 
 	}
 
+	// Method for getting admin revenue
 	public ResponseEntity<Object> getAdminRevenue() {
 
 		if (currentAdmin != null) {
@@ -159,6 +245,7 @@ public class AdminService {
 
 	}
 
+	// Method for collecting admin revenue from each hall
 	public ResponseEntity<Object> collectAdminRevenue() {
 
 		if (currentAdmin != null) {
@@ -170,13 +257,9 @@ public class AdminService {
 
 				totalRevenue += hall.getHallRevenue();
 
-				hall.setHallRevenue(0.0);
-
-				hallRepository.save(hall);
-
 			}
 
-			currentAdmin.setAdminRevenue(currentAdmin.getAdminRevenue() + totalRevenue);
+			currentAdmin.setAdminRevenue(totalRevenue);
 
 			adminRepository.save(currentAdmin);
 
@@ -344,7 +427,7 @@ public class AdminService {
 	}
 
 	// vendor services
-
+	// method to add vendor
 	public ResponseEntity<Object> addVendor(Vendor vendor) {
 
 		if (currentAdmin != null) {
@@ -367,6 +450,7 @@ public class AdminService {
 
 	}
 
+	// method to remove all present vendors from database.
 	public ResponseEntity<Object> removeAllVendor() {
 
 		if (currentAdmin != null) {
@@ -389,6 +473,7 @@ public class AdminService {
 
 	}
 
+	// method to remove a specific vendor using its id.
 	public ResponseEntity<Object> removeByVendorId(int id) {
 
 		if (currentAdmin != null) {
@@ -410,6 +495,7 @@ public class AdminService {
 		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
 	}
 
+	// method to fetch all the vendors added in the database
 	public ResponseEntity<Object> getAllVendor() {
 
 		if (currentAdmin != null) {
@@ -434,24 +520,26 @@ public class AdminService {
 
 	}
 
-	public ResponseEntity<Object> getByVendorPage(int m, int n) {
+	// method to update vendor contact details.
+	public ResponseEntity<Object> updateVendorByContact(int vendorId, String contact) {
 
 		if (currentAdmin != null) {
 
-			Pageable page = PageRequest.of(m, n);
+			Vendor vendor = vendorRepository.findById(vendorId).get();
 
-			Page<Vendor> vendors = vendorRepository.findAll(page);
+			if (vendor == null) {
 
-			if (vendors.isEmpty()) {
-
-				log.error("No vendors are present");
+				log.error("No vendor is present with these details.");
 				throw new VendorNotFoundException("Vendor not found.");
 
 			}
 
-			log.info("Admin with ID " + currentAdmin.getAdminId() + ", accessed vendors with ID " + m + " to " + n);
+			vendor.setVendorContact(contact);
+			vendorRepository.save(vendor);
 
-			return new ResponseEntity<>(vendors, HttpStatus.OK);
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", updated vendor with ID " + vendorId);
+
+			return new ResponseEntity<>("Vendor with id " + vendorId + " updated successfully.", HttpStatus.OK);
 		}
 
 		log.error("Admin tried to access vendors without login.");
@@ -460,6 +548,39 @@ public class AdminService {
 
 	}
 
+	// method to update the vendor services details.
+	public ResponseEntity<Object> updateVendorByServices(int vendorId, boolean flower, boolean music, boolean catering,
+			boolean video) {
+
+		if (currentAdmin != null) {
+
+			Vendor vendor = vendorRepository.findById(vendorId).get();
+
+			if (vendor == null) {
+
+				log.error("No vendor is present with these details.");
+				throw new VendorNotFoundException("Vendor not found.");
+
+			}
+
+			vendor.setFlower(flower);
+			vendor.setMusic(music);
+			vendor.setVideo(video);
+			vendor.setCatering(catering);
+			vendorRepository.save(vendor);
+
+			log.info("Admin with ID " + currentAdmin.getAdminId() + ", updated vendor with ID " + vendorId);
+
+			return new ResponseEntity<>("Vendor with id " + vendorId + " updated successfully.", HttpStatus.OK);
+		}
+
+		log.error("Admin tried to access vendors without login.");
+
+		throw new AdminLoggedOutException("No admin logged in, please login as admin.");
+
+	}
+
+	// method to fetch a specific vendor using its id
 	public ResponseEntity<Object> getByVendorId(int id) {
 
 		if (currentAdmin != null) {
@@ -548,7 +669,7 @@ public class AdminService {
 		if (currentAdmin != null) {
 
 			Optional<Customer> customer = customerRepository.findById(id);
-			
+
 			if (customer.isEmpty()) {
 
 				log.error("Admin tried to access supervisors, but no customers present.");

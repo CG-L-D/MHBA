@@ -65,7 +65,7 @@ public class Hall {
 	@OneToMany(cascade = CascadeType.ALL)
 	private List<HallOffers> hallOffers;
 
-	// Hall Constructor
+	// Default Constructor
 	public Hall() {
 		super();
 	}

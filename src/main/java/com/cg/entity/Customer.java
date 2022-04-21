@@ -20,10 +20,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+//Customer class
 @Entity
 @Table(name = "customer")
 public class Customer {
 
+    // Properties
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int customerId;
@@ -57,10 +59,12 @@ public class Customer {
 	@JoinTable(name = "customers_halls", joinColumns = @JoinColumn(name = "customerId", referencedColumnName = "customerId"), inverseJoinColumns = @JoinColumn(name = "hallId", referencedColumnName = "hallId"))
 	private List<Hall> halls;
 
+    // Default Constructor
 	public Customer() {
 
 	}
 
+    // Parameterized Constructor
 	public Customer(int customerId, String customerName, String customerEmail, String customerPassword,
 			String customerContact, Date bookHallFrom, Date bookHallTo) {
 		super();
@@ -73,6 +77,7 @@ public class Customer {
 		this.bookHallTo = bookHallTo;
 	}
 
+    // Getters and setters
 	public int getCustomerId() {
 		return customerId;
 	}
@@ -145,6 +150,7 @@ public class Customer {
 		this.customerBill = customerBill;
 	}
 
+    // toString method
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", customerName=" + customerName + ", customerEmail="

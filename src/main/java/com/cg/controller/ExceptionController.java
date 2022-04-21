@@ -17,9 +17,11 @@ import com.cg.exception.HallNotFoundException;
 import com.cg.exception.InvalidCredentialsException;
 import com.cg.exception.SupervisorNotFoundException;
 
+//Exception controller class
 @ControllerAdvice
 public class ExceptionController {
 
+	//Method handling admin already logged in exception
 	@ExceptionHandler(value = AdminLoggedInException.class)
 	public ResponseEntity<Object> alreadyLoggedInException(Exception e) {
 
@@ -27,6 +29,7 @@ public class ExceptionController {
 
 	}
 
+	//Method handling invalid admin credentials exception
 	@ExceptionHandler(value = InvalidCredentialsException.class)
 	public ResponseEntity<Object> invalidCredentialsException(Exception e) {
 
@@ -34,6 +37,7 @@ public class ExceptionController {
 
 	}
 
+	//Method handling admin already logged out exception
 	@ExceptionHandler(value = AdminLoggedOutException.class)
 	public ResponseEntity<Object> alreadyLoggedOutException(Exception e) {
 
@@ -41,6 +45,7 @@ public class ExceptionController {
 
 	}
 
+	//Method handling admin already available exception
 	@ExceptionHandler(value = AdminAvailableException.class)
 	public ResponseEntity<Object> adminAlreadyAvailableException(Exception e) {
 
@@ -48,6 +53,7 @@ public class ExceptionController {
 
 	}
 
+	//Method handling admin not found exception
 	@ExceptionHandler(value = AdminNotFoundException.class)
 	public ResponseEntity<Object> adminNotFoundException(Exception e) {
 
@@ -55,6 +61,7 @@ public class ExceptionController {
 
 	}
 
+	//Method handling supervisor not found exception
 	@ExceptionHandler(value = SupervisorNotFoundException.class)
 	public ResponseEntity<Object> supervisorNotFoundException(Exception e) {
 
@@ -62,6 +69,7 @@ public class ExceptionController {
 
 	}
 
+	//Method handling vendor not found exception
 	@ExceptionHandler(value = VendorNotFoundException.class)
 	public ResponseEntity<Object> vendorNotFoundException(Exception e) {
 
@@ -69,6 +77,7 @@ public class ExceptionController {
 
 	}
 
+	//Method handling customer not found exception
 	@ExceptionHandler(value = CustomerNotFoundException.class)
 	public ResponseEntity<Object> customerNotFoundException(Exception e) {
 
@@ -76,11 +85,13 @@ public class ExceptionController {
 
 	}
 
+	//Method handling customer not logged in exception
 	@ExceptionHandler(value = CustomerNotLoggedInException.class)
 	public ResponseEntity<Object> customerNotLoggedInException(Exception e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
+	//Method handling hall not found exception
 	@ExceptionHandler(value = HallNotFoundException.class)
 	public ResponseEntity<Object> hallNotFoundException(Exception e) {
 
@@ -88,6 +99,7 @@ public class ExceptionController {
 
 	}
 
+	//Method handling hall not available exception
 	@ExceptionHandler(value = HallNotAvailableException.class)
 	public ResponseEntity<Object> hallNotAvailableException(Exception e) {
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

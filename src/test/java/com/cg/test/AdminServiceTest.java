@@ -2,7 +2,6 @@ package com.cg.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-
 import com.cg.entity.Admin;
 import com.cg.entity.Hall;
 import com.cg.entity.Supervisor;
@@ -31,7 +30,7 @@ class AdminServiceTest extends MhbaApplication {
 	@BeforeEach
 	void setUp() {
 
-		admin = new Admin(101, "Onkar", "Magadum", "onkarmagadum@gmail.com", "9000000000", "Abc@123");
+		admin = new Admin(101, "Onkar", "Magadum", "onkarmagadum@gmail.com", 31, "9000000000", "Abc@123");
 
 	}
 

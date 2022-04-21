@@ -10,7 +10,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -41,7 +40,6 @@ public class Admin {
 	private int adminAge;
 
 	@Email
-	@Size(min = 3, max = 30, message = "Email must be between 3 to 30 characters.")
 	@Column(name = "email", nullable = false)
 	private String adminEmail;
 
@@ -72,23 +70,14 @@ public class Admin {
 	}
 
 	// Parameterized Constructor
-	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email,
+	public Admin(int adminId, @NotNull String firstName, @NotNull String lastName, @NotNull String email, int age,
 			String adminContact, String password) {
 		super();
 		this.adminId = adminId;
 		this.adminFirstName = firstName;
 		this.adminLastName = lastName;
 		this.adminEmail = email;
-		this.adminContact = adminContact;
-		this.adminPassword = password;
-	}
-
-	// Parameterized Overloaded Constructor
-	public Admin(@NotNull String firstName, @NotNull String lastName, @NotNull String email,
-			String adminContact, String password) {
-		this.adminFirstName = firstName;
-		this.adminLastName = lastName;
-		this.adminEmail = email;
+		this.adminAge = age;
 		this.adminContact = adminContact;
 		this.adminPassword = password;
 	}

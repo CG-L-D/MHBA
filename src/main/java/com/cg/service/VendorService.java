@@ -12,21 +12,27 @@ import com.cg.repository.HallRepository;
 import com.cg.repository.VendorRepository;
 import com.cg.entity.Hall;
 
+//Vendor Service Class 
+
 @Service
 public class VendorService {
 
-	@Autowired
+	@Autowired // auto-wiring vendor and hall repository.
 	private VendorRepository vendorRepo;
 
 	@Autowired
 	private HallRepository hallRepository;
 
+	// method to book a vendor by customer
+
 	public boolean bookVendor(int hallId, Date from, Date to, boolean flower, boolean catering, boolean music,
 			boolean video) {
 
-		List<Vendor> vendors = vendorRepo.findByServices(flower, catering, music, video);
-
-		if (vendors.isEmpty()) {
+		List<Vendor> vendors = vendorRepo.findByServices(flower, catering, music, video); // fetching vendors from
+																							// repository
+																							// according to mentioned
+																							// services.
+		if (!vendors.isEmpty()) {
 			for (Vendor vendor : vendors) {
 
 				Hall hall = hallRepository.findById(hallId).get();
@@ -34,7 +40,7 @@ public class VendorService {
 				if (hall != null && (vendor.getIsVendorAvailable() || vendor.getBookVendorFrom().after(to)
 						|| vendor.getBookVendorTo().before(from))) {
 
-					vendor.setIsVendorAvailable(false);
+					vendor.setIsVendorAvailable(false); // making vendor status false -> booked
 
 					hall.getVendors().add(vendor);
 					hallRepository.save(hall);

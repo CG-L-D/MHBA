@@ -1,5 +1,6 @@
 package com.cg.exception;
 
+@SuppressWarnings("serial")
 public class HallNotFoundException extends RuntimeException {
 
     public HallNotFoundException() {

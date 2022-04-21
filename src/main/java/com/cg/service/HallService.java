@@ -22,49 +22,55 @@ public class HallService {
 
 	static Logger log = Logger.getLogger(HallService.class.getName());
 
+	// Method to add Hall
 	public ResponseEntity<Object> addHall(Hall hall) {
 
 		hallRepository.save(hall);
-		log.info("Hall added");
+		log.info("Hall added with id" + hall.getHallId());
 		return new ResponseEntity<>("Hall added successfully", HttpStatus.OK);
 
 	}
 
+	// Method to get the List of Hall
 	public ResponseEntity<Object> getAllHall() {
 		List<Hall> halls = hallRepository.findAll();
 
-		if (halls.isEmpty())
+		if (!halls.isEmpty())
 			return new ResponseEntity<>(halls, HttpStatus.OK);
 
 		throw new HallNotFoundException("No hall found.");
 	}
 
+	// Method to get the list of Halls for a particular city
 	public ResponseEntity<Object> findHallByCity(String city) {
 		List<Hall> halls = hallRepository.findByHallCity(city);
 
-		if (halls.isEmpty())
+		if (!halls.isEmpty())
 			return new ResponseEntity<>(halls, HttpStatus.OK);
 
 		log.error("No hall available in " + city);
 		throw new HallNotFoundException("No halls available of at your city.");
 	}
 
+	// Method to get the List of Hall for a particular Location in a city
 	public ResponseEntity<Object> findHallByLocation(String city, String location) {
 		List<Hall> halls = hallRepository.findByHallCityAndHallLocation(city, location);
-		if (halls.isEmpty())
+		if (!halls.isEmpty())
 			return new ResponseEntity<>(halls.get(0), HttpStatus.OK);
 		log.error("No hall available in " + city + " at " + location);
 		throw new HallNotFoundException("No halls available of at your city and location.");
 	}
 
+	// Method to get the List of Halls according to the Capacity
 	public ResponseEntity<Object> findByCapacity(String city, int capacity) {
 		List<Hall> halls = hallRepository.findByHallCityAndHallCapacity(city, capacity);
-		if (halls.isEmpty())
+		if (!halls.isEmpty())
 			return new ResponseEntity<>(halls, HttpStatus.OK);
 		log.error("No hall available in " + city + " for " + capacity + " people");
 		throw new HallNotFoundException("No halls available of that capacity at your location");
 	}
 
+	// Method to remove the Hall
 	public ResponseEntity<Object> removeHall(int id) {
 		if (hallRepository.existsById(id)) {
 			hallRepository.deleteById(id);
@@ -75,6 +81,7 @@ public class HallService {
 		throw new HallNotFoundException("Hall not Found");
 	}
 
+	// Method to update the revenue of a particular hall
 	public void updateRevenue(int id, double bill) {
 
 		Hall hall = hallRepository.getById(id);

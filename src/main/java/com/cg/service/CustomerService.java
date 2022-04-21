@@ -13,7 +13,6 @@ import com.cg.entity.Hall;
 import com.cg.repository.CustomerRepository;
 import com.cg.repository.HallRepository;
 import com.cg.exception.HallNotFoundException;
-import com.cg.exception.AdminLoggedInException;
 import com.cg.exception.CustomerNotLoggedInException;
 import com.cg.exception.InvalidCredentialsException;
 
